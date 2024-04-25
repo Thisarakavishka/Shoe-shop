@@ -33,5 +33,5 @@ public class Customer implements SuperEntity {
     private String postalCode;
     private String contactNumber;
     private String email;
-    private Timestamp RecentPurchaseDateTime;
+    private Timestamp recentPurchaseDateTime;
 }

@@ -1,19 +1,12 @@
 package com.helloshoes.shoeshopmanagement.util;
 
-import com.helloshoes.shoeshopmanagement.dto.CategoryDTO;
-import com.helloshoes.shoeshopmanagement.dto.CustomerDTO;
-import com.helloshoes.shoeshopmanagement.dto.EmployeeDTO;
-import com.helloshoes.shoeshopmanagement.dto.SupplierDTO;
-import com.helloshoes.shoeshopmanagement.entity.Category;
-import com.helloshoes.shoeshopmanagement.entity.Customer;
-import com.helloshoes.shoeshopmanagement.entity.Employee;
-import com.helloshoes.shoeshopmanagement.entity.Supplier;
+import com.helloshoes.shoeshopmanagement.dto.*;
+import com.helloshoes.shoeshopmanagement.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -70,5 +63,18 @@ public class DataConvertor {
 
     public List<CategoryDTO> toCategoryDTOList(List<Category> categoryList) {
         return modelMapper.map(categoryList, List.class);
+    }
+
+    //Type Object Mapping
+    public TypeDTO toTypeDTO(Type type) {
+        return modelMapper.map(type, TypeDTO.class);
+    }
+
+    public Type toType(TypeDTO typeDTO) {
+        return modelMapper.map(typeDTO, Type.class);
+    }
+
+    public List<TypeDTO> toTypeDTOList(List<Type> typeList) {
+        return modelMapper.map(typeList, List.class);
     }
 }

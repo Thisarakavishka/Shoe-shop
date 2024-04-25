@@ -17,11 +17,11 @@ public class CategoryDTO implements SuperDTO {
     @Pattern(regexp = RegexUtil.CATEGORY_REGEX, message = "Invalid Category Code")
     private String categoryCode;
 
-    @NotBlank(message = "Category Name code is Required")
+    @NotBlank(message = "Category Name is Required")
     @Size(min = 3, max = 20, message = "Category Character code must be between 3 and 20 characters")
     private String categoryName;
 
-    @NotBlank(message = "Category Character code is Required")
+    @NotBlank(message = "Category Character is Required")
     @Size(min = 1, max = 2, message = "Category Character code must be between 1 and 2 characters")
     private String categoryCharacter;
 }

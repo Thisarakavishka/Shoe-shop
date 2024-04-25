@@ -67,5 +67,5 @@ public class CustomerDTO {
     private String email;
 
     @NotNull(message = "Recent Purchase Date Time is Required")
-    private Timestamp RecentPurchaseDateTime;
+    private Timestamp recentPurchaseDateTime;
 }
