@@ -1,8 +1,10 @@
 package com.helloshoes.shoeshopmanagement.util;
 
+import com.helloshoes.shoeshopmanagement.dto.CategoryDTO;
 import com.helloshoes.shoeshopmanagement.dto.CustomerDTO;
 import com.helloshoes.shoeshopmanagement.dto.EmployeeDTO;
 import com.helloshoes.shoeshopmanagement.dto.SupplierDTO;
+import com.helloshoes.shoeshopmanagement.entity.Category;
 import com.helloshoes.shoeshopmanagement.entity.Customer;
 import com.helloshoes.shoeshopmanagement.entity.Employee;
 import com.helloshoes.shoeshopmanagement.entity.Supplier;
@@ -55,5 +57,18 @@ public class DataConvertor {
 
     public List<CustomerDTO> toCustomerDTOList(List<Customer> customerList) {
         return modelMapper.map(customerList, List.class);
+    }
+
+    //Category Object Mapping
+    public CategoryDTO toCategoryDTO(Category category) {
+        return modelMapper.map(category, CategoryDTO.class);
+    }
+
+    public Category toCategory(CategoryDTO categoryDTO) {
+        return modelMapper.map(categoryDTO, Category.class);
+    }
+
+    public List<CategoryDTO> toCategoryDTOList(List<Category> categoryList) {
+        return modelMapper.map(categoryList, List.class);
     }
 }

@@ -6,4 +6,5 @@ public class RegexUtil {
     public static final String EMPLOYEE_REGEX = "^EMP\\d{3}$";
     public static final String CUSTOMER_REGEX = "^CUS\\d{3}$";
     public static final String SUPPLIER_REGEX = "^SUP\\d{3}$";
+    public static final String CATEGORY_REGEX = "^CAT\\d{3}$";
 }
