@@ -26,7 +26,7 @@ public class SupplierController {
 
     @GetMapping
     public ResponseEntity<List<SupplierDTO>> getAllSuppliers() {
-        List<SupplierDTO> supplierDTOS = supplierService.getAllSuppliers();
+        List<SupplierDTO> supplierDTOS = supplierService.getAll();
         return ResponseEntity.ok().body(supplierDTOS);
     }
 
@@ -35,7 +35,7 @@ public class SupplierController {
         if (!id.matches("^SU\\d{3}$")) {
             return ResponseEntity.badRequest().body("Invalid Supplier code format");
         }
-        SupplierDTO supplierDTO = supplierService.getSupplierByCode(id);
+        SupplierDTO supplierDTO = supplierService.getByCode(id);
         if (supplierDTO == null) {
             return ResponseEntity.notFound().build();
         }
@@ -44,9 +44,9 @@ public class SupplierController {
 
     @PostMapping
     public ResponseEntity<?> createSupplier(@RequestBody @Valid SupplierDTO supplierDTO) {
-        SupplierDTO savedSupplier = supplierService.saveSupplier(supplierDTO);
+        SupplierDTO savedSupplier = supplierService.save(supplierDTO);
         if (savedSupplier == null) {
-            return ResponseEntity.badRequest().body("Fail to create supplier");
+            return ResponseEntity.badRequest().body("Failed to create supplier");
         }
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -61,7 +61,7 @@ public class SupplierController {
         if (!id.matches("^SU\\d{3}$")) {
             return ResponseEntity.badRequest().body("Invalid Supplier code format");
         }
-        boolean isUpdated = supplierService.updateSupplier(id, supplierDTO);
+        boolean isUpdated = supplierService.update(id, supplierDTO);
         if (!isUpdated) {
             return ResponseEntity.badRequest().body("Failed to update supplier");
         }
@@ -73,7 +73,7 @@ public class SupplierController {
         if (!id.matches("^SU\\d{3}$")) {
             return ResponseEntity.badRequest().body("Invalid Employee Code format");
         }
-        boolean isDeleted = supplierService.deleteSupplier(id);
+        boolean isDeleted = supplierService.delete(id);
         if (!isDeleted) {
             return ResponseEntity.notFound().build();
         }

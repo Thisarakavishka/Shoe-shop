@@ -26,7 +26,7 @@ public class EmployeeController {
 
     @GetMapping
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
-        List<EmployeeDTO> employees = employeeService.getAllEmployees();
+        List<EmployeeDTO> employees = employeeService.getAll();
         return ResponseEntity.ok().body(employees);
     }
 
@@ -35,7 +35,7 @@ public class EmployeeController {
         if (!id.matches("^EMP\\d{3}$")) {
             return ResponseEntity.badRequest().body("Invalid Employee Code format");
         }
-        EmployeeDTO employeeDTO = employeeService.getEmployeeByCode(id);
+        EmployeeDTO employeeDTO = employeeService.getByCode(id);
         if (employeeDTO == null) {
             return ResponseEntity.notFound().build();
         }
@@ -44,7 +44,7 @@ public class EmployeeController {
 
     @PostMapping
     public ResponseEntity<?> createEmployee(@RequestBody @Valid EmployeeDTO employeeDTO) {
-        EmployeeDTO savedEmployee = employeeService.saveEmployee(employeeDTO);
+        EmployeeDTO savedEmployee = employeeService.save(employeeDTO);
         if (savedEmployee == null) {
             return ResponseEntity.badRequest().body("Failed to create Employee");
         }
@@ -61,7 +61,7 @@ public class EmployeeController {
         if (!id.matches("^EMP\\d{3}$")) {
             return ResponseEntity.badRequest().body("Invalid Employee Code format");
         }
-        boolean isUpdated = employeeService.updateEmployee(id, employeeDTO);
+        boolean isUpdated = employeeService.update(id, employeeDTO);
         if (!isUpdated) {
             return ResponseEntity.badRequest().body("Failed to update Employee");
         }
@@ -73,7 +73,7 @@ public class EmployeeController {
         if (!id.matches("^EMP\\d{3}$")) {
             return ResponseEntity.badRequest().body("Invalid Employee Code format");
         }
-        boolean isDeleted = employeeService.deleteEmployee(id);
+        boolean isDeleted = employeeService.delete(id);
         if (!isDeleted) {
             return ResponseEntity.notFound().build();
         }

@@ -20,7 +20,7 @@ public class SupplierServiceImpl implements SupplierService {
     private final DataConvertor dataConvertor;
 
     @Override
-    public SupplierDTO saveSupplier(SupplierDTO supplierDTO) {
+    public SupplierDTO save(SupplierDTO supplierDTO) {
         boolean isExists = supplierRepository.existsById(supplierDTO.getSupplierCode());
         if (!isExists) {
             return dataConvertor.toSupplierDTO(supplierRepository.save(dataConvertor.toSupplier(supplierDTO)));
@@ -29,7 +29,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public Boolean deleteSupplier(String supplierCode) {
+    public Boolean delete(String supplierCode) {
         if (supplierRepository.existsById(supplierCode)) {
             supplierRepository.deleteById(supplierCode);
             return true;
@@ -38,7 +38,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public SupplierDTO getSupplierByCode(String supplierCode) {
+    public SupplierDTO getByCode(String supplierCode) {
         if (!supplierRepository.existsById(supplierCode)) {
             return null;
         }
@@ -46,12 +46,12 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public List<SupplierDTO> getAllSuppliers() {
+    public List<SupplierDTO> getAll() {
         return dataConvertor.toSupplierDTOList(supplierRepository.findAll());
     }
 
     @Override
-    public Boolean updateSupplier(String supplierCode, SupplierDTO supplierDTO) {
+    public Boolean update(String supplierCode, SupplierDTO supplierDTO) {
         if (supplierDTO.getSupplierCode().equals(supplierCode)) {
             Optional<Supplier> supplier = supplierRepository.findById(supplierCode);
             if (supplier.isPresent()) {

@@ -20,7 +20,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final DataConvertor dataConvertor;
 
     @Override
-    public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO) {
+    public EmployeeDTO save(EmployeeDTO employeeDTO) {
         boolean isExists = employeeRepository.existsById(employeeDTO.getEmployeeCode());
         if (!isExists) {
             EmployeeDTO dbEmployee = getEmployeeByEmail(employeeDTO.getEmail());
@@ -32,7 +32,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Boolean deleteEmployee(String employeeCode) {
+    public Boolean delete(String employeeCode) {
         if (employeeRepository.existsById(employeeCode)) {
             employeeRepository.deleteById(employeeCode);
             return true;
@@ -41,7 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDTO getEmployeeByCode(String employeeCode) {
+    public EmployeeDTO getByCode(String employeeCode) {
         if (!employeeRepository.existsById(employeeCode)) {
             return null;
         }
@@ -49,12 +49,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeDTO> getAllEmployees() {
+    public List<EmployeeDTO> getAll() {
         return dataConvertor.toEmployeeDTOList(employeeRepository.findAll());
     }
 
     @Override
-    public Boolean updateEmployee(String employeeCode, EmployeeDTO employeeDTO) {
+    public Boolean update(String employeeCode, EmployeeDTO employeeDTO) {
         if (employeeDTO.getEmployeeCode().equals(employeeCode)) {
             Optional<Employee> existingEmployee = employeeRepository.findById(employeeCode);
             if (existingEmployee.isPresent()) {
@@ -83,7 +83,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         return false;
     }
 
-    private EmployeeDTO getEmployeeByEmail(String email) {
+    @Override
+    public EmployeeDTO getEmployeeByEmail(String email) {
         Employee employee = employeeRepository.findByEmail(email);
         if (employee == null) {
             return null;
