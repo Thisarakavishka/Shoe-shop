@@ -22,12 +22,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO) {
         boolean isExists = employeeRepository.existsById(employeeDTO.getEmployeeCode());
-        System.out.println(isExists);
         if (!isExists) {
-            System.out.println("in if case");
             EmployeeDTO dbEmployee = getEmployeeByEmail(employeeDTO.getEmail());
             if (dbEmployee == null) {
-                System.out.println("save");
                 return dataConvertor.toEmployeeDTO(employeeRepository.save(dataConvertor.toEmployee(employeeDTO)));
             }
         }
@@ -46,7 +43,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDTO getEmployeeByCode(String employeeCode) {
         if (!employeeRepository.existsById(employeeCode)) {
-            //return null Employee when that user didn't exist
             return null;
         }
         return dataConvertor.toEmployeeDTO(employeeRepository.getReferenceById(employeeCode));
