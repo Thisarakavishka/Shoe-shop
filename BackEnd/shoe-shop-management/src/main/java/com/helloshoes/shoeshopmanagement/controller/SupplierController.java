@@ -2,6 +2,7 @@ package com.helloshoes.shoeshopmanagement.controller;
 
 import com.helloshoes.shoeshopmanagement.dto.SupplierDTO;
 import com.helloshoes.shoeshopmanagement.service.SupplierService;
+import com.helloshoes.shoeshopmanagement.util.RegexUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class SupplierController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getSupplierByCode(@PathVariable String id) {
-        if (!id.matches("^SU\\d{3}$")) {
+        if (!id.matches(RegexUtil.SUPPLIER_REGEX)) {
             return ResponseEntity.badRequest().body("Invalid Supplier code format");
         }
         SupplierDTO supplierDTO = supplierService.getByCode(id);
@@ -58,7 +59,7 @@ public class SupplierController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateSupplier(@PathVariable String id, @RequestBody @Valid SupplierDTO supplierDTO) {
-        if (!id.matches("^SU\\d{3}$")) {
+        if (!id.matches(RegexUtil.SUPPLIER_REGEX)) {
             return ResponseEntity.badRequest().body("Invalid Supplier code format");
         }
         boolean isUpdated = supplierService.update(id, supplierDTO);
@@ -70,7 +71,7 @@ public class SupplierController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSupplier(@PathVariable String id) {
-        if (!id.matches("^SU\\d{3}$")) {
+        if (!id.matches(RegexUtil.SUPPLIER_REGEX)) {
             return ResponseEntity.badRequest().body("Invalid Employee Code format");
         }
         boolean isDeleted = supplierService.delete(id);

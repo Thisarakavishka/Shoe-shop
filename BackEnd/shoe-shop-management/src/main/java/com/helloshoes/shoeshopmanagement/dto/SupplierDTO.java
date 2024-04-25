@@ -1,6 +1,7 @@
 package com.helloshoes.shoeshopmanagement.dto;
 
 import com.helloshoes.shoeshopmanagement.entity.enums.Category;
+import com.helloshoes.shoeshopmanagement.util.RegexUtil;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class SupplierDTO implements SuperDTO {
 
     @NotBlank(message = "Supplier code is Required")
+    @Pattern(regexp = RegexUtil.SUPPLIER_REGEX, message = "Supplier code is Invalid")
     private String supplierCode;
 
     @NotBlank(message = "Supplier name is Required")
@@ -36,18 +38,18 @@ public class SupplierDTO implements SuperDTO {
     private String addressState;
 
     @NotBlank(message = "Postal Code is Required")
-    @Pattern(regexp = "\\d{5}", message = "Postal Code must be 5 digits")
+    @Pattern(regexp = RegexUtil.POSTAL_CODE_REGEX, message = "Postal Code must be 5 digits")
     private String postalCode;
 
     @NotBlank(message = "Country is Required")
     private String country;
 
     @NotBlank(message = "Mobile Contact Number is Required")
-    @Pattern(regexp = "\\d{10}", message = "Mobile Contact Number must be 10 digits")
+    @Pattern(regexp = RegexUtil.PHONE_NUMBER_REGEX, message = "Mobile Contact Number must be 10 digits")
     private String contactMobile;
 
     @NotBlank(message = "Landline Number is Required")
-    @Pattern(regexp = "\\d{10}", message = "Landline Number must be 10 digits")
+    @Pattern(regexp = RegexUtil.PHONE_NUMBER_REGEX, message = "Landline Number must be 10 digits")
     private String contactLandline;
 
     @NotBlank(message = "Email is Required")

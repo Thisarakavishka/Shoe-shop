@@ -2,6 +2,7 @@ package com.helloshoes.shoeshopmanagement.dto;
 
 import com.helloshoes.shoeshopmanagement.entity.enums.Gender;
 import com.helloshoes.shoeshopmanagement.entity.enums.Role;
+import com.helloshoes.shoeshopmanagement.util.RegexUtil;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +16,7 @@ import java.util.Date;
 public class EmployeeDTO implements SuperDTO {
 
     @NotBlank(message = "Employee code is Required")
+    @Pattern(regexp = RegexUtil.EMPLOYEE_REGEX, message = "Employee Code is Invalid")
     private String employeeCode;
 
     @NotBlank(message = "Employee name is Required")
@@ -60,11 +62,11 @@ public class EmployeeDTO implements SuperDTO {
     private String addressState;
 
     @NotBlank(message = "Postal Code is Required")
-    @Pattern(regexp = "\\d{5}", message = "Postal Code must be 5 digits")
+    @Pattern(regexp = RegexUtil.POSTAL_CODE_REGEX, message = "Postal Code must be 5 digits")
     private String postalCode;
 
     @NotBlank(message = "Contact Number is Required")
-    @Pattern(regexp = "\\d{10}", message = "Contact Number must be 10 digits")
+    @Pattern(regexp = RegexUtil.PHONE_NUMBER_REGEX, message = "Contact Number must be 10 digits")
     private String contactNumber;
 
     @NotBlank(message = "Email is Required")
@@ -78,6 +80,6 @@ public class EmployeeDTO implements SuperDTO {
     private String emergencyContactPerson;
 
     @NotBlank(message = "Emergency Contact Number is Required")
-    @Pattern(regexp = "\\d{10}", message = "Emergency Contact Number must be 10 digits")
+    @Pattern(regexp = RegexUtil.PHONE_NUMBER_REGEX, message = "Emergency Contact Number must be 10 digits")
     private String emergencyContactNumber;
 }

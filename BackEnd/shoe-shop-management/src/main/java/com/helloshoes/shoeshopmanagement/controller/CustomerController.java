@@ -2,6 +2,7 @@ package com.helloshoes.shoeshopmanagement.controller;
 
 import com.helloshoes.shoeshopmanagement.dto.CustomerDTO;
 import com.helloshoes.shoeshopmanagement.service.CustomerService;
+import com.helloshoes.shoeshopmanagement.util.RegexUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class CustomerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getCustomerByCode(@PathVariable String id) {
-        if (!id.matches("^CU\\d{3}$")) {
+        if (!id.matches(RegexUtil.CUSTOMER_REGEX)) {
             return ResponseEntity.badRequest().body("Invalid Customer code format");
         }
         CustomerDTO customerDTO = customerService.getByCode(id);
@@ -58,7 +59,7 @@ public class CustomerController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCustomer(@PathVariable String id, @RequestBody @Valid CustomerDTO customerDTO) {
-        if (!id.matches("^CU\\d{3}$")) {
+        if (!id.matches(RegexUtil.CUSTOMER_REGEX)) {
             return ResponseEntity.badRequest().body("Invalid Customer code format");
         }
         boolean isUpdated = customerService.update(id, customerDTO);
@@ -70,7 +71,7 @@ public class CustomerController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCustomer(@PathVariable String id) {
-        if (!id.matches("^CU\\d{3}$")) {
+        if (!id.matches(RegexUtil.CUSTOMER_REGEX)) {
             return ResponseEntity.badRequest().body("Invalid Customer code format");
         }
         boolean isDeleted = customerService.delete(id);

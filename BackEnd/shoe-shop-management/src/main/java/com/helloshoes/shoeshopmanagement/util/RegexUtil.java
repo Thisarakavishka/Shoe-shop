@@ -1,0 +1,9 @@
+package com.helloshoes.shoeshopmanagement.util;
+
+public class RegexUtil {
+    public static final String PHONE_NUMBER_REGEX = "\\d{10}";
+    public static final String POSTAL_CODE_REGEX = "\\d{5}";
+    public static final String EMPLOYEE_REGEX = "^EMP\\d{3}$";
+    public static final String CUSTOMER_REGEX = "^CUS\\d{3}$";
+    public static final String SUPPLIER_REGEX = "^SUP\\d{3}$";
+}

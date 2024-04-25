@@ -2,6 +2,7 @@ package com.helloshoes.shoeshopmanagement.controller;
 
 import com.helloshoes.shoeshopmanagement.dto.EmployeeDTO;
 import com.helloshoes.shoeshopmanagement.service.EmployeeService;
+import com.helloshoes.shoeshopmanagement.util.RegexUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getEmployeeByCode(@PathVariable String id) {
-        if (!id.matches("^EMP\\d{3}$")) {
+        if (!id.matches(RegexUtil.EMPLOYEE_REGEX)) {
             return ResponseEntity.badRequest().body("Invalid Employee Code format");
         }
         EmployeeDTO employeeDTO = employeeService.getByCode(id);
@@ -58,7 +59,7 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEmployee(@PathVariable String id, @RequestBody @Valid EmployeeDTO employeeDTO) {
-        if (!id.matches("^EMP\\d{3}$")) {
+        if (!id.matches(RegexUtil.EMPLOYEE_REGEX)) {
             return ResponseEntity.badRequest().body("Invalid Employee Code format");
         }
         boolean isUpdated = employeeService.update(id, employeeDTO);
@@ -70,7 +71,7 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteEmployee(@PathVariable String id) {
-        if (!id.matches("^EMP\\d{3}$")) {
+        if (!id.matches(RegexUtil.EMPLOYEE_REGEX)) {
             return ResponseEntity.badRequest().body("Invalid Employee Code format");
         }
         boolean isDeleted = employeeService.delete(id);
