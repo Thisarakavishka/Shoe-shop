@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,6 +21,7 @@ public class EmployeeDTO implements SuperDTO {
     @Size(min = 3, max = 30, message = "Employee name must be between 3 and 30 characters")
     private String employeeName;
 
+    @NotBlank(message = "Employee Profile Picture is Required")
     private String profilePic;
 
     @NotNull(message = "Gender is Required")
@@ -47,9 +47,10 @@ public class EmployeeDTO implements SuperDTO {
     @NotBlank(message = "Branch is Required")
     private String branch;
 
-    @NotBlank(message = "Address is Required")
+    @NotBlank(message = "AddressNo is Required")
     private String addressNo;
 
+    @NotBlank(message = "Address Lane is Required")
     private String addressLane;
 
     @NotBlank(message = "City is Required")
@@ -58,7 +59,7 @@ public class EmployeeDTO implements SuperDTO {
     @NotBlank(message = "State is Required")
     private String addressState;
 
-    @NotBlank(message = "Postal is Required")
+    @NotBlank(message = "Postal Code is Required")
     @Pattern(regexp = "\\d{5}", message = "Postal Code must be 5 digits")
     private String postalCode;
 

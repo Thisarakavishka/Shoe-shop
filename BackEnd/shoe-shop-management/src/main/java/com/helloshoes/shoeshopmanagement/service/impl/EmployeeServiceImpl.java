@@ -21,26 +21,35 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO) {
-        return dataConvertor.toEmployeeDTO(employeeRepository.save(dataConvertor.toEmployee(employeeDTO)));
+        boolean isExists = employeeRepository.existsById(employeeDTO.getEmployeeCode());
+        System.out.println(isExists);
+        if (!isExists) {
+            System.out.println("in if case");
+            EmployeeDTO dbEmployee = getEmployeeByEmail(employeeDTO.getEmail());
+            if (dbEmployee == null) {
+                System.out.println("save");
+                return dataConvertor.toEmployeeDTO(employeeRepository.save(dataConvertor.toEmployee(employeeDTO)));
+            }
+        }
+        return null;
     }
 
     @Override
     public Boolean deleteEmployee(String employeeCode) {
         if (employeeRepository.existsById(employeeCode)) {
-            System.out.println("found employee");
             employeeRepository.deleteById(employeeCode);
             return true;
         }
-        System.out.println("not found employee");
         return false;
     }
 
     @Override
     public EmployeeDTO getEmployeeByCode(String employeeCode) {
         if (!employeeRepository.existsById(employeeCode)) {
-            return dataConvertor.toEmployeeDTO(employeeRepository.getReferenceById(employeeCode));
+            //return null Employee when that user didn't exist
+            return null;
         }
-        return null;
+        return dataConvertor.toEmployeeDTO(employeeRepository.getReferenceById(employeeCode));
     }
 
     @Override
@@ -50,29 +59,39 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Boolean updateEmployee(String employeeCode, EmployeeDTO employeeDTO) {
-        Optional<Employee> existingEmployee = employeeRepository.findById(employeeCode);
-        if (existingEmployee.isPresent()) {
-            existingEmployee.get().setEmployeeName(employeeDTO.getEmployeeName());
-            existingEmployee.get().setProfilePic(employeeDTO.getProfilePic());
-            existingEmployee.get().setGender(employeeDTO.getGender());
-            existingEmployee.get().setStatus(employeeDTO.getStatus());
-            existingEmployee.get().setDesignation(employeeDTO.getDesignation());
-            existingEmployee.get().setRole(employeeDTO.getRole());
-            existingEmployee.get().setDob(employeeDTO.getDob());
-            existingEmployee.get().setJoinedDate(employeeDTO.getJoinedDate());
-            existingEmployee.get().setBranch(employeeDTO.getBranch());
-            existingEmployee.get().setAddressNo(employeeDTO.getAddressNo());
-            existingEmployee.get().setAddressLane(employeeDTO.getAddressLane());
-            existingEmployee.get().setAddressCity(employeeDTO.getAddressCity());
-            existingEmployee.get().setAddressState(employeeDTO.getAddressState());
-            existingEmployee.get().setPostalCode(employeeDTO.getPostalCode());
-            existingEmployee.get().setContactNumber(employeeDTO.getContactNumber());
-            existingEmployee.get().setEmail(employeeDTO.getEmail());
-            existingEmployee.get().setPassword(employeeDTO.getPassword());
-            existingEmployee.get().setEmergencyContactPerson(employeeDTO.getEmergencyContactPerson());
-            existingEmployee.get().setEmergencyContactNumber(employeeDTO.getEmergencyContactNumber());
-            return true;
+        if (employeeDTO.getEmployeeCode().equals(employeeCode)) {
+            Optional<Employee> existingEmployee = employeeRepository.findById(employeeCode);
+            if (existingEmployee.isPresent()) {
+                existingEmployee.get().setEmployeeName(employeeDTO.getEmployeeName());
+                existingEmployee.get().setProfilePic(employeeDTO.getProfilePic());
+                existingEmployee.get().setGender(employeeDTO.getGender());
+                existingEmployee.get().setStatus(employeeDTO.getStatus());
+                existingEmployee.get().setDesignation(employeeDTO.getDesignation());
+                existingEmployee.get().setRole(employeeDTO.getRole());
+                existingEmployee.get().setDob(employeeDTO.getDob());
+                existingEmployee.get().setJoinedDate(employeeDTO.getJoinedDate());
+                existingEmployee.get().setBranch(employeeDTO.getBranch());
+                existingEmployee.get().setAddressNo(employeeDTO.getAddressNo());
+                existingEmployee.get().setAddressLane(employeeDTO.getAddressLane());
+                existingEmployee.get().setAddressCity(employeeDTO.getAddressCity());
+                existingEmployee.get().setAddressState(employeeDTO.getAddressState());
+                existingEmployee.get().setPostalCode(employeeDTO.getPostalCode());
+                existingEmployee.get().setContactNumber(employeeDTO.getContactNumber());
+                existingEmployee.get().setEmail(employeeDTO.getEmail());
+                existingEmployee.get().setPassword(employeeDTO.getPassword());
+                existingEmployee.get().setEmergencyContactPerson(employeeDTO.getEmergencyContactPerson());
+                existingEmployee.get().setEmergencyContactNumber(employeeDTO.getEmergencyContactNumber());
+                return true;
+            }
         }
         return false;
+    }
+
+    private EmployeeDTO getEmployeeByEmail(String email) {
+        Employee employee = employeeRepository.findByEmail(email);
+        if (employee == null) {
+            return null;
+        }
+        return dataConvertor.toEmployeeDTO(employee);
     }
 }

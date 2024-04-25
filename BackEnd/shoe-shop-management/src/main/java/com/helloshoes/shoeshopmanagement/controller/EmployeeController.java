@@ -1,21 +1,15 @@
 package com.helloshoes.shoeshopmanagement.controller;
 
 import com.helloshoes.shoeshopmanagement.dto.EmployeeDTO;
-import com.helloshoes.shoeshopmanagement.entity.enums.Gender;
-import com.helloshoes.shoeshopmanagement.entity.enums.Role;
 import com.helloshoes.shoeshopmanagement.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -36,27 +30,24 @@ public class EmployeeController {
         return ResponseEntity.ok().body(employees);
     }
 
-    /*
-        @GetMapping("/search")
-        public ResponseEntity<EmployeeDTO> searchEmployee(@RequestParam("search") String text) {
-            // need to initialize employees from employeeService
-            System.out.println(text);
-
-            return ResponseEntity.ok().body(new EmployeeDTO());
-        }
-    */
     @GetMapping("/{id}")
-    public ResponseEntity<EmployeeDTO> getEmployeeByCode(@PathVariable String id) {
-        // need to initialize employees from employeeService
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-
+    public ResponseEntity<?> getEmployeeByCode(@PathVariable String id) {
+        if (!id.matches("^EMP\\d{3}$")) {
+            return ResponseEntity.badRequest().body("Invalid Employee Code format");
+        }
+        EmployeeDTO employeeDTO = employeeService.getEmployeeByCode(id);
+        if (employeeDTO == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok().body(employeeDTO);
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDTO> createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<?> createEmployee(@RequestBody @Valid EmployeeDTO employeeDTO) {
         EmployeeDTO savedEmployee = employeeService.saveEmployee(employeeDTO);
-
+        if (savedEmployee == null) {
+            return ResponseEntity.badRequest().body("Failed to create Employee");
+        }
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -65,25 +56,27 @@ public class EmployeeController {
         return ResponseEntity.created(location).body(savedEmployee);
     }
 
-    /*
-        @PostMapping("/{id}/upload")
-        public ResponseEntity<?> uploadProfilePicture(@PathVariable String id, @RequestParam("profile-picture") MultipartFile file) {
-            // need to initialize employees from employeeService
-            boolean isUploaded = false;
-            System.out.println(file.getOriginalFilename());
-
-            return ResponseEntity.ok(file.getOriginalFilename());
-        }
-    */
     @PutMapping("/{id}")
-    public ResponseEntity<Boolean> updateEmployee(@PathVariable String id, @Valid @RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<?> updateEmployee(@PathVariable String id, @RequestBody @Valid EmployeeDTO employeeDTO) {
+        if (!id.matches("^EMP\\d{3}$")) {
+            return ResponseEntity.badRequest().body("Invalid Employee Code format");
+        }
         boolean isUpdated = employeeService.updateEmployee(id, employeeDTO);
-        return ResponseEntity.ok().body(isUpdated);
+        if (!isUpdated) {
+            return ResponseEntity.badRequest().body("Failed to update Employee");
+        }
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteEmployee(@PathVariable String id) {
+    public ResponseEntity<?> deleteEmployee(@PathVariable String id) {
+        if (!id.matches("^EMP\\d{3}$")) {
+            return ResponseEntity.badRequest().body("Invalid Employee Code format");
+        }
         boolean isDeleted = employeeService.deleteEmployee(id);
-        return ResponseEntity.ok(isDeleted);
+        if (!isDeleted) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
     }
 }
