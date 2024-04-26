@@ -23,7 +23,10 @@ public class SupplierServiceImpl implements SupplierService {
     public SupplierDTO save(SupplierDTO supplierDTO) {
         boolean isExists = supplierRepository.existsById(supplierDTO.getSupplierCode());
         if (!isExists) {
-            return dataConvertor.toSupplierDTO(supplierRepository.save(dataConvertor.toSupplier(supplierDTO)));
+            SupplierDTO dbSupplier = getSupplierByName(supplierDTO.getSupplierName());
+            if (dbSupplier == null) {
+                return dataConvertor.toSupplierDTO(supplierRepository.save(dataConvertor.toSupplier(supplierDTO)));
+            }
         }
         return null;
     }
@@ -70,5 +73,14 @@ public class SupplierServiceImpl implements SupplierService {
             }
         }
         return false;
+    }
+
+    @Override
+    public SupplierDTO getSupplierByName(String supplierName) {
+        Supplier supplier = supplierRepository.findBySupplierName(supplierName);
+        if (supplier == null) {
+            return null;
+        }
+        return dataConvertor.toSupplierDTO(supplier);
     }
 }
