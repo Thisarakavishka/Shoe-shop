@@ -23,7 +23,10 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDTO save(CustomerDTO dto) {
         boolean isExists = customerRepository.existsById(dto.getCustomerCode());
         if (!isExists) {
-            return dataConvertor.toCustomerDTO(customerRepository.save(dataConvertor.toCustomer(dto)));
+            CustomerDTO customerDTO = getCustomerByName(dto.getCustomerName());
+            if (customerDTO == null) {
+                return dataConvertor.toCustomerDTO(customerRepository.save(dataConvertor.toCustomer(dto)));
+            }
         }
         return null;
     }
@@ -73,5 +76,14 @@ public class CustomerServiceImpl implements CustomerService {
             }
         }
         return false;
+    }
+
+    @Override
+    public CustomerDTO getCustomerByName(String customerName) {
+        Customer customer = customerRepository.findByName(customerName);
+        if (customer == null) {
+            return null;
+        }
+        return dataConvertor.toCustomerDTO(customer);
     }
 }
