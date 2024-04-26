@@ -90,4 +90,16 @@ public class DataConvertor {
     public List<SizeDTO> toSizeDTOList(List<Size> sizeList) {
         return modelMapper.map(sizeList, List.class);
     }
+
+    public ColourDTO toColourDTO(Colour colour) {
+        return modelMapper.map(colour, ColourDTO.class);
+    }
+
+    public Colour toColour(ColourDTO colourDTO) {
+        return modelMapper.map(colourDTO, Colour.class);
+    }
+
+    public List<ColourDTO> toColourDTOList(List<Colour> colourList) {
+        return modelMapper.map(colourList, List.class);
+    }
 }

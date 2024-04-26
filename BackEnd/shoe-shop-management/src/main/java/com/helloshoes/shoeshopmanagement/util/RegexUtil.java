@@ -9,4 +9,5 @@ public class RegexUtil {
     public static final String CATEGORY_REGEX = "^CAT\\d{3}$";
     public static final String TYPE_REGEX = "^TYP\\d{3}$";
     public static final String SIZE_REGEX = "^SIZ\\d{3}$";
+    public static final String COLOUR_REGEX = "^COL\\d{3}$";
 }
