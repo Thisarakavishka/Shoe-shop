@@ -77,4 +77,17 @@ public class DataConvertor {
     public List<TypeDTO> toTypeDTOList(List<Type> typeList) {
         return modelMapper.map(typeList, List.class);
     }
+
+    //Size Object Mapping
+    public SizeDTO toSizeDTO(Size size) {
+        return modelMapper.map(size, SizeDTO.class);
+    }
+
+    public Size toSize(SizeDTO sizeDTO) {
+        return modelMapper.map(sizeDTO, Size.class);
+    }
+
+    public List<SizeDTO> toSizeDTOList(List<Size> sizeList) {
+        return modelMapper.map(sizeList, List.class);
+    }
 }

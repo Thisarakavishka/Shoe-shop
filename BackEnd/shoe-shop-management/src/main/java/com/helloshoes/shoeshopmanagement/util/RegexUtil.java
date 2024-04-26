@@ -8,4 +8,5 @@ public class RegexUtil {
     public static final String SUPPLIER_REGEX = "^SUP\\d{3}$";
     public static final String CATEGORY_REGEX = "^CAT\\d{3}$";
     public static final String TYPE_REGEX = "^TYP\\d{3}$";
+    public static final String SIZE_REGEX = "^SIZ\\d{3}$";
 }
