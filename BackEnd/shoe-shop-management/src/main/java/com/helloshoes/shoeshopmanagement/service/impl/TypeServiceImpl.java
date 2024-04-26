@@ -23,7 +23,11 @@ public class TypeServiceImpl implements TypeService {
     public TypeDTO save(TypeDTO dto) {
         boolean isExists = typeRepository.existsById(dto.getTypeCode());
         if (!isExists) {
-            return dataConvertor.toTypeDTO(typeRepository.save(dataConvertor.toType(dto)));
+            TypeDTO dbType = getTypeByName(dto.getTypeName());
+            if (dbType == null) {
+                return dataConvertor.toTypeDTO(typeRepository.save(dataConvertor.toType(dto)));
+
+            }
         }
         return null;
     }
@@ -62,5 +66,14 @@ public class TypeServiceImpl implements TypeService {
             }
         }
         return false;
+    }
+
+    @Override
+    public TypeDTO getTypeByName(String typeName) {
+        Type type = typeRepository.findByTypeName(typeName);
+        if (type == null) {
+            return null;
+        }
+        return dataConvertor.toTypeDTO(type);
     }
 }
