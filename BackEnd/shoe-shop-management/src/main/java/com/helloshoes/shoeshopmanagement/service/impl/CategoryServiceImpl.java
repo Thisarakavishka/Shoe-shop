@@ -23,7 +23,10 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO save(CategoryDTO dto) {
         boolean isExists = categoryRepository.existsById(dto.getCategoryCode());
         if (!isExists) {
-            return dataConvertor.toCategoryDTO(categoryRepository.save(dataConvertor.toCategory(dto)));
+            CategoryDTO categoryDTO = getCategoryByName(dto.getCategoryName());
+            if (categoryDTO == null) {
+                return dataConvertor.toCategoryDTO(categoryRepository.save(dataConvertor.toCategory(dto)));
+            }
         }
         return null;
     }
@@ -62,5 +65,14 @@ public class CategoryServiceImpl implements CategoryService {
             }
         }
         return true;
+    }
+
+    @Override
+    public CategoryDTO getCategoryByName(String categoryName) {
+        Category category = categoryRepository.findByName(categoryName);
+        if (category == null) {
+            return null;
+        }
+        return dataConvertor.toCategoryDTO(category);
     }
 }
