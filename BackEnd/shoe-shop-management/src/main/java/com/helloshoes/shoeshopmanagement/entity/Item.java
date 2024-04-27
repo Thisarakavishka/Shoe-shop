@@ -42,4 +42,10 @@ public class Item implements SuperEntity {
             joinColumns = @JoinColumn(name = "item_id"),
             inverseJoinColumns = @JoinColumn(name = "type_id"))
     private List<Type> types;
+
+    @ManyToMany
+    @JoinTable(name = "item_colour",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "colour_id"))
+    private List<Colour> colours;
 }
