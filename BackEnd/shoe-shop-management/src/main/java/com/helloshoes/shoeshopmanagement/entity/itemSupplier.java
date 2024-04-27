@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "item_supplier")
-public class itemSupplier {
+public class itemSupplier implements SuperEntity {
     @Id
     private String id;
 

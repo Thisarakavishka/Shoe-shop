@@ -9,16 +9,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "item_category")
-public class item_category implements SuperEntity {
+@Table(name = "item_size")
+public class itemSize implements SuperEntity {
     @Id
     private String id;
+    private Double salePrice;
+    private Double buyPrice;
 
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @JoinColumn(name = "size_id")
+    private Size size;
 }
