@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "item")
-public class Item {
+public class Item implements SuperEntity {
     @Id
     private String itemCode;
     private String itemName;
@@ -24,4 +24,10 @@ public class Item {
             joinColumns = @JoinColumn(name = "item_id"),
             inverseJoinColumns = @JoinColumn(name = "supplier_id"))
     private List<Supplier> suppliers;
+
+    @ManyToMany
+    @JoinTable(name = "item_size",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "size_id"))
+    private List<Size> sizes;
 }
