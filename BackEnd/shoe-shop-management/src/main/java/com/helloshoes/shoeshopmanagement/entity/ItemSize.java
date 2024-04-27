@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "item_size")
-public class itemSize implements SuperEntity {
+public class ItemSize implements SuperEntity {
     @Id
     private String id;
     private Double salePrice;

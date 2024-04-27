@@ -6,11 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "item_supplier")
-public class itemSupplier implements SuperEntity {
+@Table(name = "item_category")
+public class ItemCategory implements SuperEntity {
     @Id
     private String id;
 
@@ -19,6 +19,6 @@ public class itemSupplier implements SuperEntity {
     private Item item;
 
     @ManyToOne
-    @JoinColumn(name = "supplier_id")
-    private Supplier supplier;
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

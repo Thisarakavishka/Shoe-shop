@@ -6,19 +6,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "item_type")
-public class itemType implements SuperEntity {
+@Table(name = "item_colour")
+public class ItemColour implements SuperEntity {
     @Id
     private String id;
+    private String imgPath;
 
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
 
     @ManyToOne
-    @JoinColumn(name = "type_id")
-    private Type type;
+    @JoinColumn(name = "colour_id")
+    private Colour colour;
 }
