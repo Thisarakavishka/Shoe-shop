@@ -48,4 +48,7 @@ public class Item implements SuperEntity {
             joinColumns = @JoinColumn(name = "item_id"),
             inverseJoinColumns = @JoinColumn(name = "colour_id"))
     private List<Colour> colours;
+
+    @OneToMany(mappedBy = "item")
+    private List<ItemDetails> itemDetails;
 }
