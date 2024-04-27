@@ -6,12 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "supplier")
-public class Supplier implements SuperEntity{
+public class Supplier implements SuperEntity {
     @Id
     private String supplierCode;
     private String supplierName;
@@ -26,4 +28,7 @@ public class Supplier implements SuperEntity{
     private String contactMobile;
     private String contactLandline;
     private String email;
+
+    @ManyToMany(mappedBy = "suppliers")
+    private List<Item> items;
 }
