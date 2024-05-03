@@ -15,6 +15,7 @@ public class ItemSize implements SuperEntity {
     private String id;
     private Double salePrice;
     private Double buyPrice;
+    private Integer qty;
 
     @ManyToOne
     @JoinColumn(name = "item_id")
