@@ -1,5 +1,6 @@
 package com.helloshoes.shoeshopmanagement.entity;
 
+import com.helloshoes.shoeshopmanagement.entity.enums.ShoeGender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +19,8 @@ public class Item implements SuperEntity {
     private String itemName;
     private Double expectedProfit;
     private Double profitMargin;
+    @Enumerated(EnumType.STRING)
+    private ShoeGender shoeGender;
 
     @ManyToMany
     @JoinTable(name = "item_supplier",
