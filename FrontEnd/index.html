@@ -2,9 +2,511 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hello shoe</title>
+    <title>Hello shoe POS</title>
+
+    <link rel="stylesheet" href="assets/lib/bootstrap/css/bootstrap.min.css">
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+
 </head>
 <body>
+<section class="container-fluid">
+    <div class="row">
+        <!-- sidebar -->
+        <div id="side-bar-section" class="col-sm-auto bg-body-secondary sticky-top">
+            <div class="d-flex flex-sm-column flex-row flex-nowrap bg-body-secondary align-items-start justify-content-between sticky-top">
+                <ul class="nav nav-pills flex-column mt-2">
+                    <li class="nav-item">
+                        <a id="home-button" href="#" class="nav-link" title="Home" data-bs-toggle="tooltip"
+                           data-bs-placement="right">
+                            <i class="fa fa-home fa-lg"></i>
+                            <span class="ms-2 d-none d-lg-inline">Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="cart-button" href="#" class="nav-link" title="Cart" data-bs-toggle="tooltip"
+                           data-bs-placement="right">
+                            <i class="fa fa-th-large fa-lg"></i>
+                            <span class="ms-2 d-none d-lg-inline">POS</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="orders-button" href="#" class="nav-link" title="Orders" data-bs-toggle="tooltip"
+                           data-bs-placement="right">
+                            <i class="fa fa-shopping-bag fa-lg"></i>
+                            <span class="ms-2 d-none d-lg-inline">POS</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="customers-button" href="#" class="nav-link" title="Customers" data-bs-toggle="tooltip"
+                           data-bs-placement="right">
+                            <i class="fa fa-users fa-lg"></i>
+                            <span class="ms-2 d-none d-lg-inline">Customer</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="items-button" href="#" class="nav-link" title="Items" data-bs-toggle="tooltip"
+                           data-bs-placement="right">
+                            <i class="fa fa-user-o fa-lg"></i>
+                            <span class="ms-2 d-none d-lg-inline">Employee</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="analytics-button" href="#" class="nav-link" title="Analytics" data-bs-toggle="tooltip"
+                           data-bs-placement="right">
+                            <i class="fa fa-cube fa-lg"></i>
+                            <span class="ms-2 d-none d-lg-inline">Item</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <hr class="mt-4">
+                        <a id="logout-button" href="#" class="nav-link" title="Logout" data-bs-toggle="tooltip"
+                           data-bs-placement="right">
+                            <i class="fa fa-sign-out fa-lg"></i>
+                            <span class="ms-2 d-none d-lg-inline">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
+        <!-- content -->
+        <div class="col-sm p-3 min-vh-100">
+
+            <!-- Item Add From -->
+            <section id="item-add-new-from" class="container-xxl border-black border">
+                <div class="row justify-content-center d-flex mt-5 p-3">
+                    <!-- Form -->
+                    <div class="col-md-5 border-secondary-subtle border rounded">
+                        <form>
+                            <div class="text-center text-muted p-3">
+                                <h2> Add new Shoe</h2>
+                                <hr>
+                            </div>
+                            <div class="mb-3">
+                                <label for="item-name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="item-name" placeholder="Nike Air">
+                            </div>
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <label class="col-form-label">Details</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <div class="d-flex justify-content-end">
+                                            <div class="flex-column">
+                                                <!-- Supplier DropDown-->
+                                                <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                        id="btn-add-supplier"
+                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                    Supplier
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item" href="#">Nike</a>
+                                                    <a class="dropdown-item" href="#">DSI</a>
+                                                    <a class="dropdown-item" href="#">Adidas</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">new Supplier</a>
+                                                </div>
+                                                <!-- Category DropDown-->
+                                                <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                        id="btn-add-category"
+                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                    Category
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item" href="#">Shoe</a>
+                                                    <a class="dropdown-item" href="#">Sport Shoe</a>
+                                                    <a class="dropdown-item" href="#">Heel</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">new Category</a>
+                                                </div>
+                                                <!-- Type DropDown-->
+                                                <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                        id="btn-add-type"
+                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                    Type
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item" href="#">Casual</a>
+                                                    <a class="dropdown-item" href="#">Formal</a>
+                                                    <a class="dropdown-item" href="#">Industrial</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">new Type</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-3 ">
+                                        <label class="col-form-label">Gender</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <div class="d-flex justify-content-end ">
+                                            <div class="flex-column">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="maleCheckBox"
+                                                           id="maleCheckBox"
+                                                           value="male">
+                                                    <label class="form-check-label" for="maleCheckBox">male</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="femaleCheckBox"
+                                                           id="femaleCheckBox" value="male">
+                                                    <label class="form-check-label" for="femaleCheckBox">female</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="unisexCheckBox"
+                                                           id="unisexCheckBox" value="male">
+                                                    <label class="form-check-label" for="unisexCheckBox">unisex</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="mb-3">
+                                <label class="form-label">Colour</label>
+                                <button class="btn btn-outline-success">add Colour</button>
+                                <!-- Colour DropDown-->
+
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="item-quantity" class="form-label">Quantity</label>
+                                <input type="number" class="form-control" id="item-quantity"
+                                       placeholder="Enter Quantity">
+                            </div>
+                            <div class="mt-auto d-flex justify-content-end mb-2">
+                                <button class="btn btn-outline-success me-2" type="submit" id="cancel-add-item-button">
+                                    cancel
+                                </button>
+                                <button class="btn btn-outline-success" type="submit" id="add-item-button">Add +
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Card -->
+                    <div class="col-md-3 d-flex justify-content-center">
+                        <div class="card h-100">
+                            <img src="assets/img/nike-shoe.png" class="card-img-top"
+                                 alt="..." datatype="add-image">
+                            <div class="card-body">
+                                <h5 class="card-title"></h5>
+                                <p class="card-text text-success" datatype="available"> Available</p>
+                                <h5 class="card-text">$</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Customer Section -->
+            <section id="customer-section" class="container-xxl border-black border">
+                <!-- Customer Search Bar -->
+                <div class="d-flex justify-content-center mt-4">
+                    <form class="d-flex col-md-5 p-2">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="customer-search-text">
+                        <button class="btn btn-outline-success" type="submit" id="customer-search">Search</button>
+                    </form>
+                </div>
+                <!-- Button Section -->
+                <div class="d-flex justify-content-between px-3 mt-4">
+                    <div class="col-md-1">
+                        <select class="form-select" id="customerPageSize" name="size" required>
+                            <option value="" selected disabled>size</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                        <div class="invalid-feedback">Please select a customer level.</div>
+                    </div>
+                    <div>
+                        <button class="btn btn-success me-3" id="add-new-customer">New Customer</button>
+                        <!--           <button class="btn btn-primary me-2">Print</button>
+                        <button class="btn btn-primary me-2">PDF</button>
+                        <button class="btn btn-primary">Excel</button>  -->
+                    </div>
+                </div>
+                <!-- Customer Table -->
+                <div class="row justify-content-center d-flex mt-3 p-2">
+                    <table class="table table-hover" id="customer-table">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">name</th>
+                            <th scope="col">gender</th>
+                            <th scope="col">joined date</th>
+                            <th scope="col">level</th>
+                            <th scope="col">points</th>
+                            <th scope="col">dob</th>
+                            <th scope="col">address</th>
+                            <th scope="col">postal</th>
+                            <th scope="col">email</th>
+                            <th scope="col">recent Purchase</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <div class="justify-content-center d-flex" id="pagination"></div>
+                </div>
+            </section>
+
+            <!-- Customer add Section -->
+            <section id="customer-add-form" class="container-xxl border-black border">
+                <h3 class="p-2 mt-3">Add Customer</h3>
+                <form id="customerAddForm" class="row g-3 needs-validation mt-3 p-2" novalidate>
+
+                    <!-- Customer Name -->
+                    <div class="col-md-6">
+                        <label for="customerName" class="form-label">Customer Name</label>
+                        <input type="text" class="form-control" id="customerName" name="customerName" required>
+                        <div class="invalid-feedback">Please provide a valid customer name.</div>
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="col-md-6">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select class="form-select" id="gender" name="gender" required>
+                            <option value="" selected disabled>Select Gender</option>
+                            <option value="MALE">MALE</option>
+                            <option value="FEMALE">FEMALE</option>
+                        </select>
+                        <div class="invalid-feedback">Please select a gender.</div>
+                    </div>
+
+                    <!-- Joined Date -->
+                    <div class="col-md-6">
+                        <label for="joinedDate" class="form-label">Joined Date</label>
+                        <input type="date" class="form-control" id="joinedDate" name="joinedDate" required>
+                        <div class="invalid-feedback">Please provide a valid joined date.</div>
+                    </div>
+
+                    <!-- Customer Level -->
+                    <div class="col-md-6">
+                        <label for="customerLevel" class="form-label">Customer Level</label>
+                        <select class="form-select" id="customerLevel" name="customerLevel" required>
+                            <option value="" selected disabled>Select Customer Level</option>
+                            <option value="NEW">NEW</option>
+                            <option value="BRONZE">BRONZE</option>
+                            <option value="SILVER">SILVER</option>
+                            <option value="GOLD">GOLD</option>
+                        </select>
+                        <div class="invalid-feedback">Please select a customer level.</div>
+                    </div>
+
+                    <!-- Total Points -->
+                    <div class="col-md-6">
+                        <label for="totalPoints" class="form-label">Total Points</label>
+                        <input type="number" class="form-control" id="totalPoints" name="totalPoints" required>
+                        <div class="invalid-feedback">Please provide a valid total points.</div>
+                    </div>
+
+                    <!-- Date of Birth -->
+                    <div class="col-md-6">
+                        <label for="dob" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="dob" name="dob" required>
+                        <div class="invalid-feedback">Please provide a valid date of birth.</div>
+                    </div>
+
+                    <!-- Address No-->
+                    <div class="col-4">
+                        <label for="addressNo" class="form-label">Address No</label>
+                        <input type="text" class="form-control" id="addressNo" name="address" required>
+                        <div class="invalid-feedback">Please provide a valid address.</div>
+                    </div>
+
+                    <!-- Address Lane-->
+                    <div class="col-4">
+                        <label for="addressLane" class="form-label">Address Lane</label>
+                        <input type="text" class="form-control" id="addressLane" name="address" required>
+                        <div class="invalid-feedback">Please provide a valid address.</div>
+                    </div>
+
+                    <!-- Address City-->
+                    <div class="col-4">
+                        <label for="addressCity" class="form-label">Address City</label>
+                        <input type="text" class="form-control" id="addressCity" name="address" required>
+                        <div class="invalid-feedback">Please provide a valid address.</div>
+                    </div>
+
+                    <!-- Address State-->
+                    <div class="col-4">
+                        <label for="addressState" class="form-label">Address State</label>
+                        <input type="text" class="form-control" id="addressState" name="address" required>
+                        <div class="invalid-feedback">Please provide a valid address.</div>
+                    </div>
+
+                    <!-- Postal Code -->
+                    <div class="col-md-4">
+                        <label for="postalCode" class="form-label">Postal Code</label>
+                        <input type="text" class="form-control" id="postalCode" name="postalCode" required>
+                        <div class="invalid-feedback">Please provide a valid postal code.</div>
+                    </div>
+
+                    <!-- Contact Number -->
+                    <div class="col-md-4">
+                        <label for="contactNumber" class="form-label">Contact Number</label>
+                        <input type="text" class="form-control" id="contactNumber" name="contactNumber" required>
+                        <div class="invalid-feedback">Please provide a valid contact number.</div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-4">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                        <div class="invalid-feedback">Please provide a valid email address.</div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="col-12 mt-4">
+                        <button type="submit" class="btn btn-primary" id="addNewCustomer">Add Customer</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Customer Update Section -->
+            <section id="customer-update-form" class="container-xxl border-black border">
+                <h3 class="p-2 mt-3">Update Customer</h3>
+                <form id="customerUpdateForm" class="row g-3 needs-validation mt-3 p-2" novalidate>
+
+                    <!-- Customer Name -->
+                    <div class="col-md-6">
+                        <label for="updateCustomerName" class="form-label">Customer Name</label>
+                        <input type="text" class="form-control" id="updateCustomerName" name="customerName" required>
+                        <div class="invalid-feedback">Please provide a valid customer name.</div>
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="col-md-6">
+                        <label for="updateGender" class="form-label">Gender</label>
+                        <select class="form-select" id="updateGender" name="gender" required>
+                            <option value="" selected disabled>Select Gender</option>
+                            <option value="MALE">MALE</option>
+                            <option value="FEMALE">FEMALE</option>
+                        </select>
+                        <div class="invalid-feedback">Please select a gender.</div>
+                    </div>
+
+                    <!-- Joined Date -->
+                    <div class="col-md-6">
+                        <label for="updateJoinedDate" class="form-label">Joined Date</label>
+                        <input type="date" class="form-control" id="updateJoinedDate" name="joinedDate" required>
+                        <div class="invalid-feedback">Please provide a valid joined date.</div>
+                    </div>
+
+                    <!-- Customer Level -->
+                    <div class="col-md-6">
+                        <label for="updateCustomerLevel" class="form-label">Customer Level</label>
+                        <select class="form-select" id="updateCustomerLevel" name="customerLevel" required>
+                            <option value="" selected disabled>Select Customer Level</option>
+                            <option value="NEW">NEW</option>
+                            <option value="BRONZE">BRONZE</option>
+                            <option value="SILVER">SILVER</option>
+                            <option value="GOLD">GOLD</option>
+                        </select>
+                        <div class="invalid-feedback">Please select a customer level.</div>
+                    </div>
+
+                    <!-- Total Points -->
+                    <div class="col-md-6">
+                        <label for="updateTotalPoints" class="form-label">Total Points</label>
+                        <input type="number" class="form-control" id="updateTotalPoints" name="totalPoints" required>
+                        <div class="invalid-feedback">Please provide a valid total points.</div>
+                    </div>
+
+                    <!-- Date of Birth -->
+                    <div class="col-md-6">
+                        <label for="updateDob" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="updateDob" name="dob" required>
+                        <div class="invalid-feedback">Please provide a valid date of birth.</div>
+                    </div>
+
+                    <!-- Address No-->
+                    <div class="col-4">
+                        <label for="updateAddressNo" class="form-label">Address No</label>
+                        <input type="text" class="form-control" id="updateAddressNo" name="address" required>
+                        <div class="invalid-feedback">Please provide a valid address.</div>
+                    </div>
+
+                    <!-- Address Lane-->
+                    <div class="col-4">
+                        <label for="updateAddressLane" class="form-label">Address Lane</label>
+                        <input type="text" class="form-control" id="updateAddressLane" name="address" required>
+                        <div class="invalid-feedback">Please provide a valid address.</div>
+                    </div>
+
+                    <!-- Address City-->
+                    <div class="col-4">
+                        <label for="updateAddressCity" class="form-label">Address City</label>
+                        <input type="text" class="form-control" id="updateAddressCity" name="address" required>
+                        <div class="invalid-feedback">Please provide a valid address.</div>
+                    </div>
+
+                    <!-- Address State-->
+                    <div class="col-4">
+                        <label for="updateAddressState" class="form-label">Address State</label>
+                        <input type="text" class="form-control" id="updateAddressState" name="address" required>
+                        <div class="invalid-feedback">Please provide a valid address.</div>
+                    </div>
+
+                    <!-- Postal Code -->
+                    <div class="col-md-4">
+                        <label for="updatePostalCode" class="form-label">Postal Code</label>
+                        <input type="text" class="form-control" id="updatePostalCode" name="postalCode" required>
+                        <div class="invalid-feedback">Please provide a valid postal code.</div>
+                    </div>
+
+                    <!-- Contact Number -->
+                    <div class="col-md-4">
+                        <label for="updateContactNumber" class="form-label">Contact Number</label>
+                        <input type="text" class="form-control" id="updateContactNumber" name="contactNumber" required>
+                        <div class="invalid-feedback">Please provide a valid contact number.</div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-4">
+                        <label for="updateEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="updateEmail" name="email" required>
+                        <div class="invalid-feedback">Please provide a valid email address.</div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="col-12 mt-4">
+                        <button type="submit" class="btn btn-primary" id="updateCustomer">Update Customer</button>
+                    </div>
+                </form>
+            </section>
+
+        </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.8/dist/sweetalert2.all.min.js"></script>
+<script src="assets/lib/jQuery/jquery.min.js"></script>
+<script src="assets/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/js/Script.js"></script>
+<script src="assets/js/Customer.js"></script>
 </body>
 </html>
