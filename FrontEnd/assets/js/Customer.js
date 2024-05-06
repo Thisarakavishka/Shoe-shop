@@ -25,15 +25,45 @@ function getDataToCustomerTable(page, size) {
         success: function (data) {
             $('#customer-table tbody').empty();
             $.each(data, function (index, customer) {
+                let levelColor;
+                switch (customer.customerLevel) {
+                    case "NEW":
+                        levelColor = "bg-custom-green";
+                        break;
+                    case "SILVER":
+                        levelColor = "bg-custom-silver";
+                        break;
+                    case "BRONZE":
+                        levelColor = "bg-custom-bronze";
+                        break;
+                    case "GOLD":
+                        levelColor = "bg-custom-gold";
+                        break;
+                }
+
+                let genderColor;
+                switch (customer.gender) {
+                    case "MALE":
+                        genderColor = "bg-custom-male";
+                        break;
+                    case "FEMALE":
+                        genderColor = "bg-custom-female";
+                        break;
+                }
+
                 $('#customer-table tbody').append(`
                         <tr>
                             <th scope="row">${index + 1}</th>
-                            <td>${customer.customerName}</td>
-                            <td>${customer.gender}</td>
+                            <td class="text-start">${customer.customerName}</td>
+                            <td>
+                            <label class="pill ${genderColor} rounded-pill">
+                                    <span class="p-2 text-white fw-bold">${customer.gender}</span>
+                                </label>
+                            </td>
                             <td>${splitDateTime(customer.joinedDate)}</td>
                             <td>
-                                <label class="bg-success rounded-pill">
-                                    <span class="p-2 text-white">${customer.customerLevel}</span>
+                                <label class="pill ${levelColor} rounded-pill">
+                                    <span class="p-2 text-white fw-bold">${customer.customerLevel}</span>
                                 </label>
                             </td>
                             <td>${customer.totalPoints}</td>
@@ -43,8 +73,8 @@ function getDataToCustomerTable(page, size) {
                             <td>${customer.email}</td>
                             <td>${splitDateTime(customer.recentPurchaseDateTime)}</td>
                             <td>
-                                <button class="btn btn-outline-success edit-customer-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
-                                <button class="btn btn-outline-success delete-customer-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
+                                <button class="btn btn-outline-custom-black-colour edit-customer-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
+                                <button class="btn btn-outline-custom-red-colour delete-customer-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
                             </td>
                         </tr>
                     `);
@@ -80,7 +110,7 @@ function getPageCount() {
 function paginationButtons(totalPages) {
     $('#pagination').empty();
     for (let i = 0; i < totalPages; i++) {
-        $('#pagination').append(`<button class="btn btn-outline-success" onclick="getDataToCustomerTable(${i}, page_size)">${i + 1}</button>`);
+        $('#pagination').append(`<button class="btn btn-outline-custom-black-colour me-2" onclick="getDataToCustomerTable(${i}, page_size)">${i + 1}</button>`);
     }
 }
 
@@ -170,11 +200,17 @@ function getNextCustomerCode() {
     });
 }
 
+$('#backNewCustomer').on('click', () => {
+    CUSTOMER_ADD_FORM.css("display", "none");
+    CUSTOMER_SECTION.css("display", "block");
+});
+
 $('#addNewCustomer').on('click', () => {
     if ($('#customerAddForm')[0].checkValidity()) {
         saveCustomer();
     } else {
         $('#customerAddForm').addClass('was-validated');
+        event.preventDefault();
     }
 });//In customer add form
 
@@ -203,9 +239,26 @@ function saveCustomer() {
         data: JSON.stringify(customer),
         success: function (data) {
             console.log('Customer added successfully:', data);
+            Swal.fire({
+                icon: "success",
+                title: "Your work has been saved",
+                showConfirmButton: false,
+                timer: 1000
+            });
+            setTimeout(function () {
+                CUSTOMER_ADD_FORM.css("display", "none");
+                CUSTOMER_SECTION.css("display", "block");
+                getPageCount();
+            }, 1000);
         },
         error: function (xhr, status, error) {
             console.error('Error adding customer:', error);
+            Swal.fire({
+                icon: "error",
+                title: status,
+                showConfirmButton: false,
+                timer: 1000
+            });
         }
     });
 }
@@ -236,19 +289,23 @@ $('#updateCustomer').on('click', () => {
         data: JSON.stringify(customer),
         success: function (response) {
             console.log("Customer updated successfully");
+            CUSTOMER_UPDATE_FORM.css("display", "none");
+            CUSTOMER_SECTION.css("display", "block");
         },
         error: function (xhr, status, error) {
             console.error("Error updating customer:", error);
         }
     });
-
-    CUSTOMER_UPDATE_FORM.css("display", "none");
-    CUSTOMER_SECTION.css("display", "block");
 });//In customer update form
 
+$('#backUpdateCustomer').on('click', () => {
+    CUSTOMER_UPDATE_FORM.css("display", "none");
+    CUSTOMER_SECTION.css("display", "block");
+});
 $('#customer-search-text').on('input', () => {
     getSearchResult();
 });
+
 $('#customer-search').on('click', () => {
     getSearchResult()
 });
@@ -267,15 +324,44 @@ function getSearchResult() {
             success: function (data) {
                 $('#customer-table tbody').empty();
                 $.each(data, function (index, customer) {
+                    let levelColor;
+                    switch (customer.customerLevel) {
+                        case "NEW":
+                            levelColor = "bg-custom-green";
+                            break;
+                        case "SILVER":
+                            levelColor = "bg-custom-silver";
+                            break;
+                        case "BRONZE":
+                            levelColor = "bg-custom-bronze";
+                            break;
+                        case "GOLD":
+                            levelColor = "bg-custom-gold";
+                            break;
+                    }
+
+                    let genderColor;
+                    switch (customer.gender) {
+                        case "MALE":
+                            genderColor = "bg-custom-male";
+                            break;
+                        case "FEMALE":
+                            genderColor = "bg-custom-female";
+                            break;
+                    }
                     $('#customer-table tbody').append(`
                         <tr>
                             <th scope="row">${index + 1}</th>
-                            <td>${customer.customerName}</td>
-                            <td>${customer.gender}</td>
+                            <td class="text-start">${customer.customerName}</td>
+                            <td>
+                                <label class="pill ${genderColor} rounded-pill">
+                                    <span class="p-2 text-white fw-bold">${customer.gender}</span>
+                                </label>
+                            </td>                            
                             <td>${splitDateTime(customer.joinedDate)}</td>
                             <td>
-                                <label class="bg-success rounded-pill">
-                                    <span class="p-2 text-white">${customer.customerLevel}</span>
+                                <label class="pill ${levelColor} rounded-pill">
+                                    <span class="p-2 text-white fw-bold">${customer.customerLevel}</span>
                                 </label>
                             </td>
                             <td>${customer.totalPoints}</td>
@@ -285,8 +371,8 @@ function getSearchResult() {
                             <td>${customer.email}</td>
                             <td>${splitDateTime(customer.recentPurchaseDateTime)}</td>
                             <td>
-                                <button class="btn btn-outline-success edit-customer-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
-                                <button class="btn btn-outline-success delete-customer-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
+                                <button class="btn btn-outline-custom-black-colour edit-customer-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
+                                <button class="btn btn-outline-custom-red-colour delete-customer-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
                             </td>
                         </tr>
                     `);

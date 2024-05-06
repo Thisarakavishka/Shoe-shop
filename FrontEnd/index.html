@@ -9,6 +9,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/colours.css">
 
 </head>
 <body>
@@ -211,49 +212,48 @@
             </section>
 
             <!-- Customer Section -->
-            <section id="customer-section" class="container-xxl border-black border">
+            <section id="customer-section" class="container-xxl">
                 <!-- Customer Search Bar -->
                 <div class="d-flex justify-content-center mt-4">
                     <form class="d-flex col-md-5 p-2">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="customer-search-text">
-                        <button class="btn btn-outline-success" type="submit" id="customer-search">Search</button>
+                        <input class="form-control me-2 custom-focus" type="search" placeholder="Search"
+                               aria-label="Search"
+                               id="customer-search-text">
+                        <button class="btn btn-outline-custom-black-colour" type="submit" id="customer-search">Search
+                        </button>
                     </form>
                 </div>
                 <!-- Button Section -->
-                <div class="d-flex justify-content-between px-3 mt-4">
+                <div class="d-flex justify-content-between mt-4">
                     <div class="col-md-1">
-                        <select class="form-select" id="customerPageSize" name="size" required>
+                        <select class="form-select custom-focus" id="customerPageSize" name="size" required>
                             <option value="" selected disabled>size</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
                         </select>
-                        <div class="invalid-feedback">Please select a customer level.</div>
                     </div>
                     <div>
-                        <button class="btn btn-success me-3" id="add-new-customer">New Customer</button>
-                        <!--           <button class="btn btn-primary me-2">Print</button>
-                        <button class="btn btn-primary me-2">PDF</button>
-                        <button class="btn btn-primary">Excel</button>  -->
+                        <button class="btn btn-custom-black-colour" id="add-new-customer">New Customer</button>
                     </div>
                 </div>
                 <!-- Customer Table -->
                 <div class="row justify-content-center d-flex mt-3 p-2">
-                    <table class="table table-hover" id="customer-table">
-                        <thead>
+                    <table class="table table-hover text-center" id="customer-table">
+                        <thead class="bg-custom-table-head">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">name</th>
-                            <th scope="col">gender</th>
-                            <th scope="col">joined date</th>
-                            <th scope="col">level</th>
-                            <th scope="col">points</th>
-                            <th scope="col">dob</th>
-                            <th scope="col">address</th>
-                            <th scope="col">postal</th>
-                            <th scope="col">email</th>
-                            <th scope="col">recent Purchase</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Joined date</th>
+                            <th scope="col">Level</th>
+                            <th scope="col">Points</th>
+                            <th scope="col">Dob</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Postal</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Recent Purchase</th>
                             <th scope="col">Action</th>
                         </tr>
                         </thead>
@@ -263,23 +263,23 @@
                     <div class="justify-content-center d-flex" id="pagination"></div>
                 </div>
             </section>
-
             <!-- Customer add Section -->
-            <section id="customer-add-form" class="container-xxl border-black border">
+            <section id="customer-add-form" class="container-xxl">
                 <h3 class="p-2 mt-3">Add Customer</h3>
                 <form id="customerAddForm" class="row g-3 needs-validation mt-3 p-2" novalidate>
 
                     <!-- Customer Name -->
                     <div class="col-md-6">
                         <label for="customerName" class="form-label">Customer Name</label>
-                        <input type="text" class="form-control" id="customerName" name="customerName" required>
+                        <input type="text" class="form-control custom-focus" id="customerName" name="customerName"
+                               required>
                         <div class="invalid-feedback">Please provide a valid customer name.</div>
                     </div>
 
                     <!-- Gender -->
                     <div class="col-md-6">
                         <label for="gender" class="form-label">Gender</label>
-                        <select class="form-select" id="gender" name="gender" required>
+                        <select class="form-select custom-focus" id="gender" name="gender" required>
                             <option value="" selected disabled>Select Gender</option>
                             <option value="MALE">MALE</option>
                             <option value="FEMALE">FEMALE</option>
@@ -290,14 +290,14 @@
                     <!-- Joined Date -->
                     <div class="col-md-6">
                         <label for="joinedDate" class="form-label">Joined Date</label>
-                        <input type="date" class="form-control" id="joinedDate" name="joinedDate" required>
+                        <input type="date" class="form-control custom-focus" id="joinedDate" name="joinedDate" required>
                         <div class="invalid-feedback">Please provide a valid joined date.</div>
                     </div>
 
                     <!-- Customer Level -->
                     <div class="col-md-6">
                         <label for="customerLevel" class="form-label">Customer Level</label>
-                        <select class="form-select" id="customerLevel" name="customerLevel" required>
+                        <select class="form-select custom-focus" id="customerLevel" name="customerLevel" required>
                             <option value="" selected disabled>Select Customer Level</option>
                             <option value="NEW">NEW</option>
                             <option value="BRONZE">BRONZE</option>
@@ -310,89 +310,95 @@
                     <!-- Total Points -->
                     <div class="col-md-6">
                         <label for="totalPoints" class="form-label">Total Points</label>
-                        <input type="number" class="form-control" id="totalPoints" name="totalPoints" required>
+                        <input type="number" class="form-control custom-focus" id="totalPoints" name="totalPoints"
+                               required>
                         <div class="invalid-feedback">Please provide a valid total points.</div>
                     </div>
 
                     <!-- Date of Birth -->
                     <div class="col-md-6">
                         <label for="dob" class="form-label">Date of Birth</label>
-                        <input type="date" class="form-control" id="dob" name="dob" required>
+                        <input type="date" class="form-control custom-focus" id="dob" name="dob" required>
                         <div class="invalid-feedback">Please provide a valid date of birth.</div>
                     </div>
 
                     <!-- Address No-->
                     <div class="col-4">
                         <label for="addressNo" class="form-label">Address No</label>
-                        <input type="text" class="form-control" id="addressNo" name="address" required>
+                        <input type="text" class="form-control custom-focus" id="addressNo" name="address" required>
                         <div class="invalid-feedback">Please provide a valid address.</div>
                     </div>
 
                     <!-- Address Lane-->
                     <div class="col-4">
                         <label for="addressLane" class="form-label">Address Lane</label>
-                        <input type="text" class="form-control" id="addressLane" name="address" required>
+                        <input type="text" class="form-control custom-focus" id="addressLane" name="address" required>
                         <div class="invalid-feedback">Please provide a valid address.</div>
                     </div>
 
                     <!-- Address City-->
                     <div class="col-4">
                         <label for="addressCity" class="form-label">Address City</label>
-                        <input type="text" class="form-control" id="addressCity" name="address" required>
+                        <input type="text" class="form-control custom-focus" id="addressCity" name="address" required>
                         <div class="invalid-feedback">Please provide a valid address.</div>
                     </div>
 
                     <!-- Address State-->
                     <div class="col-4">
                         <label for="addressState" class="form-label">Address State</label>
-                        <input type="text" class="form-control" id="addressState" name="address" required>
+                        <input type="text" class="form-control custom-focus" id="addressState" name="address" required>
                         <div class="invalid-feedback">Please provide a valid address.</div>
                     </div>
 
                     <!-- Postal Code -->
                     <div class="col-md-4">
                         <label for="postalCode" class="form-label">Postal Code</label>
-                        <input type="text" class="form-control" id="postalCode" name="postalCode" required>
+                        <input type="text" class="form-control custom-focus" id="postalCode" name="postalCode" required>
                         <div class="invalid-feedback">Please provide a valid postal code.</div>
                     </div>
 
                     <!-- Contact Number -->
                     <div class="col-md-4">
                         <label for="contactNumber" class="form-label">Contact Number</label>
-                        <input type="text" class="form-control" id="contactNumber" name="contactNumber" required>
+                        <input type="text" class="form-control custom-focus" id="contactNumber" name="contactNumber"
+                               required>
                         <div class="invalid-feedback">Please provide a valid contact number.</div>
                     </div>
 
                     <!-- Email -->
                     <div class="col-md-4">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                        <input type="email" class="form-control custom-focus" id="email" name="email" required>
                         <div class="invalid-feedback">Please provide a valid email address.</div>
                     </div>
 
                     <!-- Submit Button -->
                     <div class="col-12 mt-4">
-                        <button type="submit" class="btn btn-primary" id="addNewCustomer">Add Customer</button>
+                        <button type="submit" class="btn btn-custom-black-colour me-1" id="addNewCustomer">Add
+                            Customer
+                        </button>
+                        <button type="submit" class="btn btn-outline-custom-black-colour" id="backNewCustomer">Back
+                        </button>
                     </div>
                 </form>
             </section>
-
             <!-- Customer Update Section -->
-            <section id="customer-update-form" class="container-xxl border-black border">
+            <section id="customer-update-form" class="container-xxl">
                 <h3 class="p-2 mt-3">Update Customer</h3>
                 <form id="customerUpdateForm" class="row g-3 needs-validation mt-3 p-2" novalidate>
 
                     <!-- Customer Name -->
                     <div class="col-md-6">
                         <label for="updateCustomerName" class="form-label">Customer Name</label>
-                        <input type="text" class="form-control" id="updateCustomerName" name="customerName" required>
+                        <input type="text" class="form-control custom-focus" id="updateCustomerName" name="customerName"
+                               required>
                         <div class="invalid-feedback">Please provide a valid customer name.</div>
                     </div>
 
                     <!-- Gender -->
                     <div class="col-md-6">
                         <label for="updateGender" class="form-label">Gender</label>
-                        <select class="form-select" id="updateGender" name="gender" required>
+                        <select class="form-select custom-focus" id="updateGender" name="gender" required>
                             <option value="" selected disabled>Select Gender</option>
                             <option value="MALE">MALE</option>
                             <option value="FEMALE">FEMALE</option>
@@ -403,14 +409,15 @@
                     <!-- Joined Date -->
                     <div class="col-md-6">
                         <label for="updateJoinedDate" class="form-label">Joined Date</label>
-                        <input type="date" class="form-control" id="updateJoinedDate" name="joinedDate" required>
+                        <input type="date" class="form-control custom-focus" id="updateJoinedDate" name="joinedDate"
+                               required>
                         <div class="invalid-feedback">Please provide a valid joined date.</div>
                     </div>
 
                     <!-- Customer Level -->
                     <div class="col-md-6">
                         <label for="updateCustomerLevel" class="form-label">Customer Level</label>
-                        <select class="form-select" id="updateCustomerLevel" name="customerLevel" required>
+                        <select class="form-select custom-focus" id="updateCustomerLevel" name="customerLevel" required>
                             <option value="" selected disabled>Select Customer Level</option>
                             <option value="NEW">NEW</option>
                             <option value="BRONZE">BRONZE</option>
@@ -423,69 +430,81 @@
                     <!-- Total Points -->
                     <div class="col-md-6">
                         <label for="updateTotalPoints" class="form-label">Total Points</label>
-                        <input type="number" class="form-control" id="updateTotalPoints" name="totalPoints" required>
+                        <input type="number" class="form-control custom-focus" id="updateTotalPoints" name="totalPoints"
+                               required>
                         <div class="invalid-feedback">Please provide a valid total points.</div>
                     </div>
 
                     <!-- Date of Birth -->
                     <div class="col-md-6">
                         <label for="updateDob" class="form-label">Date of Birth</label>
-                        <input type="date" class="form-control" id="updateDob" name="dob" required>
+                        <input type="date" class="form-control custom-focus" id="updateDob" name="dob" required>
                         <div class="invalid-feedback">Please provide a valid date of birth.</div>
                     </div>
 
                     <!-- Address No-->
                     <div class="col-4">
                         <label for="updateAddressNo" class="form-label">Address No</label>
-                        <input type="text" class="form-control" id="updateAddressNo" name="address" required>
+                        <input type="text" class="form-control custom-focus" id="updateAddressNo" name="address"
+                               required>
                         <div class="invalid-feedback">Please provide a valid address.</div>
                     </div>
 
                     <!-- Address Lane-->
                     <div class="col-4">
                         <label for="updateAddressLane" class="form-label">Address Lane</label>
-                        <input type="text" class="form-control" id="updateAddressLane" name="address" required>
+                        <input type="text" class="form-control custom-focus" id="updateAddressLane" name="address"
+                               required>
                         <div class="invalid-feedback">Please provide a valid address.</div>
                     </div>
 
                     <!-- Address City-->
                     <div class="col-4">
                         <label for="updateAddressCity" class="form-label">Address City</label>
-                        <input type="text" class="form-control" id="updateAddressCity" name="address" required>
+                        <input type="text" class="form-control custom-focus" id="updateAddressCity" name="address"
+                               required>
                         <div class="invalid-feedback">Please provide a valid address.</div>
                     </div>
 
                     <!-- Address State-->
                     <div class="col-4">
                         <label for="updateAddressState" class="form-label">Address State</label>
-                        <input type="text" class="form-control" id="updateAddressState" name="address" required>
+                        <input type="text" class="form-control custom-focus" id="updateAddressState" name="address"
+                               required>
                         <div class="invalid-feedback">Please provide a valid address.</div>
                     </div>
 
                     <!-- Postal Code -->
                     <div class="col-md-4">
                         <label for="updatePostalCode" class="form-label">Postal Code</label>
-                        <input type="text" class="form-control" id="updatePostalCode" name="postalCode" required>
+                        <input type="text" class="form-control custom-focus" id="updatePostalCode" name="postalCode"
+                               required>
                         <div class="invalid-feedback">Please provide a valid postal code.</div>
                     </div>
 
                     <!-- Contact Number -->
                     <div class="col-md-4">
                         <label for="updateContactNumber" class="form-label">Contact Number</label>
-                        <input type="text" class="form-control" id="updateContactNumber" name="contactNumber" required>
+                        <input type="text" class="form-control custom-focus" id="updateContactNumber"
+                               name="contactNumber" required>
                         <div class="invalid-feedback">Please provide a valid contact number.</div>
                     </div>
 
                     <!-- Email -->
                     <div class="col-md-4">
                         <label for="updateEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="updateEmail" name="email" required>
+                        <input type="email" class="form-control custom-focus" id="updateEmail" name="email" required>
                         <div class="invalid-feedback">Please provide a valid email address.</div>
                     </div>
 
                     <!-- Submit Button -->
                     <div class="col-12 mt-4">
-                        <button type="submit" class="btn btn-primary" id="updateCustomer">Update Customer</button>
+                        <button type="submit" class="btn btn-custom-black-colour me-1" id="updateCustomer">Update
+                            Customer
+                        </button>
+                        <button type="submit" class="btn btn-outline-custom-black-colour" id="backUpdateCustomer">
+                            Cancel
+                        </button>
                     </div>
                 </form>
             </section>
@@ -494,6 +513,67 @@
     </div>
 </section>
 
+
+<!--
+<section id="sidebar" class="col-sm-auto bg-body-secondary sticky-top">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="d-flex flex-column justify-content-between col-auto bg-dark min-vh-100">
+                <div class="mt-4">
+                    <a class="text-white text-decoration-none d-flex align-items-center ms-4" role="button">
+                        <i class="bx bxs-balloon bx-sm"></i>
+                        <span class="fs-5 d-none d-lg-inline"> Logo</span>
+                    </a>
+                    <hr class="text-white">
+                    <ul class="nav nav-pills flex-column mt-2 mt-sm-0">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-white" aria-current="page">
+                                <i class="fa fa-th-large fa-lg"></i>
+                                <span class="ms-2 d-none d-lg-inline">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-white" aria-current="page">
+                                <i class="fa fa-shopping-bag fa-lg"></i>
+                                <span class="ms-2 d-none d-lg-inline">POS</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-white" aria-current="page">
+                                <i class="fa fa-users fa-lg"></i>
+                                <span class="ms-2 d-none d-lg-inline">Customer</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-white" aria-current="page">
+                                <i class="fa fa-user-o fa-lg"></i>
+                                <span class="ms-2 d-none d-lg-inline">Employee</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-white" aria-current="page">
+                                <i class="fa fa-cube fa-lg"></i>
+                                <span class="ms-2 d-none d-lg-inline">Item</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-4">
+                    <ul class="nav nav-pills flex-column mt-2 mt-sm-0">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-white d-flex" aria-current="page">
+                                <i class="bx bx-log-out bx-sm"></i>
+                                <span class="ms-2 d-none d-lg-inline">Logout</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+ -->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>

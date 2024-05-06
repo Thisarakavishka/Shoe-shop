@@ -1,0 +1,77 @@
+
+.table {
+    font-size: 15px;
+}
+
+.bg-custom-green {
+    background-color: #4CAF50;
+}
+
+.bg-custom-silver {
+    background-color: #B0B0B0;
+}
+
+.bg-custom-bronze {
+    background-color: #CD7F32;
+}
+
+.bg-custom-gold {
+    background-color: #FFD700;
+}
+
+.bg-custom-female {
+    background-color: #d5a6bd;
+}
+
+.bg-custom-male {
+    background-color: #6fa8dc;
+}
+
+.bg-custom-table-head {
+    background-color: #f5f4f4;
+}
+
+.btn-custom-black-colour {
+    color: #ffffff;
+    background-color: #000000;
+    border: 1px solid transparent;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn-custom-black-colour:hover {
+    background-color: transparent;
+    border-color: #000000;
+}
+
+
+.btn-outline-custom-black-colour {
+    color: #000000;
+    background-color: transparent;
+    border: 1px solid #000000;
+}
+
+.btn-outline-custom-black-colour:hover {
+    color: #ffffff;
+    background-color: #000000;
+}
+
+.btn-outline-custom-red-colour {
+    color: #ff0000;
+    background-color: transparent;
+    border: 1px solid #ff0000;
+}
+
+.btn-outline-custom-red-colour:hover {
+    color: #ffffff;
+    background-color: #ff0000;
+}
+
+.custom-focus:focus {
+    border-color: #000000;
+    box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.25);
+}
+
+.pill {
+    padding: 5px 10px;
+    font-size: 12px;
+}
