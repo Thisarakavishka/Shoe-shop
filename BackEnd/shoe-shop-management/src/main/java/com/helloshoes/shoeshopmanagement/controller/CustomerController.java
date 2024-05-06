@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/customer")
 @RequiredArgsConstructor
 @Validated
+@CrossOrigin
 public class CustomerController {
     private final CustomerService customerService;
 
@@ -25,10 +26,35 @@ public class CustomerController {
         return "Customer health tested";
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
         List<CustomerDTO> customerDTOS = customerService.getAll();
         return ResponseEntity.ok().body(customerDTOS);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CustomerDTO>> getAllCustomers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        List<CustomerDTO> customerDTOS = customerService.getAll(page, size);
+        return ResponseEntity.ok().body(customerDTOS);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<CustomerDTO>> getSearchCustomers(@RequestParam String query) {
+        List<CustomerDTO> customerDTOS = customerService.getSearchCustomers(query);
+        return ResponseEntity.ok().body(customerDTOS);
+    }
+
+    @GetMapping("/page-size")
+    public ResponseEntity<Integer> getPageCount(@RequestParam(defaultValue = "10") int size) {
+        int customerCount = customerService.getCustomerCount();
+        int pageCount = (int) Math.ceil((double) customerCount / size);
+        return ResponseEntity.ok(pageCount);
+    }
+
+    @GetMapping("/next-code")
+    public ResponseEntity<String> getNextCustomerCode() {
+        String nextCode = customerService.getNextCustomerCode();
+        return ResponseEntity.ok(nextCode);
     }
 
     @GetMapping("/{id}")

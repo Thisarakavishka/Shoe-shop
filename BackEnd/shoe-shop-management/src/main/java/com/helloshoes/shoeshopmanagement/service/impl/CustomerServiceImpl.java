@@ -6,6 +6,9 @@ import com.helloshoes.shoeshopmanagement.repository.CustomerRepository;
 import com.helloshoes.shoeshopmanagement.service.CustomerService;
 import com.helloshoes.shoeshopmanagement.util.DataConvertor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,5 +88,33 @@ public class CustomerServiceImpl implements CustomerService {
             return null;
         }
         return dataConvertor.toCustomerDTO(customer);
+    }
+
+    @Override
+    public List<CustomerDTO> getAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Customer> customers = customerRepository.findAll(pageable);
+        return dataConvertor.toCustomerDTOList(customers.getContent());
+    }
+
+    @Override
+    public int getCustomerCount() {
+        return (int) customerRepository.count();
+    }
+
+    @Override
+    public String getNextCustomerCode() {
+        String nextCode = customerRepository.findNextCustomerCode();
+        if (nextCode == null) {
+            return "CUS001";
+        }
+        int code = Integer.parseInt(nextCode.substring(3)) + 1;
+        return "CUS" + String.format("%03d", code);
+    }
+
+    @Override
+    public List<CustomerDTO> getSearchCustomers(String query) {
+        List<Customer> customers = customerRepository.searchCustomers(query);
+        return dataConvertor.toCustomerDTOList(customers);
     }
 }
