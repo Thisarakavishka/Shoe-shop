@@ -23,7 +23,6 @@ function getDataToCustomerTable(page, size) {
         method: 'GET',
         data: {page: page, size: size},
         success: function (data) {
-            console.log("success fetching data")
             $('#customer-table tbody').empty();
             $.each(data, function (index, customer) {
                 $('#customer-table tbody').append(`
@@ -86,7 +85,6 @@ function paginationButtons(totalPages) {
 }
 
 function editCustomer(customer) {
-    console.log(customer);
     CUSTOMER_SECTION.css("display", "none");
     CUSTOMER_UPDATE_FORM.css("display", "block");
 
@@ -111,7 +109,6 @@ function editCustomer(customer) {
 }
 
 function deleteCustomer(customer) {
-    console.log(customer);
     Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -154,16 +151,13 @@ function splitDateTime(dateTimeString) {
 }
 
 $('#add-new-customer').on('click', () => {
-    console.log("add new customer")
     clearPage();
     CUSTOMER_SECTION.css("display", "none");
     CUSTOMER_ADD_FORM.css("display", "block");
-
     getNextCustomerCode();// call backend to get next customer code when form load
 });//In customer section
 
 function getNextCustomerCode() {
-    console.log("get Next Customer Code");
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/customer/next-code',
         type: 'GET',
@@ -202,7 +196,6 @@ function saveCustomer() {
         email: $('#email').val(),
         recentPurchaseDateTime: new Date().toISOString()
     };
-    console.log(customer);
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/customer',
         type: 'POST',
@@ -218,8 +211,6 @@ function saveCustomer() {
 }
 
 $('#updateCustomer').on('click', () => {
-    console.log("update Customer");
-
     const customer = {
         "customerCode": update_customer.customerCode,
         "customerName": $("#updateCustomerName").val(),
@@ -255,21 +246,62 @@ $('#updateCustomer').on('click', () => {
     CUSTOMER_SECTION.css("display", "block");
 });//In customer update form
 
-$('#customer-search').on('click', () => {
-    const searchText = $('#customer-search-text').val();
-    $.ajax({
-        type: 'GET',
-        url: 'http://localhost:8080/spring-boot/api/v1/customer/search',
-        data: {
-            pageSize: pageSize,
-            page: page,
-            searchText: searchText
-        },
-        success: function(response) {
-            // Update the customer table with the returned data
-        },
-        error: function(xhr, status, error) {
-            // Handle errors
-        }
-    });
+$('#customer-search-text').on('input', () => {
+    getSearchResult();
 });
+$('#customer-search').on('click', () => {
+    getSearchResult()
+});
+
+function getSearchResult() {
+    event.preventDefault();
+    const searchText = $('#customer-search-text').val().trim();
+    if (searchText === '') {
+        getDataToCustomerTable(0, page_size);
+        getPageCount();
+    } else {
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8080/spring-boot/api/v1/customer/search',
+            data: {query: searchText},
+            success: function (data) {
+                $('#customer-table tbody').empty();
+                $.each(data, function (index, customer) {
+                    $('#customer-table tbody').append(`
+                        <tr>
+                            <th scope="row">${index + 1}</th>
+                            <td>${customer.customerName}</td>
+                            <td>${customer.gender}</td>
+                            <td>${splitDateTime(customer.joinedDate)}</td>
+                            <td>
+                                <label class="bg-success rounded-pill">
+                                    <span class="p-2 text-white">${customer.customerLevel}</span>
+                                </label>
+                            </td>
+                            <td>${customer.totalPoints}</td>
+                            <td>${splitDateTime(customer.dob)}</td>
+                            <td>${customer.addressCity}</td>
+                            <td>${customer.postalCode}</td>
+                            <td>${customer.email}</td>
+                            <td>${splitDateTime(customer.recentPurchaseDateTime)}</td>
+                            <td>
+                                <button class="btn btn-outline-success edit-customer-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
+                                <button class="btn btn-outline-success delete-customer-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
+                            </td>
+                        </tr>
+                    `);
+                    $('.edit-customer-btn').last().click(function () {
+                        editCustomer(customer);
+                    });
+                    $('.delete-customer-btn').last().click(function () {
+                        deleteCustomer(customer);
+                    });
+                    $('#pagination').empty();
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log("error fetching data");
+            }
+        });
+    }
+}
