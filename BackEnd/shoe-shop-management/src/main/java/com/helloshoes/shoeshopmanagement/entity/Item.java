@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "item")
-@ToString(exclude = {"suppliers", "sizes", "categories", "types", "colours", "itemDetails"})
+@ToString(exclude = {"suppliers", "sizes", "colours", "itemDetails", "refunds", "sales"})
 public class Item implements SuperEntity {
     @Id
     private String itemCode;
@@ -56,4 +56,16 @@ public class Item implements SuperEntity {
 
     @OneToMany(mappedBy = "item")
     private List<ItemDetails> itemDetails;
+
+    @ManyToMany
+    @JoinTable(name = "item_refund",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "refund_id"))
+    private List<Refund> refunds;
+
+    @ManyToMany
+    @JoinTable(name = "sales_item",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "sale_id"))
+    private List<Sales> sales;
 }

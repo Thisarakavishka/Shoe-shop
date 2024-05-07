@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -34,4 +35,7 @@ public class Customer implements SuperEntity {
     private String contactNumber;
     private String email;
     private Timestamp recentPurchaseDateTime;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Sales> sales;
 }

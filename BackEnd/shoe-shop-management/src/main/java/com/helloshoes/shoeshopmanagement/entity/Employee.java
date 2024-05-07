@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -40,4 +41,10 @@ public class Employee implements SuperEntity {
     private String password;
     private String emergencyContactPerson;
     private String emergencyContactNumber;
+
+    @OneToMany(mappedBy = "employee")
+    private List<Sales> sales;
+
+    @OneToMany(mappedBy = "employee")
+    private List<Refund> refund;
 }
