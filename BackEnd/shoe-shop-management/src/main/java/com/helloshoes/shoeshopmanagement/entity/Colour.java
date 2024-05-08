@@ -1,9 +1,6 @@
 package com.helloshoes.shoeshopmanagement.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +18,6 @@ public class Colour implements SuperEntity {
     private String colourName;
     private String hexValue;
 
-    @ManyToMany(mappedBy = "colours")
+    @ManyToMany(mappedBy = "colours",cascade = CascadeType.ALL)
     private List<Item> items;
 }

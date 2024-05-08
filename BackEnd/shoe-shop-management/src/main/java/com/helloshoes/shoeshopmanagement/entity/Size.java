@@ -17,6 +17,6 @@ public class Size implements SuperEntity {
     private String sizeCode;
     private Integer size;
 
-    @ManyToMany(mappedBy = "sizes")
+    @ManyToMany(mappedBy = "sizes",cascade = CascadeType.ALL)
     private List<Item> items;
 }

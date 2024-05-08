@@ -30,6 +30,6 @@ public class Sales implements SuperEntity{
     @JoinColumn(name = "customer_code")
     private Customer customer;
 
-    @ManyToMany(mappedBy = "sales")
+    @ManyToMany(mappedBy = "sales",cascade = CascadeType.ALL)
     private List<Item> items;
 }

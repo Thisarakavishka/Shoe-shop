@@ -23,6 +23,6 @@ public class Refund implements SuperEntity {
     @JoinColumn(name = "employee_code")
     private Employee employee;
 
-    @ManyToMany(mappedBy = "refunds")
+    @ManyToMany(mappedBy = "refunds",cascade = CascadeType.ALL)
     private List<Item> items;
 }

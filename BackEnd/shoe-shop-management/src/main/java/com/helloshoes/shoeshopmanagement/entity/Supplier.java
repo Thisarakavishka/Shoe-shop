@@ -29,6 +29,6 @@ public class Supplier implements SuperEntity {
     private String contactLandline;
     private String email;
 
-    @ManyToMany(mappedBy = "suppliers")
+    @ManyToMany(mappedBy = "suppliers", cascade = CascadeType.ALL)
     private List<Item> items;
 }
