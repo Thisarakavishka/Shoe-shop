@@ -211,304 +211,812 @@
                 </div>
             </section>
 
-            <!-- Customer Section -->
-            <section id="customer-section" class="container-xxl">
-                <!-- Customer Search Bar -->
-                <div class="d-flex justify-content-center mt-4">
-                    <form class="d-flex col-md-5 p-2">
-                        <input class="form-control me-2 custom-focus" type="search" placeholder="Search"
-                               aria-label="Search"
-                               id="customer-search-text">
-                        <button class="btn btn-outline-custom-black-colour" type="submit" id="customer-search">Search
-                        </button>
+            <!-- Customer content -->
+            <section id="customer-content">
+                <!-- Customer Section -->
+                <section id="customer-section" class="container-xxl">
+                    <!-- Customer Search Bar -->
+                    <div class="d-flex justify-content-center mt-4">
+                        <form class="d-flex col-md-5 p-2">
+                            <input class="form-control me-2 custom-focus" type="search" placeholder="Search"
+                                   aria-label="Search"
+                                   id="customer-search-text">
+                            <button class="btn btn-outline-custom-black-colour" type="submit" id="customer-search">
+                                Search
+                            </button>
+                        </form>
+                    </div>
+                    <!-- Button Section -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <div class="col-md-1">
+                            <select class="form-select custom-focus" id="customerPageSize" name="size" required>
+                                <option value="" selected disabled>size</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button class="btn btn-custom-black-colour" id="add-new-customer">New Customer</button>
+                        </div>
+                    </div>
+                    <!-- Customer Table -->
+                    <div class="row justify-content-center d-flex mt-3 p-2">
+                        <table class="table table-hover text-center" id="customer-table">
+                            <thead class="bg-custom-table-head">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Gender</th>
+                                <th scope="col">Joined date</th>
+                                <th scope="col">Level</th>
+                                <th scope="col">Points</th>
+                                <th scope="col">Dob</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Postal</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Recent Purchase</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div class="justify-content-center d-flex" id="customerPagination"></div>
+                    </div>
+                </section>
+                <!-- Customer add Section -->
+                <section id="customer-add-form" class="container-xxl">
+                    <h3 class="p-2 mt-3">Add Customer</h3>
+                    <form id="customerAddForm" class="row g-3 needs-validation mt-3 p-2" novalidate>
+
+                        <!-- Customer Name -->
+                        <div class="col-md-6">
+                            <label for="customerName" class="form-label">Customer Name</label>
+                            <input type="text" class="form-control custom-focus" id="customerName" name="customerName"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid customer name.</div>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="col-md-6">
+                            <label for="gender" class="form-label">Gender</label>
+                            <select class="form-select custom-focus" id="gender" name="gender" required>
+                                <option value="" selected disabled>Select Gender</option>
+                                <option value="MALE">MALE</option>
+                                <option value="FEMALE">FEMALE</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a gender.</div>
+                        </div>
+
+                        <!-- Joined Date -->
+                        <div class="col-md-6">
+                            <label for="joinedDate" class="form-label">Joined Date</label>
+                            <input type="date" class="form-control custom-focus" id="joinedDate" name="joinedDate"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid joined date.</div>
+                        </div>
+
+                        <!-- Customer Level -->
+                        <div class="col-md-6">
+                            <label for="customerLevel" class="form-label">Customer Level</label>
+                            <select class="form-select custom-focus" id="customerLevel" name="customerLevel" required>
+                                <option value="" selected disabled>Select Customer Level</option>
+                                <option value="NEW">NEW</option>
+                                <option value="BRONZE">BRONZE</option>
+                                <option value="SILVER">SILVER</option>
+                                <option value="GOLD">GOLD</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a customer level.</div>
+                        </div>
+
+                        <!-- Total Points -->
+                        <div class="col-md-6">
+                            <label for="totalPoints" class="form-label">Total Points</label>
+                            <input type="number" class="form-control custom-focus" id="totalPoints" name="totalPoints"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid total points.</div>
+                        </div>
+
+                        <!-- Date of Birth -->
+                        <div class="col-md-6">
+                            <label for="dob" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control custom-focus" id="dob" name="dob" required>
+                            <div class="invalid-feedback">Please provide a valid date of birth.</div>
+                        </div>
+
+                        <!-- Address No-->
+                        <div class="col-4">
+                            <label for="addressNo" class="form-label">Address No</label>
+                            <input type="text" class="form-control custom-focus" id="addressNo" name="address" required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Address Lane-->
+                        <div class="col-4">
+                            <label for="addressLane" class="form-label">Address Lane</label>
+                            <input type="text" class="form-control custom-focus" id="addressLane" name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Address City-->
+                        <div class="col-4">
+                            <label for="addressCity" class="form-label">Address City</label>
+                            <input type="text" class="form-control custom-focus" id="addressCity" name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Address State-->
+                        <div class="col-4">
+                            <label for="addressState" class="form-label">Address State</label>
+                            <input type="text" class="form-control custom-focus" id="addressState" name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Postal Code -->
+                        <div class="col-md-4">
+                            <label for="postalCode" class="form-label">Postal Code</label>
+                            <input type="text" class="form-control custom-focus" id="postalCode" name="postalCode"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid postal code.</div>
+                        </div>
+
+                        <!-- Contact Number -->
+                        <div class="col-md-4">
+                            <label for="contactNumber" class="form-label">Contact Number</label>
+                            <input type="text" class="form-control custom-focus" id="contactNumber" name="contactNumber"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid contact number.</div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-md-4">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control custom-focus" id="email" name="email" required>
+                            <div class="invalid-feedback">Please provide a valid email address.</div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-custom-black-colour me-1" id="addNewCustomer">Add
+                                Customer
+                            </button>
+                            <button type="submit" class="btn btn-outline-custom-black-colour" id="backNewCustomer">Back
+                            </button>
+                        </div>
                     </form>
-                </div>
-                <!-- Button Section -->
-                <div class="d-flex justify-content-between mt-4">
-                    <div class="col-md-1">
-                        <select class="form-select custom-focus" id="customerPageSize" name="size" required>
-                            <option value="" selected disabled>size</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                        </select>
-                    </div>
-                    <div>
-                        <button class="btn btn-custom-black-colour" id="add-new-customer">New Customer</button>
-                    </div>
-                </div>
-                <!-- Customer Table -->
-                <div class="row justify-content-center d-flex mt-3 p-2">
-                    <table class="table table-hover text-center" id="customer-table">
-                        <thead class="bg-custom-table-head">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Gender</th>
-                            <th scope="col">Joined date</th>
-                            <th scope="col">Level</th>
-                            <th scope="col">Points</th>
-                            <th scope="col">Dob</th>
-                            <th scope="col">Address</th>
-                            <th scope="col">Postal</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Recent Purchase</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    <div class="justify-content-center d-flex" id="pagination"></div>
-                </div>
-            </section>
-            <!-- Customer add Section -->
-            <section id="customer-add-form" class="container-xxl">
-                <h3 class="p-2 mt-3">Add Customer</h3>
-                <form id="customerAddForm" class="row g-3 needs-validation mt-3 p-2" novalidate>
+                </section>
+                <!-- Customer Update Section -->
+                <section id="customer-update-form" class="container-xxl">
+                    <h3 class="p-2 mt-3">Update Customer</h3>
+                    <form id="customerUpdateForm" class="row g-3 needs-validation mt-3 p-2" novalidate>
 
-                    <!-- Customer Name -->
-                    <div class="col-md-6">
-                        <label for="customerName" class="form-label">Customer Name</label>
-                        <input type="text" class="form-control custom-focus" id="customerName" name="customerName"
-                               required>
-                        <div class="invalid-feedback">Please provide a valid customer name.</div>
-                    </div>
+                        <!-- Customer Name -->
+                        <div class="col-md-6">
+                            <label for="updateCustomerName" class="form-label">Customer Name</label>
+                            <input type="text" class="form-control custom-focus" id="updateCustomerName"
+                                   name="customerName"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid customer name.</div>
+                        </div>
 
-                    <!-- Gender -->
-                    <div class="col-md-6">
-                        <label for="gender" class="form-label">Gender</label>
-                        <select class="form-select custom-focus" id="gender" name="gender" required>
-                            <option value="" selected disabled>Select Gender</option>
-                            <option value="MALE">MALE</option>
-                            <option value="FEMALE">FEMALE</option>
-                        </select>
-                        <div class="invalid-feedback">Please select a gender.</div>
-                    </div>
+                        <!-- Gender -->
+                        <div class="col-md-6">
+                            <label for="updateGender" class="form-label">Gender</label>
+                            <select class="form-select custom-focus" id="updateGender" name="gender" required>
+                                <option value="" selected disabled>Select Gender</option>
+                                <option value="MALE">MALE</option>
+                                <option value="FEMALE">FEMALE</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a gender.</div>
+                        </div>
 
-                    <!-- Joined Date -->
-                    <div class="col-md-6">
-                        <label for="joinedDate" class="form-label">Joined Date</label>
-                        <input type="date" class="form-control custom-focus" id="joinedDate" name="joinedDate" required>
-                        <div class="invalid-feedback">Please provide a valid joined date.</div>
-                    </div>
+                        <!-- Joined Date -->
+                        <div class="col-md-6">
+                            <label for="updateJoinedDate" class="form-label">Joined Date</label>
+                            <input type="date" class="form-control custom-focus" id="updateJoinedDate" name="joinedDate"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid joined date.</div>
+                        </div>
 
-                    <!-- Customer Level -->
-                    <div class="col-md-6">
-                        <label for="customerLevel" class="form-label">Customer Level</label>
-                        <select class="form-select custom-focus" id="customerLevel" name="customerLevel" required>
-                            <option value="" selected disabled>Select Customer Level</option>
-                            <option value="NEW">NEW</option>
-                            <option value="BRONZE">BRONZE</option>
-                            <option value="SILVER">SILVER</option>
-                            <option value="GOLD">GOLD</option>
-                        </select>
-                        <div class="invalid-feedback">Please select a customer level.</div>
-                    </div>
+                        <!-- Customer Level -->
+                        <div class="col-md-6">
+                            <label for="updateCustomerLevel" class="form-label">Customer Level</label>
+                            <select class="form-select custom-focus" id="updateCustomerLevel" name="customerLevel"
+                                    required>
+                                <option value="" selected disabled>Select Customer Level</option>
+                                <option value="NEW">NEW</option>
+                                <option value="BRONZE">BRONZE</option>
+                                <option value="SILVER">SILVER</option>
+                                <option value="GOLD">GOLD</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a customer level.</div>
+                        </div>
 
-                    <!-- Total Points -->
-                    <div class="col-md-6">
-                        <label for="totalPoints" class="form-label">Total Points</label>
-                        <input type="number" class="form-control custom-focus" id="totalPoints" name="totalPoints"
-                               required>
-                        <div class="invalid-feedback">Please provide a valid total points.</div>
-                    </div>
+                        <!-- Total Points -->
+                        <div class="col-md-6">
+                            <label for="updateTotalPoints" class="form-label">Total Points</label>
+                            <input type="number" class="form-control custom-focus" id="updateTotalPoints"
+                                   name="totalPoints"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid total points.</div>
+                        </div>
 
-                    <!-- Date of Birth -->
-                    <div class="col-md-6">
-                        <label for="dob" class="form-label">Date of Birth</label>
-                        <input type="date" class="form-control custom-focus" id="dob" name="dob" required>
-                        <div class="invalid-feedback">Please provide a valid date of birth.</div>
-                    </div>
+                        <!-- Date of Birth -->
+                        <div class="col-md-6">
+                            <label for="updateDob" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control custom-focus" id="updateDob" name="dob" required>
+                            <div class="invalid-feedback">Please provide a valid date of birth.</div>
+                        </div>
 
-                    <!-- Address No-->
-                    <div class="col-4">
-                        <label for="addressNo" class="form-label">Address No</label>
-                        <input type="text" class="form-control custom-focus" id="addressNo" name="address" required>
-                        <div class="invalid-feedback">Please provide a valid address.</div>
-                    </div>
+                        <!-- Address No-->
+                        <div class="col-4">
+                            <label for="updateAddressNo" class="form-label">Address No</label>
+                            <input type="text" class="form-control custom-focus" id="updateAddressNo" name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
 
-                    <!-- Address Lane-->
-                    <div class="col-4">
-                        <label for="addressLane" class="form-label">Address Lane</label>
-                        <input type="text" class="form-control custom-focus" id="addressLane" name="address" required>
-                        <div class="invalid-feedback">Please provide a valid address.</div>
-                    </div>
+                        <!-- Address Lane-->
+                        <div class="col-4">
+                            <label for="updateAddressLane" class="form-label">Address Lane</label>
+                            <input type="text" class="form-control custom-focus" id="updateAddressLane" name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
 
-                    <!-- Address City-->
-                    <div class="col-4">
-                        <label for="addressCity" class="form-label">Address City</label>
-                        <input type="text" class="form-control custom-focus" id="addressCity" name="address" required>
-                        <div class="invalid-feedback">Please provide a valid address.</div>
-                    </div>
+                        <!-- Address City-->
+                        <div class="col-4">
+                            <label for="updateAddressCity" class="form-label">Address City</label>
+                            <input type="text" class="form-control custom-focus" id="updateAddressCity" name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
 
-                    <!-- Address State-->
-                    <div class="col-4">
-                        <label for="addressState" class="form-label">Address State</label>
-                        <input type="text" class="form-control custom-focus" id="addressState" name="address" required>
-                        <div class="invalid-feedback">Please provide a valid address.</div>
-                    </div>
+                        <!-- Address State-->
+                        <div class="col-4">
+                            <label for="updateAddressState" class="form-label">Address State</label>
+                            <input type="text" class="form-control custom-focus" id="updateAddressState" name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
 
-                    <!-- Postal Code -->
-                    <div class="col-md-4">
-                        <label for="postalCode" class="form-label">Postal Code</label>
-                        <input type="text" class="form-control custom-focus" id="postalCode" name="postalCode" required>
-                        <div class="invalid-feedback">Please provide a valid postal code.</div>
-                    </div>
+                        <!-- Postal Code -->
+                        <div class="col-md-4">
+                            <label for="updatePostalCode" class="form-label">Postal Code</label>
+                            <input type="text" class="form-control custom-focus" id="updatePostalCode" name="postalCode"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid postal code.</div>
+                        </div>
 
-                    <!-- Contact Number -->
-                    <div class="col-md-4">
-                        <label for="contactNumber" class="form-label">Contact Number</label>
-                        <input type="text" class="form-control custom-focus" id="contactNumber" name="contactNumber"
-                               required>
-                        <div class="invalid-feedback">Please provide a valid contact number.</div>
-                    </div>
+                        <!-- Contact Number -->
+                        <div class="col-md-4">
+                            <label for="updateContactNumber" class="form-label">Contact Number</label>
+                            <input type="text" class="form-control custom-focus" id="updateContactNumber"
+                                   name="contactNumber" required>
+                            <div class="invalid-feedback">Please provide a valid contact number.</div>
+                        </div>
 
-                    <!-- Email -->
-                    <div class="col-md-4">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control custom-focus" id="email" name="email" required>
-                        <div class="invalid-feedback">Please provide a valid email address.</div>
-                    </div>
+                        <!-- Email -->
+                        <div class="col-md-4">
+                            <label for="updateEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control custom-focus" id="updateEmail" name="email"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid email address.</div>
+                        </div>
 
-                    <!-- Submit Button -->
-                    <div class="col-12 mt-4">
-                        <button type="submit" class="btn btn-custom-black-colour me-1" id="addNewCustomer">Add
-                            Customer
-                        </button>
-                        <button type="submit" class="btn btn-outline-custom-black-colour" id="backNewCustomer">Back
-                        </button>
-                    </div>
-                </form>
-            </section>
-            <!-- Customer Update Section -->
-            <section id="customer-update-form" class="container-xxl">
-                <h3 class="p-2 mt-3">Update Customer</h3>
-                <form id="customerUpdateForm" class="row g-3 needs-validation mt-3 p-2" novalidate>
-
-                    <!-- Customer Name -->
-                    <div class="col-md-6">
-                        <label for="updateCustomerName" class="form-label">Customer Name</label>
-                        <input type="text" class="form-control custom-focus" id="updateCustomerName" name="customerName"
-                               required>
-                        <div class="invalid-feedback">Please provide a valid customer name.</div>
-                    </div>
-
-                    <!-- Gender -->
-                    <div class="col-md-6">
-                        <label for="updateGender" class="form-label">Gender</label>
-                        <select class="form-select custom-focus" id="updateGender" name="gender" required>
-                            <option value="" selected disabled>Select Gender</option>
-                            <option value="MALE">MALE</option>
-                            <option value="FEMALE">FEMALE</option>
-                        </select>
-                        <div class="invalid-feedback">Please select a gender.</div>
-                    </div>
-
-                    <!-- Joined Date -->
-                    <div class="col-md-6">
-                        <label for="updateJoinedDate" class="form-label">Joined Date</label>
-                        <input type="date" class="form-control custom-focus" id="updateJoinedDate" name="joinedDate"
-                               required>
-                        <div class="invalid-feedback">Please provide a valid joined date.</div>
-                    </div>
-
-                    <!-- Customer Level -->
-                    <div class="col-md-6">
-                        <label for="updateCustomerLevel" class="form-label">Customer Level</label>
-                        <select class="form-select custom-focus" id="updateCustomerLevel" name="customerLevel" required>
-                            <option value="" selected disabled>Select Customer Level</option>
-                            <option value="NEW">NEW</option>
-                            <option value="BRONZE">BRONZE</option>
-                            <option value="SILVER">SILVER</option>
-                            <option value="GOLD">GOLD</option>
-                        </select>
-                        <div class="invalid-feedback">Please select a customer level.</div>
-                    </div>
-
-                    <!-- Total Points -->
-                    <div class="col-md-6">
-                        <label for="updateTotalPoints" class="form-label">Total Points</label>
-                        <input type="number" class="form-control custom-focus" id="updateTotalPoints" name="totalPoints"
-                               required>
-                        <div class="invalid-feedback">Please provide a valid total points.</div>
-                    </div>
-
-                    <!-- Date of Birth -->
-                    <div class="col-md-6">
-                        <label for="updateDob" class="form-label">Date of Birth</label>
-                        <input type="date" class="form-control custom-focus" id="updateDob" name="dob" required>
-                        <div class="invalid-feedback">Please provide a valid date of birth.</div>
-                    </div>
-
-                    <!-- Address No-->
-                    <div class="col-4">
-                        <label for="updateAddressNo" class="form-label">Address No</label>
-                        <input type="text" class="form-control custom-focus" id="updateAddressNo" name="address"
-                               required>
-                        <div class="invalid-feedback">Please provide a valid address.</div>
-                    </div>
-
-                    <!-- Address Lane-->
-                    <div class="col-4">
-                        <label for="updateAddressLane" class="form-label">Address Lane</label>
-                        <input type="text" class="form-control custom-focus" id="updateAddressLane" name="address"
-                               required>
-                        <div class="invalid-feedback">Please provide a valid address.</div>
-                    </div>
-
-                    <!-- Address City-->
-                    <div class="col-4">
-                        <label for="updateAddressCity" class="form-label">Address City</label>
-                        <input type="text" class="form-control custom-focus" id="updateAddressCity" name="address"
-                               required>
-                        <div class="invalid-feedback">Please provide a valid address.</div>
-                    </div>
-
-                    <!-- Address State-->
-                    <div class="col-4">
-                        <label for="updateAddressState" class="form-label">Address State</label>
-                        <input type="text" class="form-control custom-focus" id="updateAddressState" name="address"
-                               required>
-                        <div class="invalid-feedback">Please provide a valid address.</div>
-                    </div>
-
-                    <!-- Postal Code -->
-                    <div class="col-md-4">
-                        <label for="updatePostalCode" class="form-label">Postal Code</label>
-                        <input type="text" class="form-control custom-focus" id="updatePostalCode" name="postalCode"
-                               required>
-                        <div class="invalid-feedback">Please provide a valid postal code.</div>
-                    </div>
-
-                    <!-- Contact Number -->
-                    <div class="col-md-4">
-                        <label for="updateContactNumber" class="form-label">Contact Number</label>
-                        <input type="text" class="form-control custom-focus" id="updateContactNumber"
-                               name="contactNumber" required>
-                        <div class="invalid-feedback">Please provide a valid contact number.</div>
-                    </div>
-
-                    <!-- Email -->
-                    <div class="col-md-4">
-                        <label for="updateEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control custom-focus" id="updateEmail" name="email" required>
-                        <div class="invalid-feedback">Please provide a valid email address.</div>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <div class="col-12 mt-4">
-                        <button type="submit" class="btn btn-custom-black-colour me-1" id="updateCustomer">Update
-                            Customer
-                        </button>
-                        <button type="submit" class="btn btn-outline-custom-black-colour" id="backUpdateCustomer">
-                            Cancel
-                        </button>
-                    </div>
-                </form>
+                        <!-- Submit Button -->
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-custom-black-colour me-1" id="updateCustomer">Update
+                                Customer
+                            </button>
+                            <button type="submit" class="btn btn-outline-custom-black-colour" id="backUpdateCustomer">
+                                Back
+                            </button>
+                        </div>
+                    </form>
+                </section>
             </section>
 
+            <!-- Employee content -->
+            <section id="employee-content">
+                <!-- Employee Section -->
+                <section id="employee-section" class="container-xxl">
+                    <!-- Employee Search Bar -->
+                    <div class="d-flex justify-content-center mt-4">
+                        <form class="d-flex col-md-5 p-2">
+                            <input class="form-control me-2 custom-focus" type="search" placeholder="Search"
+                                   aria-label="Search"
+                                   id="employee-search-text">
+                            <button class="btn btn-outline-custom-black-colour" type="submit" id="employee-search">
+                                Search
+                            </button>
+                        </form>
+                    </div>
+                    <!-- Button Section -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <div class="col-md-1">
+                            <select class="form-select custom-focus" id="employeePageSize" name="size" required>
+                                <option value="" selected disabled>size</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button class="btn btn-custom-black-colour" id="add-new-employee">New Employee</button>
+                        </div>
+                    </div>
+                    <!-- Employee Table -->
+                    <div class="row justify-content-center d-flex mt-3 p-2">
+                        <table class="table table-hover text-center" id="employee-table">
+                            <thead class="bg-custom-table-head">
+                            <tr>
+                                <th scope="col">Profile</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Gender</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Contact Number</th>
+                                <th scope="col">Designation</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div class="justify-content-center d-flex" id="employeePagination"></div>
+                    </div>
+                </section>
+                <!-- Employee add Section -->
+                <section id="employee-add-form" class="container-xxl">
+                    <h3 class="p-2 mt-3">Add Employee</h3>
+                    <form id="employeeAddForm" class="row g-3 needs-validation mt-3 p-2" novalidate>
+
+                        <!-- Employee Name -->
+                        <div class="col-md-6">
+                            <label for="employeeName" class="form-label">Employee Name</label>
+                            <input type="text" class="form-control custom-focus" id="employeeName" name="employeeName"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid employee name.</div>
+                        </div>
+
+                        <!-- Profile Picture -->
+                        <div class="col-md-6">
+                            <label for="employeeProfilePic" class="form-label">Profile Picture</label>
+                            <input type="file" class="form-control custom-focus" id="employeeProfilePic"
+                                   name="profilePic"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid profile picture.</div>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="col-md-4">
+                            <label for="employeeGender" class="form-label">Gender</label>
+                            <select class="form-select custom-focus" id="employeeGender" name="gender" required>
+                                <option value="" selected disabled>Select Gender</option>
+                                <option value="MALE">MALE</option>
+                                <option value="FEMALE">FEMALE</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a gender.</div>
+                        </div>
+
+                        <!-- Status -->
+                        <div class="col-md-4">
+                            <label for="employeeStatus" class="form-label">Status</label>
+                            <input type="text" class="form-control custom-focus" id="employeeStatus" name="status"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid status.</div>
+                        </div>
+
+                        <!-- Designation -->
+                        <div class="col-md-4">
+                            <label for="employeeDesignation" class="form-label">Designation</label>
+                            <input type="text" class="form-control custom-focus" id="employeeDesignation"
+                                   name="designation"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid designation.</div>
+                        </div>
+
+                        <!-- Date of Birth -->
+                        <div class="col-md-4">
+                            <label for="employeeDob" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control custom-focus" id="employeeDob" name="dob" required>
+                            <div class="invalid-feedback">Please provide a valid date of birth.</div>
+                        </div>
+
+                        <!-- Joined Date -->
+                        <div class="col-md-4">
+                            <label for="employeeJoinedDate" class="form-label">Joined Date</label>
+                            <input type="date" class="form-control custom-focus" id="employeeJoinedDate"
+                                   name="joinedDate"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid joined date.</div>
+                        </div>
+
+                        <!-- Branch -->
+                        <div class="col-md-4">
+                            <label for="employeeBranch" class="form-label">Branch</label>
+                            <input type="text" class="form-control custom-focus" id="employeeBranch" name="branch"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid branch.</div>
+                        </div>
+
+                        <!-- Address No-->
+                        <div class="col-4">
+                            <label for="employeeAddressNo" class="form-label">Address No</label>
+                            <input type="text" class="form-control custom-focus" id="employeeAddressNo" name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Address Lane-->
+                        <div class="col-4">
+                            <label for="employeeAddressLane" class="form-label">Address Lane</label>
+                            <input type="text" class="form-control custom-focus" id="employeeAddressLane" name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Address City-->
+                        <div class="col-4">
+                            <label for="employeeAddressCity" class="form-label">Address City</label>
+                            <input type="text" class="form-control custom-focus" id="employeeAddressCity" name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Address State-->
+                        <div class="col-4">
+                            <label for="employeeAddressState" class="form-label">Address State</label>
+                            <input type="text" class="form-control custom-focus" id="employeeAddressState"
+                                   name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Postal Code -->
+                        <div class="col-md-4">
+                            <label for="employeePostalCode" class="form-label">Postal Code</label>
+                            <input type="text" class="form-control custom-focus" id="employeePostalCode"
+                                   name="postalCode"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid postal code.</div>
+                        </div>
+
+                        <!-- Contact Number -->
+                        <div class="col-md-4">
+                            <label for="employeeContactNumber" class="form-label">Contact Number</label>
+                            <input type="text" class="form-control custom-focus" id="employeeContactNumber"
+                                   name="contactNumber" required>
+                            <div class="invalid-feedback">Please provide a valid contact number.</div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-md-4">
+                            <label for="employeeEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control custom-focus" id="employeeEmail" name="email"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid email address.</div>
+                        </div>
+
+                        <!-- Emergency Contact Person -->
+                        <div class="col-md-4">
+                            <label for="employeeEmergencyContactPerson" class="form-label">Emergency Contact
+                                Person</label>
+                            <input type="text" class="form-control custom-focus" id="employeeEmergencyContactPerson"
+                                   name="emergencyContactPerson" required>
+                            <div class="invalid-feedback">Please provide a valid emergency contact person.</div>
+                        </div>
+
+                        <!-- Emergency Contact Number -->
+                        <div class="col-md-4">
+                            <label for="employeeEmergencyContactNumber" class="form-label">Emergency Contact
+                                Number</label>
+                            <input type="text" class="form-control custom-focus" id="employeeEmergencyContactNumber"
+                                   name="emergencyContactNumber" required>
+                            <div class="invalid-feedback">Please provide a valid emergency contact number.</div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-custom-black-colour me-1" id="addNewEmployee">Add
+                                Employee
+                            </button>
+                            <button type="button" class="btn btn-outline-custom-black-colour" id="backNewEmployee">Back
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            </section>
+
+            <!-- Supplier content -->
+            <section id="supplier-content">
+                <!-- Supplier Section -->
+                <section id="supplier-section" class="container-xxl">
+                    <!-- Supplier Search Bar -->
+                    <div class="d-flex justify-content-center mt-4">
+                        <form class="d-flex col-md-5 p-2">
+                            <input class="form-control me-2 custom-focus" type="search" placeholder="Search"
+                                   aria-label="Search"
+                                   id="supplier-search-text">
+                            <button class="btn btn-outline-custom-black-colour" type="submit" id="supplier-search">
+                                Search
+                            </button>
+                        </form>
+                    </div>
+                    <!-- Button Section -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <div class="col-md-1">
+                            <select class="form-select custom-focus" id="supplierPageSize" name="size" required>
+                                <option value="" selected disabled>size</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button class="btn btn-custom-black-colour" id="add-new-supplier">New Supplier</button>
+                        </div>
+                    </div>
+                    <!-- Supplier Table -->
+                    <div class="row justify-content-center d-flex mt-3 p-2">
+                        <table class="table table-hover text-center" id="supplier-table">
+                            <thead class="bg-custom-table-head">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Country</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Mobile No</th>
+                                <th scope="col">Land No</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div class="justify-content-center d-flex" id="supplierPagination"></div>
+                    </div>
+                </section>
+                <!-- Supplier add Section -->
+                <section id="supplier-add-form" class="container-xxl">
+                    <h3 class="p-2 mt-3">Add Supplier</h3>
+                    <form id="supplierAddForm" class="row g-3 needs-validation mt-3 p-2" novalidate>
+
+                        <!-- Supplier Name -->
+                        <div class="col-md-6">
+                            <label for="supplierName" class="form-label">Supplier Name</label>
+                            <input type="text" class="form-control custom-focus" id="supplierName" name="supplierName"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid supplier name.</div>
+                        </div>
+
+                        <!-- Supplier Category -->
+                        <div class="col-md-6">
+                            <label for="supplierCategory" class="form-label">Supplier Category</label>
+                            <select class="form-select custom-focus" id="supplierCategory" name="supplierCategory"
+                                    required>
+                                <option value="" selected disabled>Select Supplier Category</option>
+                                <option value="LOCAL">LOCAL</option>
+                                <option value="INTERNATIONAL">INTERNATIONAL</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a supplier level.</div>
+                        </div>
+
+                        <!-- Address No-->
+                        <div class="col-4">
+                            <label for="supplierAddressNo" class="form-label">Address No</label>
+                            <input type="text" class="form-control custom-focus" id="supplierAddressNo" name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Address Lane-->
+                        <div class="col-4">
+                            <label for="supplierAddressLane" class="form-label">Address Lane</label>
+                            <input type="text" class="form-control custom-focus" id="supplierAddressLane" name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Address City-->
+                        <div class="col-4">
+                            <label for="supplierAddressCity" class="form-label">Address City</label>
+                            <input type="text" class="form-control custom-focus" id="supplierAddressCity" name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Address State-->
+                        <div class="col-4">
+                            <label for="supplierAddressState" class="form-label">Address State</label>
+                            <input type="text" class="form-control custom-focus" id="supplierAddressState"
+                                   name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Postal Code -->
+                        <div class="col-md-4">
+                            <label for="supplierPostalCode" class="form-label">Postal Code</label>
+                            <input type="text" class="form-control custom-focus" id="supplierPostalCode"
+                                   name="postalCode"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid postal code.</div>
+                        </div>
+
+                        <!-- Country -->
+                        <div class="col-md-4">
+                            <label for="supplierCountry" class="form-label">Country</label>
+                            <input type="text" class="form-control custom-focus" id="supplierCountry"
+                                   name="country"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid country.</div>
+                        </div>
+
+                        <!-- Mobile Number -->
+                        <div class="col-md-4">
+                            <label for="supplierMobileNumber" class="form-label">Mobile Number</label>
+                            <input type="text" class="form-control custom-focus" id="supplierMobileNumber"
+                                   name="mobileNumber"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid mobile number.</div>
+                        </div>
+
+                        <!-- Land Number -->
+                        <div class="col-md-4">
+                            <label for="supplierLandNumber" class="form-label">Land Number</label>
+                            <input type="text" class="form-control custom-focus" id="supplierLandNumber"
+                                   name="landNumber"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid land number.</div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-md-4">
+                            <label for="supplierEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control custom-focus" id="supplierEmail" name="email"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid email address.</div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-custom-black-colour me-1" id="addNewSupplier">Add
+                                Supplier
+                            </button>
+                            <button type="submit" class="btn btn-outline-custom-black-colour" id="backNewSupplier">Back
+                            </button>
+                        </div>
+                    </form>
+                </section>
+                <!-- Supplier Update Section -->
+                <section id="supplier-update-form" class="container-xxl">
+                    <h3 class="p-2 mt-3">Update Supplier</h3>
+                    <form id="supplierUpdateForm" class="row g-3 needs-validation mt-3 p-2" novalidate>
+
+                        <!-- Supplier Name -->
+                        <div class="col-md-6">
+                            <label for="updateSupplierName" class="form-label">Supplier Name</label>
+                            <input type="text" class="form-control custom-focus" id="updateSupplierName"
+                                   name="supplierName"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid supplier name.</div>
+                        </div>
+
+                        <!-- Supplier Category -->
+                        <div class="col-md-6">
+                            <label for="updateSupplierCategory" class="form-label">Supplier Category</label>
+                            <select class="form-select custom-focus" id="updateSupplierCategory" name="supplierCategory"
+                                    required>
+                                <option value="" selected disabled>Select Supplier Category</option>
+                                <option value="LOCAL">LOCAL</option>
+                                <option value="INTERNATIONAL">INTERNATIONAL</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a supplier level.</div>
+                        </div>
+
+                        <!-- Address No-->
+                        <div class="col-4">
+                            <label for="updateSupplierAddressNo" class="form-label">Address No</label>
+                            <input type="text" class="form-control custom-focus" id="updateSupplierAddressNo"
+                                   name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Address Lane-->
+                        <div class="col-4">
+                            <label for="updateSupplierAddressLane" class="form-label">Address Lane</label>
+                            <input type="text" class="form-control custom-focus" id="updateSupplierAddressLane"
+                                   name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Address City-->
+                        <div class="col-4">
+                            <label for="updateSupplierAddressCity" class="form-label">Address City</label>
+                            <input type="text" class="form-control custom-focus" id="updateSupplierAddressCity"
+                                   name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Address State-->
+                        <div class="col-4">
+                            <label for="updateSupplierAddressState" class="form-label">Address State</label>
+                            <input type="text" class="form-control custom-focus" id="updateSupplierAddressState"
+                                   name="address"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Postal Code -->
+                        <div class="col-md-4">
+                            <label for="updateSupplierPostalCode" class="form-label">Postal Code</label>
+                            <input type="text" class="form-control custom-focus" id="updateSupplierPostalCode"
+                                   name="postalCode"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid postal code.</div>
+                        </div>
+
+                        <!-- Country -->
+                        <div class="col-md-4">
+                            <label for="updateSupplierCountry" class="form-label">Country</label>
+                            <input type="text" class="form-control custom-focus" id="updateSupplierCountry"
+                                   name="country"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid country.</div>
+                        </div>
+
+                        <!-- Mobile Number -->
+                        <div class="col-md-4">
+                            <label for="updateSupplierMobileNumber" class="form-label">Mobile Number</label>
+                            <input type="text" class="form-control custom-focus" id="updateSupplierMobileNumber"
+                                   name="mobileNumber"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid mobile number.</div>
+                        </div>
+
+                        <!-- Land Number -->
+                        <div class="col-md-4">
+                            <label for="updateSupplierLandNumber" class="form-label">Land Number</label>
+                            <input type="text" class="form-control custom-focus" id="updateSupplierLandNumber"
+                                   name="landNumber"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid land number.</div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-md-4">
+                            <label for="updateSupplierEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control custom-focus" id="updateSupplierEmail" name="email"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid email address.</div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-custom-black-colour me-1" id="updateSupplier">Update
+                                Supplier
+                            </button>
+                            <button type="submit" class="btn btn-outline-custom-black-colour" id="backUpdateSupplier">
+                                Back
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            </section>
         </div>
     </div>
 </section>
@@ -583,10 +1091,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.8/dist/sweetalert2.all.min.js"></script>
 <script src="assets/lib/jQuery/jquery.min.js"></script>
 <script src="assets/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/lib/sweetAlert2/sweetAlert2.js"></script>
 <script src="assets/js/Script.js"></script>
+<script src="assets/js/Supplier.js"></script>
 <script src="assets/js/Customer.js"></script>
 </body>
 </html>
