@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/supplier")
 @RequiredArgsConstructor
 @Validated
+@CrossOrigin
 public class SupplierController {
     private final SupplierService supplierService;
 
@@ -25,10 +26,35 @@ public class SupplierController {
         return "Supplier health tested";
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<SupplierDTO>> getAllSuppliers() {
         List<SupplierDTO> supplierDTOS = supplierService.getAll();
         return ResponseEntity.ok().body(supplierDTOS);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<SupplierDTO>> getAllSuppliers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        List<SupplierDTO> supplierDTOS = supplierService.getAll(page, size);
+        return ResponseEntity.ok().body(supplierDTOS);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<SupplierDTO>> getSearchSuppliers(@RequestParam String query) {
+        List<SupplierDTO> supplierDTOS = supplierService.getSearchSuppliers(query);
+        return ResponseEntity.ok().body(supplierDTOS);
+    }
+
+    @GetMapping("/page-size")
+    public ResponseEntity<Integer> getPageCount(@RequestParam(defaultValue = "10") int size) {
+        int supplierCount = supplierService.getSupplierCount();
+        int pageCount = (int) Math.ceil((double) supplierCount / size);
+        return ResponseEntity.ok(pageCount);
+    }
+
+    @GetMapping("/next-code")
+    public ResponseEntity<String> getNextCSupplierCode() {
+        String nextCode = supplierService.getNextSupplierCode();
+        return ResponseEntity.ok(nextCode);
     }
 
     @GetMapping("/{id}")

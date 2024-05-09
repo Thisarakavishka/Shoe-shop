@@ -6,6 +6,9 @@ import com.helloshoes.shoeshopmanagement.repository.SupplierRepository;
 import com.helloshoes.shoeshopmanagement.service.SupplierService;
 import com.helloshoes.shoeshopmanagement.util.DataConvertor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,5 +85,33 @@ public class SupplierServiceImpl implements SupplierService {
             return null;
         }
         return dataConvertor.toSupplierDTO(supplier);
+    }
+
+    @Override
+    public List<SupplierDTO> getAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Supplier> suppliers = supplierRepository.findAll(pageable);
+        return dataConvertor.toSupplierDTOList(suppliers.getContent());
+    }
+
+    @Override
+    public int getSupplierCount() {
+        return (int) supplierRepository.count();
+    }
+
+    @Override
+    public String getNextSupplierCode() {
+        String nextCode = supplierRepository.findNextSupplierCode();
+        if (nextCode == null) {
+            return "SUP001";
+        }
+        int code = Integer.parseInt(nextCode.substring(3)) + 1;
+        return "SUP" + String.format("%03d", code);
+    }
+
+    @Override
+    public List<SupplierDTO> getSearchSuppliers(String query) {
+        List<Supplier> suppliers = supplierRepository.searchSuppliers(query);
+        return dataConvertor.toSupplierDTOList(suppliers);
     }
 }
