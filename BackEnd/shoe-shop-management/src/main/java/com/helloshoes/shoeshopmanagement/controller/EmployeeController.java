@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/employee")
 @RequiredArgsConstructor
 @Validated
+@CrossOrigin
 public class EmployeeController {
     private final EmployeeService employeeService;
 
@@ -25,10 +26,35 @@ public class EmployeeController {
         return "customer health tested";
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
         List<EmployeeDTO> employees = employeeService.getAll();
         return ResponseEntity.ok().body(employees);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployees(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        List<EmployeeDTO> employeeDTOS = employeeService.getAll(page, size);
+        return ResponseEntity.ok().body(employeeDTOS);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<EmployeeDTO>> getSearchEmployees(@RequestParam String query) {
+        List<EmployeeDTO> employeeDTOS = employeeService.getSearchEmployees(query);
+        return ResponseEntity.ok().body(employeeDTOS);
+    }
+
+    @GetMapping("/page-size")
+    public ResponseEntity<Integer> getPageCount(@RequestParam(defaultValue = "10") int size) {
+        int employeeCount = employeeService.getEmployeeCount();
+        int pageCount = (int) Math.ceil((double) employeeCount / size);
+        return ResponseEntity.ok(pageCount);
+    }
+
+    @GetMapping("/next-code")
+    public ResponseEntity<String> getNextEmployeeCode() {
+        String nextCode = employeeService.getNextEmployeeCode();
+        return ResponseEntity.ok(nextCode);
     }
 
     @GetMapping("/{id}")

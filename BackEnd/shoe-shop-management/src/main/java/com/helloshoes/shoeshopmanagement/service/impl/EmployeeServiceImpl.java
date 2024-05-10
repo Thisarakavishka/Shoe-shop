@@ -6,6 +6,9 @@ import com.helloshoes.shoeshopmanagement.repository.EmployeeRepository;
 import com.helloshoes.shoeshopmanagement.service.EmployeeService;
 import com.helloshoes.shoeshopmanagement.util.DataConvertor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,5 +93,33 @@ public class EmployeeServiceImpl implements EmployeeService {
             return null;
         }
         return dataConvertor.toEmployeeDTO(employee);
+    }
+
+    @Override
+    public List<EmployeeDTO> getAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Employee> employees = employeeRepository.findAll(pageable);
+        return dataConvertor.toEmployeeDTOList(employees.getContent());
+    }
+
+    @Override
+    public int getEmployeeCount() {
+        return (int) employeeRepository.count();
+    }
+
+    @Override
+    public String getNextEmployeeCode() {
+        String nextCode = employeeRepository.findNextEmployeeCode();
+        if (nextCode == null) {
+            return "EMP001";
+        }
+        int code = Integer.parseInt(nextCode.substring(3)) + 1;
+        return "EMP" + String.format("%03d", code);
+    }
+
+    @Override
+    public List<EmployeeDTO> getSearchEmployees(String query) {
+        List<Employee> employees = employeeRepository.searchEmployees(query);
+        return dataConvertor.toEmployeeDTOList(employees);
     }
 }
