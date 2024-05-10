@@ -13,15 +13,16 @@ let SUPPLIER_UPDATE_FORM = $('#supplier-update-form');
 let EMPLOYEE_CONTENT = $('#employee-content');
 let EMPLOYEE_SECTION = $("#employee-section");
 let EMPLOYEE_ADD_FORM = $("#employee-add-form");
+
 const clearPage = function () {
     add_shoe.css("display", "none");
 
-    SUPPLIER_CONTENT.css("display", "block");
-    CUSTOMER_CONTENT.css("display", "none");
+    SUPPLIER_CONTENT.css("display", "none");
+    CUSTOMER_CONTENT.css("display", "block");
     EMPLOYEE_CONTENT.css("display", "none");
 
-    SUPPLIER_ADD_FORM.css("display", "none");
-    SUPPLIER_UPDATE_FORM.css("display", "none");
+    CUSTOMER_ADD_FORM.css("display", "none");
+    CUSTOMER_UPDATE_FORM.css("display", "none");
 }
 
 clearPage();

@@ -1,19 +1,16 @@
-let CUSTOMER_SECTION = $('#customer-section');
-let CUSTOMER_ADD_FORM = $('#customer-add-form');
-let CUSTOMER_UPDATE_FORM = $('#customer-update-form');
-let page_size = 10;
+let customer_page_size = 10;
 let next_customer_code;
 let update_customer;
 
 $(document).ready(function () {
-    getDataToCustomerTable(0, page_size);//First time load 10 customers
+    getDataToCustomerTable(0, customer_page_size);//First time load 10 customers
     getPageCount();
     clearPage();
 });
 
 $("#customerPageSize").change(function () {
-    page_size = $(this).val();
-    getDataToCustomerTable(0, page_size);
+    customer_page_size = $(this).val();
+    getDataToCustomerTable(0, customer_page_size);
     getPageCount();
 });
 
@@ -23,68 +20,7 @@ function getDataToCustomerTable(page, size) {
         method: 'GET',
         data: {page: page, size: size},
         success: function (data) {
-            $('#customer-table tbody').empty();
-            $.each(data, function (index, customer) {
-                let levelColor;
-                switch (customer.customerLevel) {
-                    case "NEW":
-                        levelColor = "bg-custom-green";
-                        break;
-                    case "SILVER":
-                        levelColor = "bg-custom-silver";
-                        break;
-                    case "BRONZE":
-                        levelColor = "bg-custom-bronze";
-                        break;
-                    case "GOLD":
-                        levelColor = "bg-custom-gold";
-                        break;
-                }
-
-                let genderColor;
-                switch (customer.gender) {
-                    case "MALE":
-                        genderColor = "bg-custom-male";
-                        break;
-                    case "FEMALE":
-                        genderColor = "bg-custom-female";
-                        break;
-                }
-
-                $('#customer-table tbody').append(`
-                        <tr>
-                            <th scope="row">${index + 1}</th>
-                            <td class="text-start">${customer.customerName}</td>
-                            <td>
-                            <label class="pill ${genderColor} rounded-pill">
-                                    <span class="p-2 text-white fw-bold">${customer.gender}</span>
-                                </label>
-                            </td>
-                            <td>${splitDateTime(customer.joinedDate)}</td>
-                            <td>
-                                <label class="pill ${levelColor} rounded-pill">
-                                    <span class="p-2 text-white fw-bold">${customer.customerLevel}</span>
-                                </label>
-                            </td>
-                            <td>${customer.totalPoints}</td>
-                            <td>${splitDateTime(customer.dob)}</td>
-                            <td>${customer.addressCity}</td>
-                            <td>${customer.postalCode}</td>
-                            <td>${customer.email}</td>
-                            <td>${splitDateTime(customer.recentPurchaseDateTime)}</td>
-                            <td>
-                                <button class="btn btn-outline-custom-black-colour edit-customer-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
-                                <button class="btn btn-outline-custom-red-colour delete-customer-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
-                            </td>
-                        </tr>
-                    `);
-                $('.edit-customer-btn').last().click(function () {
-                    editCustomer(customer);
-                });
-                $('.delete-customer-btn').last().click(function () {
-                    deleteCustomer(customer);
-                });
-            });
+            displayCustomerData(data, page, size);
         },
         error: function () {
             console.error('Error fetching data');
@@ -92,13 +28,56 @@ function getDataToCustomerTable(page, size) {
     });
 }
 
+function displayCustomerData(data, page, size) {
+    $('#customer-table tbody').empty();
+    $.each(data, function (index, customer) {
+        appendCustomerToTable(index + (page * size), customer);
+    });
+}
+
+function appendCustomerToTable(index, customer) {
+    let levelColor = getCustomerLevelColour(customer.customerLevel);
+    let genderColor = getCustomerGenderColour(customer.gender);
+    $('#customer-table tbody').append(`
+        <tr>
+            <th scope="row">${index + 1}</th>
+            <td class="text-start">${customer.customerName}</td>
+            <td>
+                <label class="pill ${genderColor} rounded-pill">
+                    <span class="p-2 text-white fw-bold">${customer.gender}</span>
+                </label>
+            </td>
+            <td>${splitDateTime(customer.joinedDate)}</td>
+            <td>
+                <label class="pill ${levelColor} rounded-pill">
+                    <span class="p-2 text-white fw-bold">${customer.customerLevel}</span>
+                <label>
+            </td>
+            <td>${customer.totalPoints}</td>
+            <td>${splitDateTime(customer.dob)}</td>
+            <td>${customer.email}</td>
+            <td>${splitDateTime(customer.recentPurchaseDateTime)}</td>
+            <td>
+                <button class="btn btn-outline-custom-black-colour edit-customer-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
+                <button class="btn btn-outline-custom-red-colour delete-customer-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
+        </td>
+        </tr>
+    `);
+    $('.edit-customer-btn').last().click(function () {
+        editCustomer(customer);
+    });
+    $('.delete-customer-btn').last().click(function () {
+        deleteCustomer(customer);
+    });
+}
+
 function getPageCount() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/customer/page-size',
         method: 'GET',
-        data: {size: page_size},
+        data: {size: customer_page_size},
         success: function (data) {
-            console.error('success fetching count of pages');
+            console.error('success fetching count of customer pages');
             paginationButtons(data);
         },
         error: function () {
@@ -108,9 +87,9 @@ function getPageCount() {
 }
 
 function paginationButtons(totalPages) {
-    $('#pagination').empty();
+    $('#customerPagination').empty();
     for (let i = 0; i < totalPages; i++) {
-        $('#pagination').append(`<button class="btn btn-outline-custom-black-colour me-2" onclick="getDataToCustomerTable(${i}, page_size)">${i + 1}</button>`);
+        $('#customerPagination').append(`<button class="btn btn-outline-custom-black-colour me-2" onclick="getDataToCustomerTable(${i}, customer_page_size)">${i + 1}</button>`);
     }
 }
 
@@ -158,7 +137,7 @@ function deleteCustomer(customer) {
                         text: "Your customer has been deleted.",
                         icon: "success"
                     }).then(() => {
-                        getDataToCustomerTable(0, page_size);
+                        getDataToCustomerTable(0, customer_page_size);
                         getPageCount();
                     });
                 },
@@ -173,7 +152,6 @@ function deleteCustomer(customer) {
             });
         }
     });
-
 }
 
 function splitDateTime(dateTimeString) {
@@ -245,11 +223,9 @@ function saveCustomer() {
                 showConfirmButton: false,
                 timer: 1000
             });
-            setTimeout(function () {
-                CUSTOMER_ADD_FORM.css("display", "none");
-                CUSTOMER_SECTION.css("display", "block");
-                getPageCount();
-            }, 1000);
+            CUSTOMER_ADD_FORM.css("display", "none");
+            CUSTOMER_SECTION.css("display", "block");
+            getPageCount();
         },
         error: function (xhr, status, error) {
             console.error('Error adding customer:', error);
@@ -303,18 +279,44 @@ $('#backUpdateCustomer').on('click', () => {
     CUSTOMER_SECTION.css("display", "block");
 });
 $('#customer-search-text').on('input', () => {
-    getSearchResult();
+    getCustomerSearchResult();
 });
 
 $('#customer-search').on('click', () => {
-    getSearchResult()
+    getCustomerSearchResult()
 });
 
-function getSearchResult() {
+function getCustomerLevelColour(level) {
+    switch (level) {
+        case "NEW":
+            return "bg-custom-green";
+        case "SILVER":
+            return "bg-custom-silver";
+        case "BRONZE":
+            return "bg-custom-bronze";
+        case "GOLD":
+            return "bg-custom-gold";
+        default:
+            return "";
+    }
+}
+
+function getCustomerGenderColour(gender) {
+    switch (gender) {
+        case "MALE":
+            return "bg-custom-male";
+        case "FEMALE":
+            return "bg-custom-female";
+        default:
+            return "";
+    }
+}
+
+function getCustomerSearchResult() {
     event.preventDefault();
     const searchText = $('#customer-search-text').val().trim();
     if (searchText === '') {
-        getDataToCustomerTable(0, page_size);
+        getDataToCustomerTable(0, customer_page_size);
         getPageCount();
     } else {
         $.ajax({
@@ -322,68 +324,8 @@ function getSearchResult() {
             url: 'http://localhost:8080/spring-boot/api/v1/customer/search',
             data: {query: searchText},
             success: function (data) {
-                $('#customer-table tbody').empty();
-                $.each(data, function (index, customer) {
-                    let levelColor;
-                    switch (customer.customerLevel) {
-                        case "NEW":
-                            levelColor = "bg-custom-green";
-                            break;
-                        case "SILVER":
-                            levelColor = "bg-custom-silver";
-                            break;
-                        case "BRONZE":
-                            levelColor = "bg-custom-bronze";
-                            break;
-                        case "GOLD":
-                            levelColor = "bg-custom-gold";
-                            break;
-                    }
-
-                    let genderColor;
-                    switch (customer.gender) {
-                        case "MALE":
-                            genderColor = "bg-custom-male";
-                            break;
-                        case "FEMALE":
-                            genderColor = "bg-custom-female";
-                            break;
-                    }
-                    $('#customer-table tbody').append(`
-                        <tr>
-                            <th scope="row">${index + 1}</th>
-                            <td class="text-start">${customer.customerName}</td>
-                            <td>
-                                <label class="pill ${genderColor} rounded-pill">
-                                    <span class="p-2 text-white fw-bold">${customer.gender}</span>
-                                </label>
-                            </td>                            
-                            <td>${splitDateTime(customer.joinedDate)}</td>
-                            <td>
-                                <label class="pill ${levelColor} rounded-pill">
-                                    <span class="p-2 text-white fw-bold">${customer.customerLevel}</span>
-                                </label>
-                            </td>
-                            <td>${customer.totalPoints}</td>
-                            <td>${splitDateTime(customer.dob)}</td>
-                            <td>${customer.addressCity}</td>
-                            <td>${customer.postalCode}</td>
-                            <td>${customer.email}</td>
-                            <td>${splitDateTime(customer.recentPurchaseDateTime)}</td>
-                            <td>
-                                <button class="btn btn-outline-custom-black-colour edit-customer-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
-                                <button class="btn btn-outline-custom-red-colour delete-customer-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
-                            </td>
-                        </tr>
-                    `);
-                    $('.edit-customer-btn').last().click(function () {
-                        editCustomer(customer);
-                    });
-                    $('.delete-customer-btn').last().click(function () {
-                        deleteCustomer(customer);
-                    });
-                    $('#pagination').empty();
-                });
+                displayCustomerData(data, 0, data.length);
+                $("#customerPagination").empty();
             },
             error: function (xhr, status, error) {
                 console.log("error fetching data");

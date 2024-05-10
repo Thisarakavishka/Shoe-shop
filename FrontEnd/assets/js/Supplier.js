@@ -36,7 +36,7 @@ function displaySupplierData(data, page, size) {
 }
 
 function appendSupplierToTable(index, supplier) {
-    let categoryColour = getCategoryColour(supplier.category);
+    let categoryColour = getSupplierCategoryColour(supplier.category);
     $('#supplier-table tbody').append(`
         <tr>
             <th scope="row">${index + 1}</th>
@@ -65,7 +65,7 @@ function appendSupplierToTable(index, supplier) {
     });
 }
 
-function getCategoryColour(category) {
+function getSupplierCategoryColour(category) {
     switch (category) {
         case "LOCAL":
             return "bg-custom-green";
@@ -292,7 +292,7 @@ function getSupplierSearchResult() {
             url: 'http://localhost:8080/spring-boot/api/v1/supplier/search',
             data: {query: searchText},
             success: function (data) {
-                displaySupplierData(data,0 ,data.length);
+                displaySupplierData(data, 0, data.length);
                 $('#supplierPagination').empty();
             },
             error: function (xhr, status, error) {
