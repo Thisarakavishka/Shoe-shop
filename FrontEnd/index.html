@@ -76,141 +76,6 @@
         <!-- content -->
         <div class="col-sm p-3 min-vh-100">
 
-            <!-- Item Add From -->
-            <section id="item-add-new-from" class="container-xxl border-black border">
-                <div class="row justify-content-center d-flex mt-5 p-3">
-                    <!-- Form -->
-                    <div class="col-md-5 border-secondary-subtle border rounded">
-                        <form>
-                            <div class="text-center text-muted p-3">
-                                <h2> Add new Shoe</h2>
-                                <hr>
-                            </div>
-                            <div class="mb-3">
-                                <label for="item-name" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="item-name" placeholder="Nike Air">
-                            </div>
-                            <div class="mb-3">
-                                <div class="row">
-                                    <div class="col-3">
-                                        <label class="col-form-label">Details</label>
-                                    </div>
-                                    <div class="col-9">
-                                        <div class="d-flex justify-content-end">
-                                            <div class="flex-column">
-                                                <!-- Supplier DropDown-->
-                                                <button class="btn btn-secondary dropdown-toggle" type="button"
-                                                        id="btn-add-supplier"
-                                                        data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                    Supplier
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item" href="#">Nike</a>
-                                                    <a class="dropdown-item" href="#">DSI</a>
-                                                    <a class="dropdown-item" href="#">Adidas</a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item" href="#">new Supplier</a>
-                                                </div>
-                                                <!-- Category DropDown-->
-                                                <button class="btn btn-secondary dropdown-toggle" type="button"
-                                                        id="btn-add-category"
-                                                        data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                    Category
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item" href="#">Shoe</a>
-                                                    <a class="dropdown-item" href="#">Sport Shoe</a>
-                                                    <a class="dropdown-item" href="#">Heel</a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item" href="#">new Category</a>
-                                                </div>
-                                                <!-- Type DropDown-->
-                                                <button class="btn btn-secondary dropdown-toggle" type="button"
-                                                        id="btn-add-type"
-                                                        data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                    Type
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item" href="#">Casual</a>
-                                                    <a class="dropdown-item" href="#">Formal</a>
-                                                    <a class="dropdown-item" href="#">Industrial</a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item" href="#">new Type</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="row">
-                                    <div class="col-3 ">
-                                        <label class="col-form-label">Gender</label>
-                                    </div>
-                                    <div class="col-9">
-                                        <div class="d-flex justify-content-end ">
-                                            <div class="flex-column">
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="maleCheckBox"
-                                                           id="maleCheckBox"
-                                                           value="male">
-                                                    <label class="form-check-label" for="maleCheckBox">male</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="femaleCheckBox"
-                                                           id="femaleCheckBox" value="male">
-                                                    <label class="form-check-label" for="femaleCheckBox">female</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="unisexCheckBox"
-                                                           id="unisexCheckBox" value="male">
-                                                    <label class="form-check-label" for="unisexCheckBox">unisex</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="mb-3">
-                                <label class="form-label">Colour</label>
-                                <button class="btn btn-outline-success">add Colour</button>
-                                <!-- Colour DropDown-->
-
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="item-quantity" class="form-label">Quantity</label>
-                                <input type="number" class="form-control" id="item-quantity"
-                                       placeholder="Enter Quantity">
-                            </div>
-                            <div class="mt-auto d-flex justify-content-end mb-2">
-                                <button class="btn btn-outline-success me-2" type="submit" id="cancel-add-item-button">
-                                    cancel
-                                </button>
-                                <button class="btn btn-outline-success" type="submit" id="add-item-button">Add +
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- Card -->
-                    <div class="col-md-3 d-flex justify-content-center">
-                        <div class="card h-100">
-                            <img src="assets/img/nike-shoe.png" class="card-img-top"
-                                 alt="..." datatype="add-image">
-                            <div class="card-body">
-                                <h5 class="card-title"></h5>
-                                <p class="card-text text-success" datatype="available"> Available</p>
-                                <h5 class="card-text">$</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <!-- Customer content -->
             <section id="customer-content">
                 <!-- Customer Section -->
@@ -519,6 +384,7 @@
                     </form>
                 </section>
             </section>
+
             <!-- Employee content -->
             <section id="employee-content">
                 <!-- Employee Section -->
@@ -762,7 +628,8 @@
 
                         <!-- Employee Profile Preview -->
                         <div class="mt-2 bg-body-secondary rounded-start-pill p-2" id="updateIconPreviewParent">
-                            <i class="fa fa-user-circle-o fa-5x text-white " id="updateIconPreview" aria-hidden="true"></i>
+                            <i class="fa fa-user-circle-o fa-5x text-white " id="updateIconPreview"
+                               aria-hidden="true"></i>
                             <img src="#" id="updateEmployeeProfilePicPreview" alt="Preview" class="rounded-circle"
                                  style="width: 80px; height: 80px; display: none;">
                         </div>
@@ -770,14 +637,16 @@
                         <!-- Employee Name -->
                         <div class="col-md-6">
                             <label for="updateEmployeeName" class="form-label">Employee Name</label>
-                            <input type="text" class="form-control custom-focus" id="updateEmployeeName" name="employeeName" required>
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeName"
+                                   name="employeeName" required>
                             <div class="invalid-feedback">Please provide a valid employee name.</div>
                         </div>
 
                         <!-- Profile Picture -->
                         <div class="col-md-6">
                             <label for="updateEmployeeProfilePic" class="form-label">Profile Picture</label>
-                            <input type="file" class="form-control custom-focus" id="updateEmployeeProfilePic" name="profilePic">
+                            <input type="file" class="form-control custom-focus" id="updateEmployeeProfilePic"
+                                   name="profilePic">
                             <div class="invalid-feedback">Please provide a valid profile picture.</div>
                         </div>
 
@@ -806,7 +675,8 @@
                         <!-- Designation -->
                         <div class="col-md-4">
                             <label for="updateEmployeeDesignation" class="form-label">Designation</label>
-                            <input type="text" class="form-control custom-focus" id="updateEmployeeDesignation" name="designation" required>
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeDesignation"
+                                   name="designation" required>
                             <div class="invalid-feedback">Please provide a valid designation.</div>
                         </div>
 
@@ -824,35 +694,40 @@
                         <!-- Date of Birth -->
                         <div class="col-md-4">
                             <label for="updateEmployeeDob" class="form-label">Date of Birth</label>
-                            <input type="date" class="form-control custom-focus" id="updateEmployeeDob" name="dob" required>
+                            <input type="date" class="form-control custom-focus" id="updateEmployeeDob" name="dob"
+                                   required>
                             <div class="invalid-feedback">Please provide a valid date of birth.</div>
                         </div>
 
                         <!-- Joined Date -->
                         <div class="col-md-4">
                             <label for="updateEmployeeJoinedDate" class="form-label">Joined Date</label>
-                            <input type="date" class="form-control custom-focus" id="updateEmployeeJoinedDate" name="joinedDate" required>
+                            <input type="date" class="form-control custom-focus" id="updateEmployeeJoinedDate"
+                                   name="joinedDate" required>
                             <div class="invalid-feedback">Please provide a valid joined date.</div>
                         </div>
 
                         <!-- Branch -->
                         <div class="col-md-4">
                             <label for="updateEmployeeBranch" class="form-label">Branch</label>
-                            <input type="text" class="form-control custom-focus" id="updateEmployeeBranch" name="branch" required>
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeBranch" name="branch"
+                                   required>
                             <div class="invalid-feedback">Please provide a valid branch.</div>
                         </div>
 
                         <!-- Address No-->
                         <div class="col-4">
                             <label for="updateEmployeeAddressNo" class="form-label">Address No</label>
-                            <input type="text" class="form-control custom-focus" id="updateEmployeeAddressNo" name="addressNo" required>
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeAddressNo"
+                                   name="addressNo" required>
                             <div class="invalid-feedback">Please provide a valid address.</div>
                         </div>
 
                         <!-- Address Lane-->
                         <div class="col-4">
                             <label for="updateEmployeeAddressLane" class="form-label">Address Lane</label>
-                            <input type="text" class="form-control custom-focus" id="updateEmployeeAddressLane" name="addressLane"
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeAddressLane"
+                                   name="addressLane"
                                    required>
                             <div class="invalid-feedback">Please provide a valid address.</div>
                         </div>
@@ -860,7 +735,8 @@
                         <!-- Address City-->
                         <div class="col-4">
                             <label for="updateEmployeeAddressCity" class="form-label">Address City</label>
-                            <input type="text" class="form-control custom-focus" id="updateEmployeeAddressCity" name="addressCity"
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeAddressCity"
+                                   name="addressCity"
                                    required>
                             <div class="invalid-feedback">Please provide a valid address.</div>
                         </div>
@@ -868,7 +744,8 @@
                         <!-- Address State-->
                         <div class="col-4">
                             <label for="updateEmployeeAddressState" class="form-label">Address State</label>
-                            <input type="text" class="form-control custom-focus" id="updateEmployeeAddressState" name="addressState"
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeAddressState"
+                                   name="addressState"
                                    required>
                             <div class="invalid-feedback">Please provide a valid address.</div>
                         </div>
@@ -876,7 +753,8 @@
                         <!-- Postal Code -->
                         <div class="col-md-4">
                             <label for="updateEmployeePostalCode" class="form-label">Postal Code</label>
-                            <input type="text" class="form-control custom-focus" id="updateEmployeePostalCode" name="postalCode"
+                            <input type="text" class="form-control custom-focus" id="updateEmployeePostalCode"
+                                   name="postalCode"
                                    required>
                             <div class="invalid-feedback">Please provide a valid postal code.</div>
                         </div>
@@ -892,7 +770,8 @@
                         <!-- Email -->
                         <div class="col-md-4">
                             <label for="updateEmployeeEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control custom-focus" id="updateEmployeeEmail" name="email" required>
+                            <input type="email" class="form-control custom-focus" id="updateEmployeeEmail" name="email"
+                                   required>
                             <div class="invalid-feedback">Please provide a valid email address.</div>
                         </div>
 
@@ -900,7 +779,8 @@
                         <div class="col-md-4">
                             <label for="updateEmployeeEmergencyContactPerson" class="form-label">Emergency Contact
                                 Person</label>
-                            <input type="text" class="form-control custom-focus" id="updateEmployeeEmergencyContactPerson"
+                            <input type="text" class="form-control custom-focus"
+                                   id="updateEmployeeEmergencyContactPerson"
                                    name="emergencyContactPerson" required>
                             <div class="invalid-feedback">Please provide a valid emergency contact person.</div>
                         </div>
@@ -909,19 +789,25 @@
                         <div class="col-md-4">
                             <label for="updateEmployeeEmergencyContactNumber" class="form-label">Emergency Contact
                                 Number</label>
-                            <input type="text" class="form-control custom-focus" id="updateEmployeeEmergencyContactNumber"
+                            <input type="text" class="form-control custom-focus"
+                                   id="updateEmployeeEmergencyContactNumber"
                                    name="emergencyContactNumber" required>
                             <div class="invalid-feedback">Please provide a valid emergency contact number.</div>
                         </div>
 
                         <!-- Submit Button -->
                         <div class="col-12 mt-4">
-                            <button type="submit" class="btn btn-custom-black-colour me-1" id="updateEmployee">Update Employee</button>
-                            <button type="button" class="btn btn-outline-custom-black-colour" id="backToUpdateEmployee">Back</button>
+                            <button type="submit" class="btn btn-custom-black-colour me-1" id="updateEmployee">Update
+                                Employee
+                            </button>
+                            <button type="button" class="btn btn-outline-custom-black-colour" id="backToUpdateEmployee">
+                                Back
+                            </button>
                         </div>
                     </form>
                 </section>
             </section>
+
             <!-- Supplier content -->
             <section id="supplier-content">
                 <!-- Supplier Section -->
@@ -1204,6 +1090,91 @@
                     </form>
                 </section>
             </section>
+
+            <!-- Item Add From -->
+            <section id="item-add-new-from" class="container-xxl border-black border">
+                <div class="row justify-content-center d-flex mt-5 p-3">
+                    <!-- Form -->
+                    <div class="col-10 border-secondary-subtle border rounded">
+                        <form>
+                            <div class="text-center text-muted p-3">
+                                <h2> Add new Shoe</h2>
+                                <hr>
+                            </div>
+                            <div class="mb-3">
+                                <label for="item-name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="item-name" placeholder="Nike Air">
+                            </div>
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col">
+                                        <!-- Supplier DropDown-->
+                                        <label for="itemSupplier" class="form-label">Supplier</label>
+                                        <select class="form-select custom-focus" id="itemSupplier" name="supplier"
+                                                required>
+                                            <option value="" selected disabled>Select Supplier</option>
+                                            <option value="nike">Nike</option>
+                                            <option value="dsi">dsi</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select a supplier.</div>
+                                    </div>
+                                    <div class="col">
+                                        <!-- Category DropDown-->
+                                        <label for="itemCategory" class="form-label">Category</label>
+                                        <select class="form-select custom-focus" id="itemCategory" name="category"
+                                                required>
+                                            <option value="" selected disabled>Select Category</option>
+                                            <option value="nike">Shoe</option>
+                                            <option value="dsi">Sport</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select a category.</div>
+                                    </div>
+                                    <div class="col">
+                                        <!-- Type DropDown-->
+                                        <label for="itemType" class="form-label">Type</label>
+                                        <select class="form-select custom-focus" id="itemType" name="type" required>
+                                            <option value="" selected disabled>Select Type</option>
+                                            <option value="nike">Formal</option>
+                                            <option value="dsi">Casual</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select a type.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3 mt-4">
+                                <div class="row">
+                                    <div class="col-md-2 d-flex justify-content-start">
+                                        <label class="col-form-label">Gender</label>
+                                    </div>
+                                    <div class="col-md-8 d-flex align-items-center justify-content-center">
+                                        <div class="btn-group w-100" role="group" aria-label="Gender">
+                                            <input type="radio" class="btn-check" name="gender" id="maleRadioButton" autocomplete="off">
+                                            <label class="btn btn-outline-dark" for="maleRadioButton">Male</label>
+
+                                            <input type="radio" class="btn-check" name="gender" id="femaleRadioButton" autocomplete="off">
+                                            <label class="btn btn-outline-dark" for="femaleRadioButton">Female</label>
+
+                                            <input type="radio" class="btn-check" name="gender" id="unisexRadioButton" autocomplete="off">
+                                            <label class="btn btn-outline-dark" for="unisexRadioButton">Unisex</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="mt-4">
+                            <div class="mb-3">
+                                <button class="btn btn-outline-dark" id="add-new-colour-section">add Colour</button>
+                            </div>
+                            <div class="mt-auto d-flex justify-content-end mb-2">
+                                <button class="btn btn-outline-custom-black-colour me-2" type="submit"
+                                        id="cancel-add-item-button">cancel
+                                </button>
+                                <button class="btn btn-custom-black-colour" type="submit" id="add-item-button">Add Item
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
 </section>
@@ -1222,6 +1193,7 @@
 <script src="assets/lib/sweetAlert2/sweetAlert2.js"></script>
 <script src="assets/js/Script.js"></script>
 <script src="assets/js/Employee.js"></script>
+<script src="assets/js/Item.js"></script>
 <script src="assets/js/Supplier.js"></script>
 <script src="assets/js/Customer.js"></script>
 </body>
