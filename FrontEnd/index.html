@@ -555,6 +555,7 @@
                         <table class="table table-hover text-center" id="employee-table">
                             <thead class="bg-custom-table-head">
                             <tr>
+                                <th scope="col">#</th>
                                 <th scope="col">Profile</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Gender</th>
@@ -575,6 +576,13 @@
                 <section id="employee-add-form" class="container-xxl">
                     <h3 class="p-2 mt-3">Add Employee</h3>
                     <form id="employeeAddForm" class="row g-3 needs-validation mt-3 p-2" novalidate>
+
+                        <!-- Employee Profile Preview -->
+                        <div class="mt-2 bg-body-secondary rounded-start-pill p-2" id="iconPreviewParent">
+                            <i class="fa fa-user-circle-o fa-5x text-white " id="iconPreview" aria-hidden="true"></i>
+                            <img src="#" id="employeeProfilePicPreview" alt="Preview" class="rounded-circle"
+                                 style="width: 80px; height: 80px; display: none;">
+                        </div>
 
                         <!-- Employee Name -->
                         <div class="col-md-6">
@@ -619,6 +627,17 @@
                                    name="designation"
                                    required>
                             <div class="invalid-feedback">Please provide a valid designation.</div>
+                        </div>
+
+                        <!-- Role -->
+                        <div class="col-md-4">
+                            <label for="employeeRole" class="form-label">Role</label>
+                            <select class="form-select custom-focus" id="employeeRole" name="role" required>
+                                <option value="" selected disabled>Select Role</option>
+                                <option value="USER">USER</option>
+                                <option value="ADMIN">ADMIN</option>
+                            </select>
+                            <div class="invalid-feedback">Please provide a valid Role.</div>
                         </div>
 
                         <!-- Date of Birth -->
@@ -731,8 +750,171 @@
                         </div>
                     </form>
                 </section>
-            </section>
+                <!-- Employee Update Section -->
+                <section id="employee-update-form" class="container-xxl">
+                    <h3 class="p-2 mt-3">Update Employee</h3>
+                    <form id="employeeUpdateForm" class="row g-3 needs-validation mt-3 p-2" novalidate>
+                        <!-- Employee ID -->
+                        <input type="hidden" id="updateEmployeeId" name="employeeId" value="">
 
+                        <!-- Employee Profile Preview -->
+                        <div class="mt-2 bg-body-secondary rounded-start-pill p-2" id="updateIconPreviewParent">
+                            <i class="fa fa-user-circle-o fa-5x text-white " id="updateIconPreview" aria-hidden="true"></i>
+                            <img src="#" id="updateEmployeeProfilePicPreview" alt="Preview" class="rounded-circle"
+                                 style="width: 80px; height: 80px; display: none;">
+                        </div>
+
+                        <!-- Employee Name -->
+                        <div class="col-md-6">
+                            <label for="updateEmployeeName" class="form-label">Employee Name</label>
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeName" name="employeeName" required>
+                            <div class="invalid-feedback">Please provide a valid employee name.</div>
+                        </div>
+
+                        <!-- Profile Picture -->
+                        <div class="col-md-6">
+                            <label for="updateEmployeeProfilePic" class="form-label">Profile Picture</label>
+                            <input type="file" class="form-control custom-focus" id="updateEmployeeProfilePic" name="profilePic">
+                            <div class="invalid-feedback">Please provide a valid profile picture.</div>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="col-md-4">
+                            <label for="updateEmployeeGender" class="form-label">Gender</label>
+                            <select class="form-select custom-focus" id="updateEmployeeGender" name="gender" required>
+                                <option value="" selected disabled>Select Gender</option>
+                                <option value="MALE">MALE</option>
+                                <option value="FEMALE">FEMALE</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a gender.</div>
+                        </div>
+
+                        <!-- Status -->
+                        <div class="col-md-4">
+                            <label for="updateEmployeeStatus" class="form-label">Status</label>
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeStatus" name="status" required>
+                            <div class="invalid-feedback">Please provide a valid status.</div>
+                        </div>
+
+                        <!-- Designation -->
+                        <div class="col-md-4">
+                            <label for="updateEmployeeDesignation" class="form-label">Designation</label>
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeDesignation" name="designation" required>
+                            <div class="invalid-feedback">Please provide a valid designation.</div>
+                        </div>
+
+                        <!-- Role -->
+                        <div class="col-md-4">
+                            <label for="updateEmployeeRole" class="form-label">Role</label>
+                            <select class="form-select custom-focus" id="updateEmployeeRole" name="role" required>
+                                <option value="" selected disabled>Select Role</option>
+                                <option value="USER">USER</option>
+                                <option value="ADMIN">ADMIN</option>
+                            </select>
+                            <div class="invalid-feedback">Please provide a valid Role.</div>
+                        </div>
+
+                        <!-- Date of Birth -->
+                        <div class="col-md-4">
+                            <label for="updateEmployeeDob" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control custom-focus" id="updateEmployeeDob" name="dob" required>
+                            <div class="invalid-feedback">Please provide a valid date of birth.</div>
+                        </div>
+
+                        <!-- Joined Date -->
+                        <div class="col-md-4">
+                            <label for="updateEmployeeJoinedDate" class="form-label">Joined Date</label>
+                            <input type="date" class="form-control custom-focus" id="updateEmployeeJoinedDate" name="joinedDate" required>
+                            <div class="invalid-feedback">Please provide a valid joined date.</div>
+                        </div>
+
+                        <!-- Branch -->
+                        <div class="col-md-4">
+                            <label for="updateEmployeeBranch" class="form-label">Branch</label>
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeBranch" name="branch" required>
+                            <div class="invalid-feedback">Please provide a valid branch.</div>
+                        </div>
+
+                        <!-- Address No-->
+                        <div class="col-4">
+                            <label for="updateEmployeeAddressNo" class="form-label">Address No</label>
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeAddressNo" name="addressNo" required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Address Lane-->
+                        <div class="col-4">
+                            <label for="updateEmployeeAddressLane" class="form-label">Address Lane</label>
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeAddressLane" name="addressLane"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Address City-->
+                        <div class="col-4">
+                            <label for="updateEmployeeAddressCity" class="form-label">Address City</label>
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeAddressCity" name="addressCity"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Address State-->
+                        <div class="col-4">
+                            <label for="updateEmployeeAddressState" class="form-label">Address State</label>
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeAddressState" name="addressState"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid address.</div>
+                        </div>
+
+                        <!-- Postal Code -->
+                        <div class="col-md-4">
+                            <label for="updateEmployeePostalCode" class="form-label">Postal Code</label>
+                            <input type="text" class="form-control custom-focus" id="updateEmployeePostalCode" name="postalCode"
+                                   required>
+                            <div class="invalid-feedback">Please provide a valid postal code.</div>
+                        </div>
+
+                        <!-- Contact Number -->
+                        <div class="col-md-4">
+                            <label for="updateEmployeeContactNumber" class="form-label">Contact Number</label>
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeContactNumber"
+                                   name="contactNumber" required>
+                            <div class="invalid-feedback">Please provide a valid contact number.</div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-md-4">
+                            <label for="updateEmployeeEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control custom-focus" id="updateEmployeeEmail" name="email" required>
+                            <div class="invalid-feedback">Please provide a valid email address.</div>
+                        </div>
+
+                        <!-- Emergency Contact Person -->
+                        <div class="col-md-4">
+                            <label for="updateEmployeeEmergencyContactPerson" class="form-label">Emergency Contact
+                                Person</label>
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeEmergencyContactPerson"
+                                   name="emergencyContactPerson" required>
+                            <div class="invalid-feedback">Please provide a valid emergency contact person.</div>
+                        </div>
+
+                        <!-- Emergency Contact Number -->
+                        <div class="col-md-4">
+                            <label for="updateEmployeeEmergencyContactNumber" class="form-label">Emergency Contact
+                                Number</label>
+                            <input type="text" class="form-control custom-focus" id="updateEmployeeEmergencyContactNumber"
+                                   name="emergencyContactNumber" required>
+                            <div class="invalid-feedback">Please provide a valid emergency contact number.</div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-custom-black-colour me-1" id="updateEmployee">Update Employee</button>
+                            <button type="button" class="btn btn-outline-custom-black-colour" id="backToUpdateEmployee">Back</button>
+                        </div>
+                    </form>
+                </section>
+            </section>
             <!-- Supplier content -->
             <section id="supplier-content">
                 <!-- Supplier Section -->
@@ -1032,6 +1214,7 @@
 <script src="assets/lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/lib/sweetAlert2/sweetAlert2.js"></script>
 <script src="assets/js/Script.js"></script>
+<script src="assets/js/Employee.js"></script>
 <script src="assets/js/Supplier.js"></script>
 <script src="assets/js/Customer.js"></script>
 </body>
