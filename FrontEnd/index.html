@@ -519,7 +519,6 @@
                     </form>
                 </section>
             </section>
-
             <!-- Employee content -->
             <section id="employee-content">
                 <!-- Employee Section -->
@@ -559,6 +558,7 @@
                                 <th scope="col">Profile</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Gender</th>
+                                <th scope="col">Role</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Contact Number</th>
                                 <th scope="col">Designation</th>
@@ -615,8 +615,11 @@
                         <!-- Status -->
                         <div class="col-md-4">
                             <label for="employeeStatus" class="form-label">Status</label>
-                            <input type="text" class="form-control custom-focus" id="employeeStatus" name="status"
-                                   required>
+                            <select class="form-select custom-focus" id="employeeStatus" name="status" required>
+                                <option value="" selected disabled>Select Status</option>
+                                <option value="ACTIVE">ACTIVE</option>
+                                <option value="INACTIVE">INACTIVE</option>
+                            </select>
                             <div class="invalid-feedback">Please provide a valid status.</div>
                         </div>
 
@@ -792,7 +795,11 @@
                         <!-- Status -->
                         <div class="col-md-4">
                             <label for="updateEmployeeStatus" class="form-label">Status</label>
-                            <input type="text" class="form-control custom-focus" id="updateEmployeeStatus" name="status" required>
+                            <select class="form-select custom-focus" id="updateEmployeeStatus" name="status" required>
+                                <option value="" selected disabled>Select Status</option>
+                                <option value="ACTIVE">ACTIVE</option>
+                                <option value="INACTIVE">INACTIVE</option>
+                            </select>
                             <div class="invalid-feedback">Please provide a valid status.</div>
                         </div>
 
