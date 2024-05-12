@@ -1,6 +1,10 @@
 package com.helloshoes.shoeshopmanagement.util.ImageUtil;
 
+
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
 
 public class FileUtil {
@@ -58,4 +62,15 @@ public class FileUtil {
             return false;
         }
     }
+
+    public static String ecncodImageToBase64String(String path){
+        try{
+            Path imagePath = Paths.get(path);
+            byte[] imageBytes = Files.readAllBytes(imagePath);
+            return Base64.getEncoder().encodeToString(imageBytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
