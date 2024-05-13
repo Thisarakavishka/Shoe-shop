@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/type")
 @RequiredArgsConstructor
 @Validated
+@CrossOrigin
 public class TypeController {
     private final TypeService typeService;
 

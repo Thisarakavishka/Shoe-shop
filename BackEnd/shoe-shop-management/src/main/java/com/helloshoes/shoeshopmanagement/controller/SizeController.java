@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/size")
 @RequiredArgsConstructor
 @Validated
+@CrossOrigin
 public class SizeController {
     private final SizeService sizeService;
 

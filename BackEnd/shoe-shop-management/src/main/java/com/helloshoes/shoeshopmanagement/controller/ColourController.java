@@ -6,6 +6,7 @@ import com.helloshoes.shoeshopmanagement.util.RegexUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -15,6 +16,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/colour")
 @RequiredArgsConstructor
+@Validated
+@CrossOrigin
 public class ColourController {
     private final ColourService colourService;
 
