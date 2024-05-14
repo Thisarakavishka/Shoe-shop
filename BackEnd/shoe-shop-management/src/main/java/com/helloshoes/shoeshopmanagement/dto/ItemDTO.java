@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemDTO implements SuperDTO{
+    private String itemCode;
     private String itemName;
     private String categoryName;
     private String supplierName;
