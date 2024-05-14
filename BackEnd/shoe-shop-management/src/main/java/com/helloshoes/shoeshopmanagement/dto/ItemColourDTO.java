@@ -11,7 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ItemColourDTO implements SuperDTO{
     private String colourName;
-    private String hexValue;
     private String image;
+    private Double sellPrice;
+    private Double buyPrice;
     private List<ItemSizeDTO> sizes;
 }

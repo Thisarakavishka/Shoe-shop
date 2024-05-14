@@ -10,6 +10,4 @@ import lombok.NoArgsConstructor;
 public class ItemSizeDTO implements SuperDTO{
     private Integer size;
     private Integer quantity;
-    private Double sellPrice;
-    private Double buyPrice;
 }
