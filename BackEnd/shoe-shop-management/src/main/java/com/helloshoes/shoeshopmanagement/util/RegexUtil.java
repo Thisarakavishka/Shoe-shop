@@ -10,4 +10,5 @@ public class RegexUtil {
     public static final String TYPE_REGEX = "^TYP\\d{3}$";
     public static final String SIZE_REGEX = "^SIZ\\d{3}$";
     public static final String COLOUR_REGEX = "^COL\\d{3}$";
+    public static final String ITEM_REGEX = "^IC\\d{3}$";
 }

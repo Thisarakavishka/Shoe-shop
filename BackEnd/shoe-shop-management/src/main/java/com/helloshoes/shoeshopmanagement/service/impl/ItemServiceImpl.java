@@ -81,6 +81,7 @@ public class ItemServiceImpl implements ItemService {
                 itemDetails.setType(type);
                 itemDetails.setCategory(category);
                 itemDetails.setSize(size);
+                itemDetails.setQty(itemSizeDTO.getQuantity());
                 itemDetailsRepository.save(itemDetails);
             }
         }
@@ -94,7 +95,55 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDTO getByCode(String code) {
-        return null;
+        if (!itemRepository.existsById(code)) {
+            return null;
+        }
+        Item item = itemRepository.getReferenceById(code);
+        ItemDTO itemDTO = new ItemDTO();
+
+        itemDTO.setItemCode(item.getItemCode());
+        itemDTO.setItemName(item.getItemName());
+        itemDTO.setProfitMargin(item.getProfitMargin());
+        itemDTO.setExpectedProfit(item.getExpectedProfit());
+        itemDTO.setGender(item.getShoeGender());
+
+        if (!item.getSuppliers().isEmpty()) {
+            itemDTO.setSupplierName(item.getSuppliers().get(0).getSupplierName());
+        }
+        if (!item.getTypes().isEmpty()) {
+            itemDTO.setTypeName(item.getTypes().get(0).getTypeName());
+        }
+        if (!item.getCategories().isEmpty()) {
+            itemDTO.setCategoryName(item.getCategories().get(0).getCategoryName());
+        }
+
+        List<ItemColourDTO> itemColourDTOS = new ArrayList<>();
+        for (Colour colour : item.getColours()) {
+            ItemColourDTO itemColourDTO = new ItemColourDTO();
+            itemColourDTO.setColourName(colour.getColourName());
+
+            ItemColour itemColour = itemColourRepository.findByItemItemCodeAndColourColourCode(item.getItemCode(), colour.getColourCode());
+            itemColourDTO.setImage(itemColour.getImgPath());
+            itemColourDTO.setSellPrice(itemColour.getSellPrice());
+            itemColourDTO.setBuyPrice(itemColour.getBuyPrice());
+
+            List<ItemSizeDTO> itemSizeDTOS = new ArrayList<>();
+
+            List<ItemDetails> itemDetailsList = itemDetailsRepository.findByItem_ItemCodeAndColour_ColourCode(item.getItemCode(), colour.getColourCode());
+            for (ItemDetails itemDetails : itemDetailsList) {
+                Size size = itemDetails.getSize();
+                ItemSizeDTO itemSizeDTO = new ItemSizeDTO();
+
+                itemSizeDTO.setQuantity(itemDetails.getQty());
+                itemSizeDTO.setSize(size.getSize());
+
+                itemSizeDTOS.add(itemSizeDTO);
+            }
+            itemColourDTO.setSizes(itemSizeDTOS);
+            itemColourDTOS.add(itemColourDTO);
+        }
+        itemDTO.setColours(itemColourDTOS);
+        return itemDTO;
     }
 
     @Override

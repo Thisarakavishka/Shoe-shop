@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class ItemDetails implements SuperEntity {
     @Id
     private String id;
+    private Integer qty;
 
     @ManyToOne
     @JoinColumn(name = "item_id")

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ItemColourRepository extends JpaRepository<ItemColour, String> {
+    ItemColour findByItemItemCodeAndColourColourCode(String itemCode, String colourCode);
 }
