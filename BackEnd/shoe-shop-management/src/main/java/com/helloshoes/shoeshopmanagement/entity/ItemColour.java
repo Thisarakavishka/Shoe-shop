@@ -14,6 +14,8 @@ public class ItemColour implements SuperEntity {
     @Id
     private String id;
     private String imgPath;
+    private Double sellPrice;
+    private Double buyPrice;
 
     @ManyToOne
     @JoinColumn(name = "item_id")

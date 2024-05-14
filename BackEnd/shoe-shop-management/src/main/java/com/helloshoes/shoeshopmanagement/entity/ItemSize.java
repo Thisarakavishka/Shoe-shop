@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 public class ItemSize implements SuperEntity {
     @Id
     private String id;
-    private Double salePrice;
-    private Double buyPrice;
     private Integer qty;
 
     @ManyToOne
