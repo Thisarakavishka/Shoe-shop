@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
     fetchSuppliers();
     fetchCategories();
@@ -21,9 +20,7 @@ $(document).ready(function () {
                     <!-- Create a select element for choosing a color -->
                     <select class="form-select custom-focus" id="colourSelect-${colorSectionId}" required>
                         <option value="" selected disabled>Select Colour</option>
-                        <option value="red">Red</option>
-                        <option value="blue">Blue</option>
-                        <option value="green">Green</option>
+                        <option value="new">New Colour</option>
                     </select>
                     <!-- Display an error message if no color is selected -->
                     <div class="invalid-feedback">Please select a colour.</div>
@@ -51,9 +48,7 @@ $(document).ready(function () {
                     <div class="col-3">
                         <select class="form-select custom-focus " id="sizeSelect-${colorSectionId}" required>
                             <option value="" selected disabled>Select Size</option>
-                            <option value="36">36</option>
-                            <option value="37">37</option>
-                            <option value="38">38</option>
+                            <option value="new">New Size</option>
                         </select>
                     </div>
                     <!-- Button group for adding and clearing sizes -->
@@ -67,6 +62,8 @@ $(document).ready(function () {
 
         // Insert the colorSection div before the element with the ID 'add-new-colour-section'
         $('#add-new-colour-section').before(colorSection);
+        fetchColours(colorSectionId);
+        fetchSizes(colorSectionId);
 
         // Listen for click events on the add-size-button within the color section
         $(document).on('click', `.add-size-button[data-section="${colorSectionId}"]`, function () {
@@ -89,6 +86,98 @@ $(document).ready(function () {
         });
     });
 });
+$("#add-item-button").on('click', () => {
+    saveItem();
+});
+
+function saveItem() {
+    const item = {
+        "itemCode": "IC001",
+        "itemName": $('#item-name').val(),
+        "categoryName": $('#itemCategory').val(),
+        "supplierName": $('#itemSupplier').val(),
+        "typeName": $('#itemType').val(),
+        "gender": $("input[name='gender']:checked").next('label').text().trim(),
+        "profitMargin": $('#item-profit-margin').val(),
+        "expectedProfit": $('#item-expected-profit').val(),
+        "colours": []
+    };
+
+    function addColorObject(colorSectionId, colourName, imageBase64String, sellPrice, buyPrice, sizes) {
+        item.colours.push({
+            "colourName": colourName,
+            "image": imageBase64String,
+            "sellPrice": sellPrice,
+            "buyPrice": buyPrice,
+            "sizes": sizes
+        });
+    }
+
+    function readImageFile(imageInput) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                resolve(event.target.result.split(',')[1]);
+            };
+            reader.onerror = function (error) {
+                reject(error);
+            };
+            reader.readAsDataURL(imageInput);
+        });
+    }
+
+    const promises = $('.mb-3[id^="colorSection"]').map(async function () {
+        const colorSectionId = $(this).attr('id');
+        const colourName = $(`#colourSelect-${colorSectionId}`).val();
+        const imageInput = $(`#colourImageInput-${colorSectionId}`)[0].files[0];
+        const sellPrice = $(`#sellPriceInput-${colorSectionId}`).val();
+        const buyPrice = $(`#buyPriceInput-${colorSectionId}`).val();
+        const sizes = [];
+
+        const imageBase64String = await readImageFile(imageInput);
+
+        addColorObject(colorSectionId, colourName, imageBase64String, sellPrice, buyPrice, sizes);
+
+        $(`#sizeInputsRow-${colorSectionId} input[type='text']`).each(function () {
+            sizes.push({
+                "size": $(this).prev().text(),
+                "quantity": $(this).val()
+            });
+        });
+    }).get();
+
+    event.preventDefault();
+    console.log(JSON.stringify(item));
+
+    Promise.all(promises).then(() => {
+        $.ajax({
+            url: 'http://localhost:8080/spring-boot/api/v1/item',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(item),
+            success: function (data) {
+                console.log('item added successfully:', data);
+                Swal.fire({
+                    icon: "success",
+                    title: "Your work has been saved",
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error adding Item:', error);
+                Swal.fire({
+                    icon: "error",
+                    title: status,
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+            }
+        });
+    }).catch(error => {
+        console.error('Error reading image file:', error);
+    });
+}
 
 function fetchSuppliers() {
     $.ajax({
@@ -101,12 +190,14 @@ function fetchSuppliers() {
                     text: supplier.supplierName
                 }));
             });
+            console.log("Fetch All Suppliers");
         },
         error: function (xhr, status, error) {
             console.log(error);
         }
     });
 }
+
 function fetchCategories() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/category',
@@ -118,12 +209,14 @@ function fetchCategories() {
                     text: category.categoryName
                 }));
             });
+            console.log("Fetch All Categories");
         },
         error: function (xhr, status, error) {
             console.log(error);
         }
     });
 }
+
 function fetchTypes() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/type',
@@ -135,6 +228,45 @@ function fetchTypes() {
                     text: type.typeName
                 }));
             });
+            console.log("Fetch All Types");
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+function fetchColours(colorSectionId) {
+    $.ajax({
+        url: 'http://localhost:8080/spring-boot/api/v1/colour',
+        type: 'GET',
+        success: function (data) {
+            data.forEach(function (colour) {
+                $(`#colourSelect-${colorSectionId}`).append($('<option>', {
+                    value: colour.colourCode,
+                    text: colour.colourName
+                }));
+            });
+            console.log("Fetch All Colours");
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+function fetchSizes(colorSectionId) {
+    $.ajax({
+        url: 'http://localhost:8080/spring-boot/api/v1/size',
+        type: 'GET',
+        success: function (data) {
+            data.forEach(function (size) {
+                $(`#sizeSelect-${colorSectionId}`).append($('<option>', {
+                    value: size.size,
+                    text: size.size
+                }));
+            });
+            console.log("Fetch All Sizes");
         },
         error: function (xhr, status, error) {
             console.log(error);
