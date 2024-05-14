@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class ItemColour implements SuperEntity {
     @Id
     private String id;
+    @Column(columnDefinition = "LONGTEXT")
     private String imgPath;
     private Double sellPrice;
     private Double buyPrice;
