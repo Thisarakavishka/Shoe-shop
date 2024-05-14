@@ -1,5 +1,6 @@
 package com.helloshoes.shoeshopmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.helloshoes.shoeshopmanagement.entity.enums.CustomerLevel;
 import com.helloshoes.shoeshopmanagement.entity.enums.Gender;
 import jakarta.persistence.*;
@@ -37,5 +38,6 @@ public class Customer implements SuperEntity {
     private Timestamp recentPurchaseDateTime;
 
     @OneToMany(mappedBy = "customer")
+    @JsonManagedReference
     private List<Sales> sales;
 }

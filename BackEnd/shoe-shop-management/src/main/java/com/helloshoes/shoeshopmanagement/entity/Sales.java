@@ -1,5 +1,6 @@
 package com.helloshoes.shoeshopmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.helloshoes.shoeshopmanagement.entity.enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,12 +25,15 @@ public class Sales implements SuperEntity{
 
     @ManyToOne
     @JoinColumn(name = "employee_code")
+    @JsonBackReference
     private Employee employee;
 
     @ManyToOne
     @JoinColumn(name = "customer_code")
+    @JsonBackReference
     private Customer customer;
 
     @ManyToMany(mappedBy = "sales",cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Item> items;
 }

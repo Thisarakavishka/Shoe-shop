@@ -1,5 +1,6 @@
 package com.helloshoes.shoeshopmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,5 +19,6 @@ public class Size implements SuperEntity {
     private Integer size;
 
     @ManyToMany(mappedBy = "sizes",cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Item> items;
 }

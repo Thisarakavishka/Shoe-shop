@@ -38,17 +38,17 @@ public class ItemServiceImpl implements ItemService {
         item.setProfitMargin(dto.getProfitMargin());
         item.setShoeGender(dto.getGender());
 
-        Supplier supplier = supplierRepository.getReferenceById(dto.getSupplierName());
+        Supplier supplier = supplierRepository.findBySupplierName(dto.getSupplierName());
         List<Supplier> supplierList = new ArrayList<>();
         supplierList.add(supplier);
         item.setSuppliers(supplierList);
 
-        Category category = categoryRepository.getReferenceById(dto.getCategoryName());
+        Category category = categoryRepository.findByName(dto.getCategoryName());
         List<Category> categoryList = new ArrayList<>();
         categoryList.add(category);
         item.setCategories(categoryList);
 
-        Type type = typeRepository.getReferenceById(dto.getTypeName());
+        Type type = typeRepository.findByTypeName(dto.getTypeName());
         List<Type> typeList = new ArrayList<>();
         typeList.add(type);
         item.setTypes(typeList);
@@ -56,7 +56,7 @@ public class ItemServiceImpl implements ItemService {
         itemRepository.save(item);
 
         for (ItemColourDTO itemColourDTO : dto.getColours()) {
-            Colour colour = colourRepository.getReferenceById(itemColourDTO.getColourName());
+            Colour colour = colourRepository.findByName(itemColourDTO.getColourName());
             ItemColour itemColour = new ItemColour();
             itemColour.setId(IDGeneratorUtil.idGenerator(IdType.ITEM_COLOUR));
             itemColour.setImgPath(itemColourDTO.getImage());

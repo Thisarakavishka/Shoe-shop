@@ -1,5 +1,6 @@
 package com.helloshoes.shoeshopmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.helloshoes.shoeshopmanagement.entity.enums.ShoeGender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class Item implements SuperEntity {
             joinColumns = @JoinColumn(name = "item_id"),
             inverseJoinColumns = @JoinColumn(name = "supplier_id"))
     @ToString.Exclude
+    @JsonManagedReference
     private List<Supplier> suppliers;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -35,6 +37,7 @@ public class Item implements SuperEntity {
             joinColumns = @JoinColumn(name = "item_id"),
             inverseJoinColumns = @JoinColumn(name = "size_id"))
     @ToString.Exclude
+    @JsonManagedReference
     private List<Size> sizes;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -42,6 +45,7 @@ public class Item implements SuperEntity {
             joinColumns = @JoinColumn(name = "item_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     @ToString.Exclude
+    @JsonManagedReference
     private List<Category> categories;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -49,6 +53,7 @@ public class Item implements SuperEntity {
             joinColumns = @JoinColumn(name = "item_id"),
             inverseJoinColumns = @JoinColumn(name = "type_id"))
     @ToString.Exclude
+    @JsonManagedReference
     private List<Type> types;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -56,10 +61,12 @@ public class Item implements SuperEntity {
             joinColumns = @JoinColumn(name = "item_id"),
             inverseJoinColumns = @JoinColumn(name = "colour_id"))
     @ToString.Exclude
+    @JsonManagedReference
     private List<Colour> colours;
 
     @OneToMany(mappedBy = "item")
     @ToString.Exclude
+    @JsonManagedReference
     private List<ItemDetails> itemDetails;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -67,6 +74,7 @@ public class Item implements SuperEntity {
             joinColumns = @JoinColumn(name = "item_id"),
             inverseJoinColumns = @JoinColumn(name = "refund_id"))
     @ToString.Exclude
+    @JsonManagedReference
     private List<Refund> refunds;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -74,6 +82,7 @@ public class Item implements SuperEntity {
             joinColumns = @JoinColumn(name = "item_id"),
             inverseJoinColumns = @JoinColumn(name = "sale_id"))
     @ToString.Exclude
+    @JsonManagedReference
     private List<Sales> sales;
 
     @Override

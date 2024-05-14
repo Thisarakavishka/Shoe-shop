@@ -1,9 +1,11 @@
 package com.helloshoes.shoeshopmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -19,5 +21,7 @@ public class Type implements SuperEntity {
     private String typeCharacter;
 
     @ManyToMany(mappedBy = "types",cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @JsonBackReference
     private List<Item> items;
 }

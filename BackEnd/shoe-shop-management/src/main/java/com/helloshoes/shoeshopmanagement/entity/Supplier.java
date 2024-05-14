@@ -1,5 +1,6 @@
 package com.helloshoes.shoeshopmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.helloshoes.shoeshopmanagement.entity.enums.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,5 +31,6 @@ public class Supplier implements SuperEntity {
     private String email;
 
     @ManyToMany(mappedBy = "suppliers", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Item> items;
 }

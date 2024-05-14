@@ -1,5 +1,6 @@
 package com.helloshoes.shoeshopmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,9 +21,11 @@ public class ItemColour implements SuperEntity {
 
     @ManyToOne
     @JoinColumn(name = "item_id")
+    @JsonBackReference
     private Item item;
 
     @ManyToOne
     @JoinColumn(name = "colour_id")
+    @JsonBackReference
     private Colour colour;
 }

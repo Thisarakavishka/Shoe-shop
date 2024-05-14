@@ -1,5 +1,6 @@
 package com.helloshoes.shoeshopmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,5 +20,6 @@ public class Colour implements SuperEntity {
     private String hexValue;
 
     @ManyToMany(mappedBy = "colours",cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Item> items;
 }

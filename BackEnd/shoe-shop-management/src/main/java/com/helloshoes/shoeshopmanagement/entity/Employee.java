@@ -1,5 +1,6 @@
 package com.helloshoes.shoeshopmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.helloshoes.shoeshopmanagement.entity.enums.Gender;
 import com.helloshoes.shoeshopmanagement.entity.enums.Role;
 import jakarta.persistence.*;
@@ -43,8 +44,10 @@ public class Employee implements SuperEntity {
     private String emergencyContactNumber;
 
     @OneToMany(mappedBy = "employee")
+    @JsonManagedReference
     private List<Sales> sales;
 
     @OneToMany(mappedBy = "employee")
+    @JsonManagedReference
     private List<Refund> refund;
 }
