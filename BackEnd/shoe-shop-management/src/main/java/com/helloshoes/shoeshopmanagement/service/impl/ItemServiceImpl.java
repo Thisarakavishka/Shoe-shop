@@ -9,6 +9,9 @@ import com.helloshoes.shoeshopmanagement.service.ItemService;
 import com.helloshoes.shoeshopmanagement.util.IDGeneratorUtil;
 import com.helloshoes.shoeshopmanagement.util.IdType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -99,6 +102,38 @@ public class ItemServiceImpl implements ItemService {
             return null;
         }
         Item item = itemRepository.getReferenceById(code);
+        return getItemDTO(item);
+    }
+
+    @Override
+    public List<ItemDTO> getAll() {
+        List<Item> items = itemRepository.findAll();
+        List<ItemDTO> itemDTOS = new ArrayList<>();
+        for (Item item : items) {
+            ItemDTO itemDTO = getItemDTO(item);
+            itemDTOS.add(itemDTO);
+        }
+        return itemDTOS;
+    }
+
+    @Override
+    public List<ItemDTO> getAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Item> items = itemRepository.findAll(pageable);
+        List<ItemDTO> itemDTOS = new ArrayList<>();
+        for (Item item : items) {
+            ItemDTO itemDTO = getItemDTO(item);
+            itemDTOS.add(itemDTO);
+        }
+        return itemDTOS;
+    }
+
+    @Override
+    public Boolean update(String code, ItemDTO dto) {
+        return null;
+    }
+
+    private ItemDTO getItemDTO(Item item) {
         ItemDTO itemDTO = new ItemDTO();
 
         itemDTO.setItemCode(item.getItemCode());
@@ -144,15 +179,5 @@ public class ItemServiceImpl implements ItemService {
         }
         itemDTO.setColours(itemColourDTOS);
         return itemDTO;
-    }
-
-    @Override
-    public List<ItemDTO> getAll() {
-        return null;
-    }
-
-    @Override
-    public Boolean update(String code, ItemDTO dto) {
-        return null;
     }
 }
