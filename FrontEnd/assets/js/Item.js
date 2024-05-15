@@ -1,10 +1,67 @@
 let item_page_size = 10;
 let next_item_code;
 let update_item;
+let view_item;
 
 function viewItem(item) {
-
+    view_item = item;
+    const modalHtml = `
+        <div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        ${item.colours.map((color, index) => `<button class="btn btn-outline-custom-black-colour me-2" onclick="showDetails(view_item,'${color.colourName}')" ${index === 0 ? "id='autoClickButton'" : ""}>${color.colourName}</button>`).join('')}
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="itemDetails"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-custom-black-colour" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    $('#itemModal').remove();
+    $('body').append(modalHtml);
+    $('#itemModal').modal('show');
+    $("#autoClickButton").click();
 }
+
+function showDetails(item, colourName) {
+    const colour = item.colours.find(c => c.colourName === colourName);
+
+    const detailsHtml = `
+            <label class="border border-success rounded p-2 text-success"><span>Profit Margin: <b>${item.profitMargin}%</b> </span></label>
+            <label class="border border-success rounded p-2 ms-2 text-success"><span>Expected Profit: <b>$${item.expectedProfit}</b> </span></label>
+        <div class="mt-2">
+            <label class="border border-success rounded p-2 text-success"><span>Sell Price: <b>$${colour.sellPrice}</b> </span></label>
+            <label class="border border-success rounded p-2 ms-2 text-success"><span>Buy Price: <b>$${colour.buyPrice}</b> </span></label>
+        </div>
+        <div class="text-center mt-3">
+            <img src="data:image/png;base64,${colour.image}" class="rounded" alt="Color Image" style="width: 370px; height: 400px;">
+        </div>
+        <div class="mt-3">
+            <div class="row">
+                ${colour.sizes.map(size => `
+                    <div class="col-6 col-md-4 col-lg-3 mt-2">
+                        <div class="border border-dark rounded">
+                            <div class="text-white bg-dark p-2 text-center rounded-top-1">
+                                <span> <b>Size: ${size.size}</b> </span>
+                            </div>
+                            <div class="p-2 text-center">
+                                <span>Qty: <b>${size.quantity}</b> </span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    $('#itemDetails').html(detailsHtml);
+}
+
 
 function editItem(item) {
 
