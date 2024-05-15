@@ -92,7 +92,7 @@ $("#add-item-button").on('click', () => {
 
 function saveItem() {
     const item = {
-        "itemCode": "IC001",
+        "itemCode": "IC002",
         "itemName": $('#item-name').val(),
         "categoryName": $('#itemCategory').val(),
         "supplierName": $('#itemSupplier').val(),
@@ -186,7 +186,7 @@ function fetchSuppliers() {
         success: function (data) {
             data.forEach(function (supplier) {
                 $("#itemSupplier").append($('<option>', {
-                    value: supplier.supplierCode,
+                    value: supplier.supplierName,
                     text: supplier.supplierName
                 }));
             });
@@ -205,7 +205,7 @@ function fetchCategories() {
         success: function (data) {
             data.forEach(function (category) {
                 $("#itemCategory").append($('<option>', {
-                    value: category.categoryCode,
+                    value: category.categoryName,
                     text: category.categoryName
                 }));
             });
@@ -224,7 +224,7 @@ function fetchTypes() {
         success: function (data) {
             data.forEach(function (type) {
                 $("#itemType").append($('<option>', {
-                    value: type.typeCode,
+                    value: type.typeName,
                     text: type.typeName
                 }));
             });
@@ -243,7 +243,7 @@ function fetchColours(colorSectionId) {
         success: function (data) {
             data.forEach(function (colour) {
                 $(`#colourSelect-${colorSectionId}`).append($('<option>', {
-                    value: colour.colourCode,
+                    value: colour.colourName,
                     text: colour.colourName
                 }));
             });

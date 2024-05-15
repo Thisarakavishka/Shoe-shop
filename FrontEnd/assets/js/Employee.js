@@ -4,9 +4,11 @@ let update_employee;
 let employee_profile_pic;
 
 $(document).ready(function () {
-    getDataToEmployeeTable(0, employee_page_size);
-    getEmployeePageCount();
-    clearPage();
+    if (EMPLOYEE_CONTENT.is(':visible')) {
+        getDataToEmployeeTable(0, employee_page_size);
+        getEmployeePageCount();
+        clearPage();
+    }
 });
 
 function getDataToEmployeeTable(page, size) {

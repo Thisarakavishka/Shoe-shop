@@ -3,9 +3,11 @@ let next_supplier_code;
 let update_supplier;
 
 $(document).ready(function () {
-    getDataToSupplierTable(0, supplier_page_size);
-    getSupplierPageCount();
-    clearPage();
+    if (SUPPLIER_CONTENT.is(':visible')) {
+        getDataToSupplierTable(0, supplier_page_size);
+        getSupplierPageCount();
+        clearPage();
+    }
 });
 
 $("#supplierPageSize").change(function () {

@@ -3,9 +3,11 @@ let next_customer_code;
 let update_customer;
 
 $(document).ready(function () {
-    getDataToCustomerTable(0, customer_page_size);//First time load 10 customers
-    getPageCount();
-    clearPage();
+    if (CUSTOMER_CONTENT.is(':visible')) {
+        getDataToCustomerTable(0, customer_page_size);//First time load 10 customers
+        getPageCount();
+        clearPage();
+    }
 });
 
 $("#customerPageSize").change(function () {
