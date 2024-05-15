@@ -102,7 +102,7 @@ public class ItemServiceImpl implements ItemService {
             return null;
         }
         Item item = itemRepository.getReferenceById(code);
-        return getItemDTO(item);
+        return convertItemToItemDTO(item);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class ItemServiceImpl implements ItemService {
         List<Item> items = itemRepository.findAll();
         List<ItemDTO> itemDTOS = new ArrayList<>();
         for (Item item : items) {
-            ItemDTO itemDTO = getItemDTO(item);
+            ItemDTO itemDTO = convertItemToItemDTO(item);
             itemDTOS.add(itemDTO);
         }
         return itemDTOS;
@@ -122,7 +122,33 @@ public class ItemServiceImpl implements ItemService {
         Page<Item> items = itemRepository.findAll(pageable);
         List<ItemDTO> itemDTOS = new ArrayList<>();
         for (Item item : items) {
-            ItemDTO itemDTO = getItemDTO(item);
+            ItemDTO itemDTO = convertItemToItemDTO(item);
+            itemDTOS.add(itemDTO);
+        }
+        return itemDTOS;
+    }
+
+    @Override
+    public int getItemCount() {
+        return (int) itemRepository.count();
+    }
+
+    @Override
+    public String getNextItemCode() {
+        String nextCode = itemRepository.findNextItemCode();
+        if (nextCode == null) {
+            return "IC001";
+        }
+        int code = Integer.parseInt(nextCode.substring(3)) + 1;
+        return "IC" + String.format("%03d", code);
+    }
+
+    @Override
+    public List<ItemDTO> getSearchItems(String query) {
+        List<Item> items = itemRepository.searchItems(query);
+        List<ItemDTO> itemDTOS = new ArrayList<>();
+        for (Item item : items) {
+            ItemDTO itemDTO = convertItemToItemDTO(item);
             itemDTOS.add(itemDTO);
         }
         return itemDTOS;
@@ -133,7 +159,7 @@ public class ItemServiceImpl implements ItemService {
         return null;
     }
 
-    private ItemDTO getItemDTO(Item item) {
+    private ItemDTO convertItemToItemDTO(Item item) {
         ItemDTO itemDTO = new ItemDTO();
 
         itemDTO.setItemCode(item.getItemCode());

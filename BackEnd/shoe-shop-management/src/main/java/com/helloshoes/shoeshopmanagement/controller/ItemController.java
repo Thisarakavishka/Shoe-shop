@@ -33,10 +33,23 @@ public class ItemController {
         return ResponseEntity.ok().body(itemDTOS);
     }
 
-    @PostMapping
-    public ResponseEntity<?> createItem(@RequestBody ItemDTO itemDTO) {
-        ItemDTO savedItem = itemService.save(itemDTO);
-        return ResponseEntity.ok().body(savedItem);
+    @GetMapping("/search")
+    public ResponseEntity<List<ItemDTO>> getSearchItems(@RequestParam String query) {
+        List<ItemDTO> itemDTOS = itemService.getSearchItems(query);
+        return ResponseEntity.ok().body(itemDTOS);
+    }
+
+    @GetMapping("/page-size")
+    public ResponseEntity<Integer> getPageCount(@RequestParam(defaultValue = "10") int size) {
+        int itemCount = itemService.getItemCount();
+        int pageCount = (int) Math.ceil((double) itemCount / size);
+        return ResponseEntity.ok(pageCount);
+    }
+
+    @GetMapping("/next-code")
+    public ResponseEntity<String> getNextItemCode() {
+        String nextCode = itemService.getNextItemCode();
+        return ResponseEntity.ok(nextCode);
     }
 
     @GetMapping("/{id}")
@@ -49,5 +62,11 @@ public class ItemController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(itemDTO);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createItem(@RequestBody ItemDTO itemDTO) {
+        ItemDTO savedItem = itemService.save(itemDTO);
+        return ResponseEntity.ok().body(savedItem);
     }
 }

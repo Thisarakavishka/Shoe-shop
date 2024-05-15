@@ -52,7 +52,7 @@ public class SupplierController {
     }
 
     @GetMapping("/next-code")
-    public ResponseEntity<String> getNextCSupplierCode() {
+    public ResponseEntity<String> getNextSupplierCode() {
         String nextCode = supplierService.getNextSupplierCode();
         return ResponseEntity.ok(nextCode);
     }
