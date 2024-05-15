@@ -14,6 +14,7 @@ let EMPLOYEE_ADD_FORM = $("#employee-add-form");
 let EMPLOYEE_UPDATE_FORM = $("#employee-update-form");
 
 let ITEM_CONTENT = $("#item-content");
+let ITEM_SECTION = $("#item-section");
 let ITEM_ADD_FORM = $("#item-add-from");
 
 const clearPage = function () {
@@ -21,7 +22,7 @@ const clearPage = function () {
     SUPPLIER_CONTENT.css("display", "none");
     CUSTOMER_CONTENT.css("display", "none");
     EMPLOYEE_CONTENT.css("display", "none");
-    ITEM_CONTENT.css("display", "none");
+    ITEM_CONTENT.css("display", "block");
 
     CUSTOMER_SECTION.css("display", "none");
     CUSTOMER_ADD_FORM.css("display", "none");
@@ -35,7 +36,8 @@ const clearPage = function () {
     SUPPLIER_ADD_FORM.css("display", "none");
     SUPPLIER_UPDATE_FORM.css("display", "none");
 
-    ITEM_CONTENT.css("display", "none");
+    ITEM_SECTION.css("display", "block");
+    ITEM_ADD_FORM.css("display", "none");
 }
 
 clearPage();

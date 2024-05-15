@@ -1093,6 +1093,55 @@
 
             <!-- Item content -->
             <section id="item-content">
+                <!-- Item Section -->
+                <section id="item-section" class="container-xxl">
+                    <!-- Item Search Bar -->
+                    <div class="d-flex justify-content-center mt-4">
+                        <form class="d-flex col-md-5 p-2">
+                            <input class="form-control me-2 custom-focus" type="search" placeholder="Search"
+                                   aria-label="Search"
+                                   id="item-search-text">
+                            <button class="btn btn-outline-custom-black-colour" type="submit" id="item-search">
+                                Search
+                            </button>
+                        </form>
+                    </div>
+                    <!-- Button Section -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <div class="col-md-1">
+                            <select class="form-select custom-focus" id="itemPageSize" name="size" required>
+                                <option value="" selected disabled>size</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button class="btn btn-custom-black-colour" id="add-new-item">New Item</button>
+                        </div>
+                    </div>
+                    <!-- Item Table -->
+                    <div class="row justify-content-center d-flex mt-3 p-2">
+                        <table class="table table-hover text-center" id="item-table">
+                            <thead class="bg-custom-table-head">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Shoe</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Profit Margin</th>
+                                <th scope="col">Expected Profit</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div class="justify-content-center d-flex" id="itemPagination"></div>
+                    </div>
+                </section>
                 <!-- Item Add From -->
                 <section id="item-add-from" class="container-xxl border-black border">
                     <div class="row justify-content-center d-flex mt-5 p-3">

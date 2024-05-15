@@ -1,4 +1,100 @@
+let item_page_size = 10;
+let next_item_code;
+let update_item;
+
+function viewItem(item) {
+
+}
+
+function editItem(item) {
+
+}
+
+function deleteItem(item) {
+
+}
+
+
+function appendItemToTable(index, item) {
+    $('#item-table tbody').append(`
+        <tr>
+            <th scope="row" class="align-middle">${index + 1}</th>
+            <th>
+                <img src="data:image/png;base64,${item.colours[0].image}" class="rounded" alt="Profile Pic" style="width: 50px; height: 50px;">
+            </th>
+            <td class="align-middle">${item.itemName}</td>
+            <td class="align-middle">${item.categoryName}</td>
+            <td class="align-middle">${item.typeName}</td>
+            <td class="align-middle">${item.profitMargin}%</td>
+            <td class="align-middle">$${item.expectedProfit}</td>
+            <td class="align-middle">
+                <button class="btn btn-outline-custom-black-colour view-item-btn btn-sm"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></button>
+                <button class="btn btn-outline-custom-black-colour edit-item-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
+                <button class="btn btn-outline-custom-red-colour delete-item-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
+            </td>
+        </tr>
+    `);
+    $('.view-item-btn').last().click(function () {
+        viewItem(item);
+    });
+    $('.edit-item-btn').last().click(function () {
+        editItem(item);
+    });
+    $('.delete-item-btn').last().click(function () {
+        deleteItem(item);
+    });
+}
+
+function displayItemData(data, page, size) {
+    $("#item-table tbody").empty();
+    $.each(data, function (index, item) {
+        appendItemToTable(index + (page * size), item);
+    })
+}
+
+function getDataToItemTable(page, size) {
+    $.ajax({
+        url: 'http://localhost:8080/spring-boot/api/v1/item',
+        method: 'GET',
+        data: {page: page, size: size},
+        success: function (data) {
+            displayItemData(data, page, size);
+        },
+        error: function () {
+            console.error('Error fetching data');
+        }
+    });
+}
+
+function itemPaginationButtons(totalPages) {
+    $("#itemPagination").empty();
+    for (let i = 0; i < totalPages; i++) {
+        $('#itemPagination').append(`<button class="btn btn-outline-custom-black-colour me-2" onclick="getDataToItemTable(${i}, item_page_size)">${i + 1}</button>`);
+    }
+}
+
+function getItemPageCount() {
+    $.ajax({
+        url: 'http://localhost:8080/spring-boot/api/v1/item/page-size',
+        method: 'GET',
+        data: {size: item_page_size},
+        success: function (data) {
+            console.log('success fetching count of item pages');
+            itemPaginationButtons(data);
+        },
+        error: function () {
+            console.error('Error fetching item count of pages');
+        }
+    });
+}
+
 $(document).ready(function () {
+    getDataToItemTable(0, item_page_size);
+    getItemPageCount();
+    clearPage();
+});
+
+function loadItemAddFormData() {
     fetchSuppliers();
     fetchCategories();
     fetchTypes();
@@ -85,14 +181,15 @@ $(document).ready(function () {
             $(`#sizeInputsRow-${colorSectionId} .col-2, #sizeInputsRow-${colorSectionId} label, #sizeInputsRow-${colorSectionId} hr`).remove();
         });
     });
-});
+}
+
 $("#add-item-button").on('click', () => {
     saveItem();
 });
 
 function saveItem() {
     const item = {
-        "itemCode": "IC002",
+        "itemCode": "IC001",
         "itemName": $('#item-name').val(),
         "categoryName": $('#itemCategory').val(),
         "supplierName": $('#itemSupplier').val(),
@@ -273,3 +370,33 @@ function fetchSizes(colorSectionId) {
         }
     });
 }
+
+function getItemSearchResult() {
+    event.preventDefault();
+    const searchText = $('#item-search-text').val().trim();
+    if (searchText === '') {
+        getDataToItemTable(0, item_page_size);
+        getItemPageCount();
+    } else {
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8080/spring-boot/api/v1/item/search',
+            data: {query: searchText},
+            success: function (data) {
+                displayItemData(data, 0, data.length);
+                $('#itemPagination').empty();
+            },
+            error: function (xhr, status, error) {
+                console.log("error fetching Item Search data")
+            }
+        });
+    }
+}
+
+$("#item-search-text").on('input', () => {
+    getItemSearchResult();
+});
+
+$("#item-search").on('click', () => {
+    getItemSearchResult();
+});
