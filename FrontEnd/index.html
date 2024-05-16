@@ -24,20 +24,21 @@
             <div class="d-flex flex-sm-column flex-row flex-nowrap bg-white text-black align-items-center justify-content-between sticky-top">
                 <ul class="nav nav-pills flex-column mt-4">
                     <li class="nav-item">
-                        <a id="admin-panel-button" href="#" class="nav-link text-black" title="Admin panel" data-bs-toggle="tooltip"
+                        <a id="admin-panel-button" href="#" class="nav-link text-black" title="Admin panel"
+                           data-bs-toggle="tooltip"
                            data-bs-placement="right">
                             <i class="fa fa-home fa-lg"></i>
                             <span class="ms-2 d-none d-lg-inline"><b>Admin Panel</b></span>
                         </a>
                     </li>
-                    <li class="nav-item mt-3">
+                    <li class="nav-item mt-4">
                         <a id="cart-button" href="#" class="nav-link text-black" title="Cart" data-bs-toggle="tooltip"
                            data-bs-placement="right">
                             <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>
                             <span class="ms-2 d-none d-lg-inline"><b>Cart</b></span>
                         </a>
                     </li>
-                    <li class="nav-item mt-3">
+                    <li class="nav-item mt-4">
                         <a id="items-button" href="#" class="nav-link text-black" title="items"
                            data-bs-toggle="tooltip"
                            data-bs-placement="right">
@@ -45,7 +46,7 @@
                             <span class="ms-2 d-none d-lg-inline"><b>Items</b></span>
                         </a>
                     </li>
-                    <li class="nav-item mt-3">
+                    <li class="nav-item mt-4">
                         <a id="customers-button" href="#" class="nav-link text-black" title="Customers"
                            data-bs-toggle="tooltip"
                            data-bs-placement="right">
@@ -53,14 +54,15 @@
                             <span class="ms-2 d-none d-lg-inline"><b>Customers</b></span>
                         </a>
                     </li>
-                    <li class="nav-item mt-3">
-                        <a id="employees-button" href="#" class="nav-link text-black" title="Employees" data-bs-toggle="tooltip"
+                    <li class="nav-item mt-4">
+                        <a id="employees-button" href="#" class="nav-link text-black" title="Employees"
+                           data-bs-toggle="tooltip"
                            data-bs-placement="right">
                             <i class="fa fa-user-o fa-lg"></i>
                             <span class="ms-2 d-none d-lg-inline"><b>Employees</b></span>
                         </a>
                     </li>
-                    <li class="nav-item mt-3">
+                    <li class="nav-item mt-4">
                         <a id="suppliers-button" href="#" class="nav-link text-black" title="Suppliers"
                            data-bs-toggle="tooltip"
                            data-bs-placement="right">
@@ -68,7 +70,7 @@
                             <span class="ms-2 d-none d-lg-inline"><b>Suppliers</b></span>
                         </a>
                     </li>
-                    <li class="nav-item mt-3">
+                    <li class="nav-item mt-4">
                         <a id="categories-button" href="#" class="nav-link text-black" title="Categories"
                            data-bs-toggle="tooltip"
                            data-bs-placement="right">
@@ -77,8 +79,14 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <hr class="mt-4">
-                        <a id="logout-button" href="#" class="nav-link text-black" title="Logout"
+                        <hr class="mt-5">
+                            <div class="p-1 mt-5 border border-secondary-subtle rounded profile-menu">
+                                <img id="userProfilePicMenu" src="assets/images/HELLO%2520SHOE.png" class="rounded-circle" alt="Profile Pic"
+                                     style="width: 40px; height: 40px;">
+
+                                <span id="userProfileNameMenu" class="ms-2 me-2">name of user</span>
+                            </div>
+                        <a id="logout-button" href="#" class="nav-link text-black mt-3" title="Logout"
                            data-bs-toggle="tooltip"
                            data-bs-placement="right">
                             <i class="fa fa-sign-out fa-lg"></i>
@@ -88,7 +96,6 @@
                 </ul>
             </div>
         </div>
-
 
         <!-- content -->
         <div class="col-sm p-3 min-vh-100">
@@ -1160,11 +1167,11 @@
                     </div>
                 </section>
                 <!-- Item Add From -->
-                <section id="item-add-from" class="container-xxl border-black border">
+                <section id="item-add-form" class="container-xxl">
                     <div class="row justify-content-center d-flex mt-5 p-3">
                         <!-- Form -->
                         <div class="col-10 border-secondary-subtle border rounded">
-                            <form>
+                            <form id="itemAddForm" class="row g-3 needs-validation mt-3 p-2" novalidate>
                                 <div class="text-center text-muted p-3">
                                     <h2> Add new Shoe</h2>
                                     <hr>
@@ -1174,17 +1181,20 @@
                                         <div class="col-4">
                                             <label for="item-name" class="form-label">Name</label>
                                             <input type="text" class="form-control custom-focus" id="item-name"
-                                                   placeholder="Nike Air">
+                                                   placeholder="Nike Air" required>
+                                            <div class="invalid-feedback">Please enter Name.</div>
                                         </div>
                                         <div class="col-4">
                                             <label for="item-profit-margin" class="form-label">Profit Margin</label>
                                             <input type="text" class="form-control custom-focus" id="item-profit-margin"
-                                                   placeholder="10%">
+                                                   placeholder="10%" required>
+                                            <div class="invalid-feedback">Please enter Profit Margin.</div>
                                         </div>
                                         <div class="col-4">
                                             <label for="item-expected-profit" class="form-label">Expected Profit</label>
                                             <input type="text" class="form-control custom-focus"
-                                                   id="item-expected-profit" placeholder="20$">
+                                                   id="item-expected-profit" placeholder="20$" required>
+                                            <div class="invalid-feedback">Please enter Expected Profit.</div>
                                         </div>
                                     </div>
                                 </div>
@@ -1196,7 +1206,6 @@
                                             <select class="form-select custom-focus" id="itemSupplier" name="supplier"
                                                     required>
                                                 <option value="" selected disabled>Select Supplier</option>
-                                                <option value="newSupplier">New Supplier</option>
                                             </select>
                                             <div class="invalid-feedback">Please select a supplier.</div>
                                         </div>
@@ -1206,7 +1215,6 @@
                                             <select class="form-select custom-focus" id="itemCategory" name="category"
                                                     required>
                                                 <option value="" selected disabled>Select Category</option>
-                                                <option value="newCategory">New Category</option>
                                             </select>
                                             <div class="invalid-feedback">Please select a category.</div>
                                         </div>
@@ -1215,7 +1223,6 @@
                                             <label for="itemType" class="form-label">Type</label>
                                             <select class="form-select custom-focus" id="itemType" name="type" required>
                                                 <option value="" selected disabled>Select Type</option>
-                                                <option value="newType">New Type</option>
                                             </select>
                                             <div class="invalid-feedback">Please select a type.</div>
                                         </div>
@@ -1261,6 +1268,8 @@
                         </div>
                     </div>
                 </section>
+                <!-- Item Update From -->
+                <section id="item-update-form" class="container-xxl"></section>
             </section>
         </div>
     </div>

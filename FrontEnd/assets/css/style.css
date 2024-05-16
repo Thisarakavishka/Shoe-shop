@@ -3,3 +3,10 @@
     background-color: black;
     color: white !important; /* Added !important to ensure it overrides any other styles */
 }
+
+.profile-menu:hover{
+    background-color: black;
+    color: white;
+    font-style: italic;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}

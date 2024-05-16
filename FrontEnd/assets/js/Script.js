@@ -11,7 +11,8 @@ let EMPLOYEE_ADD_FORM = $("#employee-add-form");
 let EMPLOYEE_UPDATE_FORM = $("#employee-update-form");
 
 let ITEM_SECTION = $("#item-section");
-let ITEM_ADD_FORM = $("#item-add-from");
+let ITEM_ADD_FORM = $("#item-add-form");
+let ITEM_UPDATE_FORM = $("#item-update-form");
 
 $(document).ready(function () {
     clearPage();
@@ -32,11 +33,13 @@ const clearPage = function () {
 
     ITEM_SECTION.css("display", "none");
     ITEM_ADD_FORM.css("display", "none");
+    ITEM_UPDATE_FORM.css("display", "none");
 }
 
 $("#admin-panel-button").on("click", () => {
     clearPage();
 });
+
 $("#items-button").on("click", () => {
     clearPage();
     getDataToItemTable(0, item_page_size);
