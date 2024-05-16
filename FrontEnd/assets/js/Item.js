@@ -33,8 +33,14 @@ function showDetails(item, colourName) {
     const colour = item.colours.find(c => c.colourName === colourName);
 
     const detailsHtml = `
+        <div>
+            <label class="border border-secondary rounded p-2 text-secondary"><span><b>${item.supplierName}</b> </span></label>
+            <label class="border border-secondary rounded p-2 ms-2 text-secondary"><span><b>${item.typeName}</b> </span></label>
+        </div>
+        <div class="mt-2">
             <label class="border border-success rounded p-2 text-success"><span>Profit Margin: <b>${item.profitMargin}%</b> </span></label>
             <label class="border border-success rounded p-2 ms-2 text-success"><span>Expected Profit: <b>$${item.expectedProfit}</b> </span></label>
+        </div>
         <div class="mt-2">
             <label class="border border-success rounded p-2 text-success"><span>Sell Price: <b>$${colour.sellPrice}</b> </span></label>
             <label class="border border-success rounded p-2 ms-2 text-success"><span>Buy Price: <b>$${colour.buyPrice}</b> </span></label>
@@ -62,15 +68,46 @@ function showDetails(item, colourName) {
     $('#itemDetails').html(detailsHtml);
 }
 
-
 function editItem(item) {
 
 }
 
 function deleteItem(item) {
-
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: 'http://localhost:8080/spring-boot/api/v1/item/' + item.itemCode,
+                type: 'DELETE',
+                success: function (response) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your Item has been deleted.",
+                        icon: "success"
+                    }).then(() => {
+                        getDataToItemTable(0, item_page_size);
+                        getItemPageCount();
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error deleting Item:', error);
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Failed to delete item.",
+                        icon: "error"
+                    });
+                }
+            });
+        }
+    });
 }
-
 
 function appendItemToTable(index, item) {
     $('#item-table tbody').append(`
@@ -144,12 +181,6 @@ function getItemPageCount() {
         }
     });
 }
-
-$(document).ready(function () {
-    getDataToItemTable(0, item_page_size);
-    getItemPageCount();
-    clearPage();
-});
 
 function loadItemAddFormData() {
     fetchSuppliers();
@@ -299,9 +330,6 @@ function saveItem() {
             });
         });
     }).get();
-
-    event.preventDefault();
-    console.log(JSON.stringify(item));
 
     Promise.all(promises).then(() => {
         $.ajax({
@@ -456,4 +484,10 @@ $("#item-search-text").on('input', () => {
 
 $("#item-search").on('click', () => {
     getItemSearchResult();
+});
+
+$("#add-new-item").on('click', () => {
+    ITEM_SECTION.css("display", "none");
+    ITEM_ADD_FORM.css("display", "block");
+    loadItemAddFormData();
 });

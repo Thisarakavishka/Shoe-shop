@@ -2,14 +2,6 @@ let customer_page_size = 10;
 let next_customer_code;
 let update_customer;
 
-$(document).ready(function () {
-    if (CUSTOMER_CONTENT.is(':visible')) {
-        getDataToCustomerTable(0, customer_page_size);//First time load 10 customers
-        getPageCount();
-        clearPage();
-    }
-});
-
 $("#customerPageSize").change(function () {
     customer_page_size = $(this).val();
     getDataToCustomerTable(0, customer_page_size);
@@ -79,7 +71,7 @@ function getPageCount() {
         method: 'GET',
         data: {size: customer_page_size},
         success: function (data) {
-            console.error('success fetching count of customer pages');
+            console.log('success fetching count of customer pages');
             paginationButtons(data);
         },
         error: function () {

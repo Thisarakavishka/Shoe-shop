@@ -3,14 +3,6 @@ let next_employee_code;
 let update_employee;
 let employee_profile_pic;
 
-$(document).ready(function () {
-    if (EMPLOYEE_CONTENT.is(':visible')) {
-        getDataToEmployeeTable(0, employee_page_size);
-        getEmployeePageCount();
-        clearPage();
-    }
-});
-
 function getDataToEmployeeTable(page, size) {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/employee',
@@ -82,7 +74,7 @@ function getEmployeePageCount() {
         method: 'GET',
         data: {size: employee_page_size},
         success: function (data) {
-            console.error('success fetching count of employee pages');
+            console.log('success fetching count of employee pages');
             employeePaginationButtons(data);
         },
         error: function () {

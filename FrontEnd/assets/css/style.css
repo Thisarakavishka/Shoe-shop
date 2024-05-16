@@ -1,3 +1,5 @@
-.nav-pills li a:hover{
-    background-color: #0dcaf0;
+.nav-pills li a:hover,
+.nav-pills li a:hover .text-black {
+    background-color: black;
+    color: white !important; /* Added !important to ensure it overrides any other styles */
 }

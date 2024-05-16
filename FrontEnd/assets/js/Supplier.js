@@ -2,14 +2,6 @@ let supplier_page_size = 10;
 let next_supplier_code;
 let update_supplier;
 
-$(document).ready(function () {
-    if (SUPPLIER_CONTENT.is(':visible')) {
-        getDataToSupplierTable(0, supplier_page_size);
-        getSupplierPageCount();
-        clearPage();
-    }
-});
-
 $("#supplierPageSize").change(function () {
     supplier_page_size = $(this).val();
     getDataToSupplierTable(0, supplier_page_size);
@@ -84,7 +76,7 @@ function getSupplierPageCount() {
         method: 'GET',
         data: {size: supplier_page_size},
         success: function (data) {
-            console.error('success fetching count of supplier pages');
+            console.log('success fetching count of supplier pages');
             supplierPaginationButtons(data);
         },
         error: function () {
