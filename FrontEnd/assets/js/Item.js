@@ -186,7 +186,7 @@ function loadItemAddFormData() {
     fetchSuppliers();
     fetchCategories();
     fetchTypes();
-    let colorSectionCount = 0; // Initialize a counter to keep track of color sections
+    let colorSectionCount = 0;
 
     // Listen for click events on the element with the ID 'add-new-colour-section'
     $('#add-new-colour-section').click(function () {
@@ -201,28 +201,26 @@ function loadItemAddFormData() {
             <div class="row">
                 <div class="col-md-6">
                     <label for="colourSelect-${colorSectionId}" class="form-label mt-2">Colour</label>
-                    <!-- Create a select element for choosing a color -->
                     <select class="form-select custom-focus" id="colourSelect-${colorSectionId}" required>
                         <option value="" selected disabled>Select Colour</option>
                         <option value="new">New Colour</option>
                     </select>
-                    <!-- Display an error message if no color is selected -->
                     <div class="invalid-feedback">Please select a colour.</div>
                 </div>
                 <div class="col-md-6">
                     <label for="colourImageInput-${colorSectionId}" class="form-label mt-2">Image</label>
-                    <!-- Create an input element for uploading an image -->
-                    <input type="file" class="form-control custom-focus" id="colourImageInput-${colorSectionId}" accept="image/*">
+                    <input type="file" class="form-control custom-focus" id="colourImageInput-${colorSectionId}" accept="image/*" required>
+                    <div class="invalid-feedback">Please select shoe image.</div>
                 </div>    
                 <div class="col-md-6">
                     <label for="sellPriceInput-${colorSectionId}" class="form-label mt-2">Sell Price</label>
-                    <!-- Create an input element for entering the sell price -->
-                    <input type="text" class="form-control custom-focus" id="sellPriceInput-${colorSectionId}" placeholder="Sell Price">
+                    <input type="text" class="form-control custom-focus" id="sellPriceInput-${colorSectionId}" placeholder="Sell Price" required>
+                    <div class="invalid-feedback">Please enter Sell price.</div>
                 </div>
                 <div class="col-md-6">
                     <label for="buyPriceInput-${colorSectionId}" class="form-label mt-2">Buy Price</label>
-                    <!-- Create an input element for entering the buy price -->
-                    <input type="text" class="form-control custom-focus" id="buyPriceInput-${colorSectionId}" placeholder="Buy Price">
+                    <input type="text" class="form-control custom-focus" id="buyPriceInput-${colorSectionId}" placeholder="Buy Price" required>
+                    <div class="invalid-feedback">Please enter Buy price.</div>
                 </div>
             </div>
 
@@ -232,10 +230,8 @@ function loadItemAddFormData() {
                     <div class="col-3">
                         <select class="form-select custom-focus " id="sizeSelect-${colorSectionId}" required>
                             <option value="" selected disabled>Select Size</option>
-                            <option value="new">New Size</option>
                         </select>
                     </div>
-                    <!-- Button group for adding and clearing sizes -->
                     <div class="col-9 d-flex align-items-center justify-content-start">
                         <button class="btn btn-outline-dark add-size-button me-3" data-section="${colorSectionId}">Add Size</button>
                         <button class="btn btn-outline-dark clear-size-button" data-section="${colorSectionId}">Clear Sizes</button>
@@ -272,7 +268,12 @@ function loadItemAddFormData() {
 }
 
 $("#add-item-button").on('click', () => {
-    saveItem();
+    if ($('#itemAddForm')[0].checkValidity()) {
+        saveItem();
+    } else {
+        $('#itemAddForm').addClass('was-validated');
+        event.preventDefault();
+    }
 });
 
 function saveItem() {
@@ -491,3 +492,109 @@ $("#add-new-item").on('click', () => {
     ITEM_ADD_FORM.css("display", "block");
     loadItemAddFormData();
 });
+
+$("#cancel-add-item-button").on('click', () => {
+    ITEM_ADD_FORM.css("display", "none");
+    ITEM_SECTION.css("display", "block");
+});
+
+function openAddSupplierModal() {
+    const modalAddSupplier = `
+        <div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Add New Supplier</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="supplierModalAddForm" class="row g-3 needs-validation" novalidate>
+                            <div class="p-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="modalSupplierName" class="form-label">Supplier Name</label>
+                                        <input type="text" class="form-control custom-focus" id="modalSupplierName" name="supplierName" required>
+                                        <div class="invalid-feedback">Please provide a valid supplier name.</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="modalSupplierCategory" class="form-label">Supplier Category</label>
+                                        <select class="form-select custom-focus" id="modalSupplierCategory" name="supplierCategory" required>
+                                            <option value="" selected disabled>Select Supplier Category</option>
+                                            <option value="LOCAL">LOCAL</option>
+                                            <option value="INTERNATIONAL">INTERNATIONAL</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select a supplier category.</div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-6">
+                                        <label for="modalSupplierAddressNo" class="form-label">Address No</label>
+                                        <input type="text" class="form-control custom-focus" id="modalSupplierAddressNo" name="address" required>
+                                        <div class="invalid-feedback">Please provide a valid address.</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="modalSupplierAddressLane" class="form-label">Address Lane</label>
+                                        <input type="text" class="form-control custom-focus" id="modalSupplierAddressLane" name="address" required>
+                                        <div class="invalid-feedback">Please provide a valid address.</div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-6">
+                                        <label for="modalSupplierAddressCity" class="form-label">Address City</label>
+                                        <input type="text" class="form-control custom-focus" id="modalSupplierAddressCity" name="address" required>
+                                        <div class="invalid-feedback">Please provide a valid address.</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="modalSupplierAddressState" class="form-label">Address State</label>
+                                        <input type="text" class="form-control custom-focus" id="modalSupplierAddressState" name="address" required>
+                                        <div class="invalid-feedback">Please provide a valid address.</div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-6">
+                                        <label for="modalSupplierPostalCode" class="form-label">Postal Code</label>
+                                        <input type="text" class="form-control custom-focus" id="modalSupplierPostalCode" name="postalCode" required>
+                                        <div class="invalid-feedback">Please provide a valid postal code.</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="modalSupplierCountry" class="form-label">Country</label>
+                                        <input type="text" class="form-control custom-focus" id="modalSupplierCountry" name="country" required>
+                                        <div class="invalid-feedback">Please provide a valid country.</div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-6">
+                                        <label for="modalSupplierMobileNumber" class="form-label">Mobile Number</label>
+                                        <input type="text" class="form-control custom-focus" id="modalSupplierMobileNumber" name="mobileNumber" required>
+                                        <div class="invalid-feedback">Please provide a valid mobile number.</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="modalSupplierLandNumber" class="form-label">Land Number</label>
+                                        <input type="text" class="form-control custom-focus" id="modalSupplierLandNumber" name="landNumber" required>
+                                        <div class="invalid-feedback">Please provide a valid land number.</div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-8">
+                                        <label for="modalSupplierEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control custom-focus" id="modalSupplierEmail" name="email" required>
+                                        <div class="invalid-feedback">Please provide a valid email address.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="modalAddNewSupplier" class="btn btn-outline-custom-black-colour" data-bs-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    `;
+
+    // Append modal to body
+    $('body').append(modalAddSupplier);
+
+    // Show the modal
+    $('#addSupplierModal').modal('show');
+}
