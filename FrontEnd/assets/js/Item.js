@@ -68,8 +68,307 @@ function showDetails(item, colourName) {
     $('#itemDetails').html(detailsHtml);
 }
 
-function editItem(item) {
+async function updateItem(event) {
+    event.preventDefault();
 
+    const item = {
+        "itemCode": update_item.itemCode,
+        "itemName": $('#updateItemName').val(),
+        "categoryName": $('#updateItemCategory').val(),
+        "supplierName": $('#updateItemSupplier').val(),
+        "typeName": $('#updateItemType').val(),
+        "gender": $("input[name='updateGender']:checked").next('label').text().trim(),
+        "profitMargin": $('#updateItemProfitMargin').val(),
+        "expectedProfit": $('#updateItemExpectedProfit').val(),
+        "colours": []
+    };
+
+    function addUpdatedColorObject(colorSectionId, colourName, imageBase64String, sellPrice, buyPrice, sizes) {
+        item.colours.push({
+            "colourName": colourName,
+            "image": imageBase64String,
+            "sellPrice": sellPrice,
+            "buyPrice": buyPrice,
+            "sizes": sizes
+        });
+    }
+
+    function readUpdatedImageFile(imageInput) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                resolve(event.target.result.split(',')[1]);
+            };
+            reader.onerror = function (error) {
+                reject(error);
+            };
+            reader.readAsDataURL(imageInput);
+        });
+    }
+
+    const promises = $('.mb-3[id^="colorSectionUpdate"]').map(async function () {
+        const colorSectionId = $(this).attr('id');
+        const colourName = $(`#colourSelect-${colorSectionId}`).val();
+        const imageInput = $(`#colourImageInput-${colorSectionId}`)[0].files[0];
+        const hiddenImage = $(`#hiddenColourImage-${colorSectionId}`).val();
+        const sellPrice = $(`#sellPriceInput-${colorSectionId}`).val();
+        const buyPrice = $(`#buyPriceInput-${colorSectionId}`).val();
+        const sizes = [];
+
+        const imageBase64String = imageInput ? await readUpdatedImageFile(imageInput) : hiddenImage;
+
+        addUpdatedColorObject(colorSectionId, colourName, imageBase64String, sellPrice, buyPrice, sizes);
+
+        $(`#sizeInputsRow-${colorSectionId} input[type='text']`).each(function () {
+            sizes.push({
+                "size": $(this).prev().text(),
+                "quantity": $(this).val()
+            });
+        });
+    }).get();
+
+    try {
+        await Promise.all(promises);
+
+        console.log(item);
+
+        $.ajax({
+            url: 'http://localhost:8080/spring-boot/api/v1/item' + update_item.itemCode,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(item),
+            success: function (data) {
+                console.log('item updated successfully:', data);
+                Swal.fire({
+                    icon: "success",
+                    title: "Your Item has been updated",
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+                // Optionally, redirect or refresh the page
+            },
+            error: function (xhr, status, error) {
+                console.error('Error updating item:', error);
+                Swal.fire({
+                    icon: "error",
+                    title: status,
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+            }
+        });
+
+    } catch (error) {
+        console.error('Error reading image file:', error);
+    }
+}
+
+function getNextItemCode() {
+    $.ajax({
+        url: 'http://localhost:8080/spring-boot/api/v1/item/next-code',
+        type: 'GET',
+        success: function (data) {
+            next_item_code = data;
+        },
+        error: function () {
+            console.error("Error fetching next item code")
+        }
+    });
+}
+
+$("#update-item-button").on('click', updateItem);
+
+function addColourSection(index, color) {
+    const colorSectionId = `colorSectionUpdate${index}`;
+    const colorSection = $('<div>').addClass('mb-3').attr('id', colorSectionId);
+
+    colorSection.append(`
+        <div class="row">
+            <hr>
+            <div class="col-md-6">
+                <label for="colourSelect-${colorSectionId}" class="form-label mt-2">Colour</label>
+                <select class="form-select custom-focus" id="colourSelect-${colorSectionId}" required>
+                    <option value="" disabled>Select Colour</option>
+                    <option value="new">New Colour</option>
+                </select>
+                <div class="invalid-feedback">Please select a colour.</div>
+            </div>
+            <div class="col-md-6">
+                <label for="colourImageInput-${colorSectionId}" class="form-label mt-2">Image</label>
+                <input type="file" class="form-control custom-focus" id="colourImageInput-${colorSectionId}" accept="image/*" required>
+                <input type="hidden" id="hiddenColourImage-${colorSectionId}" value="${color.image}">
+                <img id="imagePreview-${colorSectionId}" src="data:image/jpeg;base64,${color.image}" alt="Image Preview" style="max-width: 100%; height: auto; display: block; margin-top: 10px;">
+                <div class="invalid-feedback">Please select shoe image.</div>
+            </div>
+            <div class="col-md-6">
+                <label for="sellPriceInput-${colorSectionId}" class="form-label mt-2">Sell Price</label>
+                <input type="text" class="form-control custom-focus" id="sellPriceInput-${colorSectionId}" placeholder="Sell Price" value="${color.sellPrice}" required>
+                <div class="invalid-feedback">Please enter Sell price.</div>
+            </div>
+            <div class="col-md-6">
+                <label for="buyPriceInput-${colorSectionId}" class="form-label mt-2">Buy Price</label>
+                <input type="text" class="form-control custom-focus" id="buyPriceInput-${colorSectionId}" placeholder="Buy Price" value="${color.buyPrice}" required>
+                <div class="invalid-feedback">Please enter Buy price.</div>
+            </div>
+        </div>
+
+        <div class="mb-3 sizes-row">
+            <label class="form-label mt-3">Sizes</label>
+            <div class="row" id="sizeInputsRow-${colorSectionId}">
+                <div class="col-3">
+                    <select class="form-select custom-focus" id="sizeSelect-${colorSectionId}" required>
+                        <option value="" selected disabled>Select Size</option>
+                    </select>
+                </div>
+                <div class="col-9 d-flex align-items-center justify-content-start">
+                    <button class="btn btn-outline-dark add-size-button me-3" data-section="${colorSectionId}">Add Size</button>
+                    <button class="btn btn-outline-dark clear-size-button" data-section="${colorSectionId}">Clear Sizes</button>
+                    <button class="btn btn-outline-danger clear-color-section-button ms-2" data-section="${colorSectionId}">Remove Colour</button>
+                </div>
+            </div>
+        </div>
+    `);
+
+    $('#color-section-update-container').append(colorSection);
+
+    // Fetch colours and set the selected value
+    fetchEditColours(colorSectionId, color.colourName);
+
+    // Pre-fill sizes
+    fetchEditSizes(colorSectionId, color.sizes);
+
+    // Attach the same event handlers for adding/removing sizes and color sections
+    $(document).on('click', `.add-size-button[data-section="${colorSectionId}"]`, function (event) {
+        event.preventDefault();
+        const selectedSize = $(`#sizeSelect-${colorSectionId}`).val();
+        if (!selectedSize) {
+            $(`#sizeSelect-${colorSectionId}`).addClass('is-invalid');
+            return;
+        } else {
+            $(`#sizeSelect-${colorSectionId}`).removeClass('is-invalid');
+        }
+
+        const sizeExists = $(`#sizeInputsRow-${colorSectionId} label`).filter(function () {
+            return $(this).text() === selectedSize;
+        }).length > 0;
+
+        if (sizeExists) {
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: "This size already added",
+                showConfirmButton: false,
+                timer: 800
+            });
+            return;
+        }
+
+        const label = $('<label>').addClass('form-label p-4 rounded mt-4 border-black border fs-5 fw-bold').text(selectedSize);
+        const inputField = $('<input>').attr('type', 'text').addClass('form-control me-2 mt-3 col-2 custom-focus').attr('placeholder', 'Size').val(50).css('margin-left', '10px');
+        $(`#sizeInputsRow-${colorSectionId}`).append($('<div>').addClass('col-1').css('margin-left', `50px`).append(label).append(inputField));
+    });
+
+    $(document).on('click', `.clear-size-button[data-section="${colorSectionId}"]`, function (event) {
+        event.preventDefault();
+        $(`#sizeInputsRow-${colorSectionId} .col-1, #sizeInputsRow-${colorSectionId} label, #sizeInputsRow-${colorSectionId} hr`).remove();
+    });
+
+    $(document).on('click', `.clear-color-section-button[data-section="${colorSectionId}"]`, function (event) {
+        event.preventDefault();
+        $(`#${colorSectionId}`).remove();
+    });
+
+    $(`#colourImageInput-${colorSectionId}`).on('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                $(`#imagePreview-${colorSectionId}`).attr('src', e.target.result);
+                $(`#hiddenColourImage-${colorSectionId}`).val(e.target.result.split(',')[1]);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+function fetchEditColours(sectionId, selectedColour) {
+    $.ajax({
+        url: 'http://localhost:8080/spring-boot/api/v1/colour',
+        type: 'GET',
+        success: function (data) {
+            const select = $(`#colourSelect-${sectionId}`);
+            data.forEach(colour => {
+                const option = $('<option>').attr('value', colour.colourName).text(colour.colourName);
+                select.append(option);
+            });
+
+            if (selectedColour) {
+                select.val(selectedColour);
+            }
+            console.log("Fetch All Colours");
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+function fetchEditSizes(sectionId, sizes) {
+    $.ajax({
+        url: 'http://localhost:8080/spring-boot/api/v1/size',
+        type: 'GET',
+        success: function (data) {
+            const select = $(`#sizeSelect-${sectionId}`);
+
+            data.forEach(size => {
+                const option = $('<option>').attr('value', size.size).text(size.size);
+                select.append(option);
+            });
+            if (sizes) {
+                sizes.forEach(size => {
+                    const label = $('<label>').addClass('form-label p-4 rounded mt-4 border-black border fs-5 fw-bold').text(size.size);
+                    const inputField = $('<input>').attr('type', 'text').addClass('form-control me-2 mt-3 col-2 custom-focus').attr('placeholder', 'Size').val(50).css('margin-left', '10px');
+                    $(`#sizeInputsRow-${sectionId}`).append($('<div>').addClass('col-1').css('margin-left', `50px`).append(label).append(inputField));
+                });
+            }
+            console.log("Fetch All Sizes");
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+$('#add-new-colour-update-section').on('click', function (event) {
+    event.preventDefault();
+    const newIndex = $('#color-section-update-container .mb-3').length + 1;
+    addColourSection(newIndex, {});
+});
+
+$("#cancel-update-item-button").on('click', () => {
+    ITEM_UPDATE_FORM.css("display", "none");
+    ITEM_SECTION.css("display", "block");
+});
+
+function editItem(item) {
+    ITEM_SECTION.css("display", "none");
+    ITEM_UPDATE_FORM.css("display", "block");
+
+    update_item = item;
+    $('#updateItemName').val(item.itemName);
+    $('#updateItemProfitMargin').val(item.profitMargin);
+    $('#updateItemExpectedProfit').val(item.expectedProfit);
+    fetchSuppliers();
+    fetchCategories();
+    fetchTypes();
+    $('#updateItemSupplier').val(item.supplierName).change();
+    $('#updateItemCategory').val(item.categoryName).change();
+    $('#updateItemType').val(item.typeName).change();
+    $(`input[name="updateGender"][value="${item.gender.toUpperCase()}"]`).prop('checked', true);
+    $('#color-section-update-container').empty();
+    item.colours.forEach((colour, index) => {
+        addColourSection(index + 1, colour);
+    });
 }
 
 function deleteItem(item) {
@@ -188,17 +487,15 @@ function loadItemAddFormData() {
     fetchTypes();
     let colorSectionCount = 0;
 
-    // Listen for click events on the element with the ID 'add-new-colour-section'
     $('#add-new-colour-section').click(function () {
-        colorSectionCount++; // Increment the color section count for each click
-        const colorSectionId = `colorSection${colorSectionCount}`; // Generate a unique identifier for the color section
-
-        // Create a new div element with the class 'mb-3' and set its ID to the generated colorSectionId
+        event.preventDefault();
+        colorSectionCount++;
+        const colorSectionId = `colorSection${colorSectionCount}`;
         const colorSection = $('<div>').addClass('mb-3').attr('id', colorSectionId);
 
-        // Append HTML content to the colorSection div using template literals
         colorSection.append(`
             <div class="row">
+                <hr>
                 <div class="col-md-6">
                     <label for="colourSelect-${colorSectionId}" class="form-label mt-2">Colour</label>
                     <select class="form-select custom-focus" id="colourSelect-${colorSectionId}" required>
@@ -226,7 +523,7 @@ function loadItemAddFormData() {
 
             <div class="mb-3 sizes-row">
                 <label class="form-label mt-3">Sizes</label>
-                <div class="row" id="sizeInputsRow-${colorSectionId}"> <!-- Unique identifier for size inputs -->
+                <div class="row" id="sizeInputsRow-${colorSectionId}">
                     <div class="col-3">
                         <select class="form-select custom-focus " id="sizeSelect-${colorSectionId}" required>
                             <option value="" selected disabled>Select Size</option>
@@ -235,34 +532,54 @@ function loadItemAddFormData() {
                     <div class="col-9 d-flex align-items-center justify-content-start">
                         <button class="btn btn-outline-dark add-size-button me-3" data-section="${colorSectionId}">Add Size</button>
                         <button class="btn btn-outline-dark clear-size-button" data-section="${colorSectionId}">Clear Sizes</button>
+                        <button class="btn btn-outline-danger clear-color-section-button ms-2" data-section="${colorSectionId}">Remove Colour</button>
                     </div>
                 </div>
             </div>
         `);
 
-        // Insert the colorSection div before the element with the ID 'add-new-colour-section'
         $('#add-new-colour-section').before(colorSection);
         fetchColours(colorSectionId);
         fetchSizes(colorSectionId);
 
-        // Listen for click events on the add-size-button within the color section
         $(document).on('click', `.add-size-button[data-section="${colorSectionId}"]`, function () {
             event.preventDefault();
             const selectedSize = $(`#sizeSelect-${colorSectionId}`).val();
-            const label = $('<label>').addClass('form-label p-4 rounded mt-4 border-black border fs-5 fw-bold').text(selectedSize);
-            const inputField = $('<input>').attr('type', 'text').addClass('form-control me-2 mt-3 col-2 custom-focus').attr('placeholder', 'Size').val(50).css('margin-left', '10px'); // Adding left margin to the input field
-            const prevLabelCount = $(`#sizeInputsRow-${colorSectionId}`).find('label').length;
-            $(`#sizeInputsRow-${colorSectionId}`).append($('<div>').addClass('col-1').css('margin-left', `50px`).append(label).append(inputField));
-
-            if ($(`#sizeInputsRow-${colorSectionId} .col-2`).length === 1) {
-                $(`#sizeInputsRow-${colorSectionId}`).after('<hr>');
+            if (!selectedSize) {
+                $(`#sizeSelect-${colorSectionId}`).addClass('is-invalid');
+                return;
+            } else {
+                $(`#sizeSelect-${colorSectionId}`).removeClass('is-invalid');
             }
+
+            const sizeExists = $(`#sizeInputsRow-${colorSectionId} label`).filter(function () {
+                return $(this).text() === selectedSize;
+            }).length > 0;
+
+            if (sizeExists) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: "This size already added",
+                    showConfirmButton: false,
+                    timer: 800
+                });
+                return;
+            }
+
+            const label = $('<label>').addClass('form-label p-4 rounded mt-4 border-black border fs-5 fw-bold').text(selectedSize);
+            const inputField = $('<input>').attr('type', 'text').addClass('form-control me-2 mt-3 col-2 custom-focus').attr('placeholder', 'Size').val(50).css('margin-left', '10px');
+            $(`#sizeInputsRow-${colorSectionId}`).append($('<div>').addClass('col-1').css('margin-left', `50px`).append(label).append(inputField));
         });
 
-        // Listen for click events on the clear-size-button within the color section
         $(document).on('click', `.clear-size-button[data-section="${colorSectionId}"]`, function () {
-            // Remove input fields, labels, and hr elements from the sizeInputsRow
+            event.preventDefault();
             $(`#sizeInputsRow-${colorSectionId} .col-2, #sizeInputsRow-${colorSectionId} label, #sizeInputsRow-${colorSectionId} hr`).remove();
+        });
+
+        $(document).on('click', `.clear-color-section-button[data-section="${colorSectionId}"]`, function () {
+            event.preventDefault();
+            $(`#${colorSectionId}`).remove();
         });
     });
 }
@@ -274,11 +591,12 @@ $("#add-item-button").on('click', () => {
         $('#itemAddForm').addClass('was-validated');
         event.preventDefault();
     }
+
 });
 
 function saveItem() {
     const item = {
-        "itemCode": "IC001",
+        "itemCode": next_item_code,
         "itemName": $('#item-name').val(),
         "categoryName": $('#itemCategory').val(),
         "supplierName": $('#itemSupplier').val(),
@@ -372,6 +690,10 @@ function fetchSuppliers() {
                     value: supplier.supplierName,
                     text: supplier.supplierName
                 }));
+                $("#updateItemSupplier").append($('<option>', {
+                    value: supplier.supplierName,
+                    text: supplier.supplierName
+                }));
             });
             console.log("Fetch All Suppliers");
         },
@@ -391,6 +713,10 @@ function fetchCategories() {
                     value: category.categoryName,
                     text: category.categoryName
                 }));
+                $("#updateItemCategory").append($('<option>', {
+                    value: category.categoryName,
+                    text: category.categoryName
+                }));
             });
             console.log("Fetch All Categories");
         },
@@ -407,6 +733,10 @@ function fetchTypes() {
         success: function (data) {
             data.forEach(function (type) {
                 $("#itemType").append($('<option>', {
+                    value: type.typeName,
+                    text: type.typeName
+                }));
+                $("#updateItemType").append($('<option>', {
                     value: type.typeName,
                     text: type.typeName
                 }));
@@ -490,6 +820,7 @@ $("#item-search").on('click', () => {
 $("#add-new-item").on('click', () => {
     ITEM_SECTION.css("display", "none");
     ITEM_ADD_FORM.css("display", "block");
+    getNextItemCode();
     loadItemAddFormData();
 });
 
