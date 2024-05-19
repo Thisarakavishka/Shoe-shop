@@ -14,6 +14,8 @@ let ITEM_SECTION = $("#item-section");
 let ITEM_ADD_FORM = $("#item-add-form");
 let ITEM_UPDATE_FORM = $("#item-update-form");
 
+let CART_SECTION = $("#cart-section");
+
 $(document).ready(function () {
     clearPage();
 });
@@ -34,10 +36,17 @@ const clearPage = function () {
     ITEM_SECTION.css("display", "none");
     ITEM_ADD_FORM.css("display", "none");
     ITEM_UPDATE_FORM.css("display", "none");
+
+    CART_SECTION.css("display", "none");
 }
 
 $("#admin-panel-button").on("click", () => {
     clearPage();
+});
+
+$("#cart-button").on("click", () => {
+    clearPage();
+    CART_SECTION.css("display", "block");
 });
 
 $("#items-button").on("click", () => {

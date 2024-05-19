@@ -133,7 +133,7 @@ async function updateItem(event) {
         console.log(item);
 
         $.ajax({
-            url: 'http://localhost:8080/spring-boot/api/v1/item' + update_item.itemCode,
+            url: 'http://localhost:8080/spring-boot/api/v1/item/' + update_item.itemCode,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify(item),
