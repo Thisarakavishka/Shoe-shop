@@ -25,4 +25,9 @@ public class ItemSize implements SuperEntity {
     @JoinColumn(name = "size_id")
     @JsonBackReference
     private Size size;
+
+    @ManyToOne
+    @JoinColumn(name = "colour_id")
+    @JsonBackReference
+    private Colour colour;
 }

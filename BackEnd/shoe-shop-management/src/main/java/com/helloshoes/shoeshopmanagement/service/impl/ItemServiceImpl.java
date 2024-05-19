@@ -15,8 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -75,6 +74,7 @@ public class ItemServiceImpl implements ItemService {
                 itemSize.setQty(itemSizeDTO.getQuantity());
                 itemSize.setItem(item);
                 itemSize.setSize(size);
+                itemSize.setColour(colour);
                 itemSizeRepository.save(itemSize);
 
                 ItemDetails itemDetails = new ItemDetails();
@@ -155,8 +155,135 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Boolean update(String code, ItemDTO dto) {
-        return null;
+    public Boolean update(String itemCode, ItemDTO dto) {
+        Optional<Item> existingItemOptional = itemRepository.findById(itemCode);
+        if (existingItemOptional.isPresent()) {
+            Item existingItem = existingItemOptional.get();
+
+            // Update basic item details
+            existingItem.setItemName(dto.getItemName());
+            existingItem.setExpectedProfit(dto.getExpectedProfit());
+            existingItem.setProfitMargin(dto.getProfitMargin());
+            existingItem.setShoeGender(dto.getGender());
+
+            // Update suppliers
+            List<Supplier> suppliers = new ArrayList<>();
+            Supplier supplier = supplierRepository.findBySupplierName(dto.getSupplierName());
+            if (supplier != null) {
+                suppliers.add(supplier);
+            }
+            existingItem.setSuppliers(suppliers);
+
+            // Update categories
+            List<Category> categories = new ArrayList<>();
+            Category category = categoryRepository.findByName(dto.getCategoryName());
+            if (category != null) {
+                categories.add(category);
+            }
+            existingItem.setCategories(categories);
+
+            // Update types
+            List<Type> types = new ArrayList<>();
+            Type type = typeRepository.findByTypeName(dto.getTypeName());
+            if (type != null) {
+                types.add(type);
+            }
+            existingItem.setTypes(types);
+
+            // Update colors and sizes
+            List<ItemColour> existingColors = itemColourRepository.findByItem_ItemCode(itemCode);
+            Map<String, ItemColourDTO> newColorsMap = new HashMap<>();
+            for (ItemColourDTO color : dto.getColours()) {
+                newColorsMap.put(color.getColourName(), color);
+            }
+
+            // Remove colors not in the update data
+            for (ItemColour existingColor : existingColors) {
+                if (!newColorsMap.containsKey(existingColor.getColour().getColourName())) {
+                    itemColourRepository.delete(existingColor);
+                    itemSizeRepository.deleteAllByItemAndColour(existingItem, existingColor.getColour());
+                    itemDetailsRepository.deleteAllByItemAndColour(existingItem, existingColor.getColour());
+                }
+            }
+
+            for (ItemColourDTO itemColourDTO : dto.getColours()) {
+                Colour colour = colourRepository.findByName(itemColourDTO.getColourName());
+                ItemColour itemColour = itemColourRepository.findByItemAndColour(existingItem, colour)
+                        .orElseGet(() -> {
+                            ItemColour newItemColour = new ItemColour();
+                            newItemColour.setId(IDGeneratorUtil.idGenerator(IdType.ITEM_COLOUR));
+                            newItemColour.setItem(existingItem);
+                            newItemColour.setColour(colour);
+                            return newItemColour;
+                        });
+
+                itemColour.setImgPath(itemColourDTO.getImage());
+                itemColour.setSellPrice(itemColourDTO.getSellPrice());
+                itemColour.setBuyPrice(itemColourDTO.getBuyPrice());
+                itemColourRepository.save(itemColour);
+
+                // Update sizes
+                List<ItemSize> existingSizes = itemSizeRepository.findByItemAndColour(existingItem, colour);
+                Map<Integer, ItemSizeDTO> newSizeMap = new HashMap<>();
+                for (ItemSizeDTO size : itemColourDTO.getSizes()) {
+                    newSizeMap.put(size.getSize(), size);
+                }
+
+                // Remove sizes not in the update data
+                for (ItemSize existingSize : existingSizes) {
+                    if (!newSizeMap.containsKey(existingSize.getSize().getSize())) {
+                        itemSizeRepository.delete(existingSize);
+                    }
+                }
+
+                // Keep track of ItemDetails that need to be updated
+                Set<String> updatedItemDetailsIds = new HashSet<>();
+
+                for (ItemSizeDTO itemSizeDTO : itemColourDTO.getSizes()) {
+                    Size size = sizeRepository.findBySize(itemSizeDTO.getSize());
+                    ItemSize itemSize = itemSizeRepository.findByItemAndColourAndSize(existingItem, colour, size)
+                            .orElseGet(() -> {
+                                ItemSize newItemSize = new ItemSize();
+                                newItemSize.setId(IDGeneratorUtil.idGenerator(IdType.ITEM_SIZE));
+                                newItemSize.setItem(existingItem);
+                                newItemSize.setColour(colour);
+                                newItemSize.setSize(size);
+                                return newItemSize;
+                            });
+
+                    itemSize.setQty(itemSizeDTO.getQuantity());
+                    itemSizeRepository.save(itemSize);
+
+                    // Update item details
+                    ItemDetails itemDetails = itemDetailsRepository.findByItemAndColourAndSize(existingItem, colour, size)
+                            .orElseGet(() -> {
+                                ItemDetails newItemDetails = new ItemDetails();
+                                newItemDetails.setId(IDGeneratorUtil.idGenerator(IdType.ITEM_DETAILS));
+                                newItemDetails.setItem(existingItem);
+                                newItemDetails.setColour(colour);
+                                newItemDetails.setSize(size);
+                                newItemDetails.setCategory(category);
+                                newItemDetails.setType(type);
+                                return newItemDetails;
+                            });
+
+                    itemDetails.setQty(itemSizeDTO.getQuantity());
+                    itemDetailsRepository.save(itemDetails);
+                    updatedItemDetailsIds.add(itemDetails.getId());
+                }
+
+                // Remove ItemDetails not in the update data
+                List<ItemDetails> existingItemDetails = itemDetailsRepository.findByItemAndColour(existingItem, colour);
+                for (ItemDetails existingDetail : existingItemDetails) {
+                    if (!updatedItemDetailsIds.contains(existingDetail.getId())) {
+                        itemDetailsRepository.delete(existingDetail);
+                    }
+                }
+            }
+            itemRepository.save(existingItem);
+            return true;
+        }
+        return false;
     }
 
     private ItemDTO convertItemToItemDTO(Item item) {

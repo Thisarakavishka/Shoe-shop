@@ -69,4 +69,16 @@ public class ItemController {
         ItemDTO savedItem = itemService.save(itemDTO);
         return ResponseEntity.ok().body(savedItem);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateItem(@PathVariable String id, @RequestBody ItemDTO itemDTO) {
+        if (!id.matches(RegexUtil.ITEM_REGEX)) {
+            return ResponseEntity.badRequest().body("Invalid Item Code format");
+        }
+        boolean isUpdated = itemService.update(id, itemDTO);
+        if (!isUpdated) {
+            return ResponseEntity.badRequest().body("Failed to update Item");
+        }
+        return ResponseEntity.ok().build();
+    }
 }
