@@ -39,7 +39,7 @@ function appendEmployeeToTable(index, employee) {
             <td class="align-middle">${employee.contactNumber}</td>
             <td class="align-middle">${employee.designation}</td>
             <td class="align-middle">
-                <label class="pill ${statusColour} rounded-pill">
+                <label class="pill ${statusColour} rounded">
                     <span class="p-2 text-white fw-bold">${employee.status}</span>
                 </label>
             </td>

@@ -1,10 +1,19 @@
+body {
+    overflow: hidden; /* Prevents body scrolling */
+}
+
+.sidebar {
+    height: 100vh;
+    overflow: hidden; /* Ensures sidebar doesn't scroll */
+}
+
 .nav-pills li a:hover,
 .nav-pills li a:hover .text-black {
     background-color: black;
     color: white !important; /* Added !important to ensure it overrides any other styles */
 }
 
-.profile-menu:hover{
+.profile-menu:hover {
     background-color: black;
     color: white;
     font-style: italic;

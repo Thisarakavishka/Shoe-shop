@@ -16,7 +16,12 @@ let ITEM_UPDATE_FORM = $("#item-update-form");
 
 let CART_SECTION = $("#cart-section");
 
-$(document).ready(function () {
+$(document).ready(async function () {
+    initializeSuppliers();
+    initializeCategories();
+    initializeTypes();
+    initializeColours();
+    initializeSizes();
     clearPage();
 });
 
@@ -46,6 +51,7 @@ $("#admin-panel-button").on("click", () => {
 
 $("#cart-button").on("click", () => {
     clearPage();
+    loadDataToPOS();
     CART_SECTION.css("display", "block");
 });
 

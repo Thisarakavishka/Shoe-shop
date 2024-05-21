@@ -36,7 +36,7 @@ function appendSupplierToTable(index, supplier) {
             <th scope="row">${index + 1}</th>
             <td>${supplier.supplierName}</td>
             <td>
-                <label class="pill ${categoryColour} rounded-pill">
+                <label class="pill ${categoryColour} rounded">
                     <span class="p-2 text-white fw-bold">${supplier.category}</span>
                 </label>
             </td>
@@ -278,7 +278,7 @@ function getSupplierSearchResult() {
     event.preventDefault();
     const searchText = $('#supplier-search-text').val().trim();
     if (searchText === '') {
-        getDataToSupplierTable(0, page_size);
+        getDataToSupplierTable(0, supplier_page_size);
         getSupplierPageCount();
     } else {
         $.ajax({

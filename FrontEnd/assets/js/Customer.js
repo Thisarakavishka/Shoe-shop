@@ -37,13 +37,13 @@ function appendCustomerToTable(index, customer) {
             <th scope="row">${index + 1}</th>
             <td class="text-start">${customer.customerName}</td>
             <td>
-                <label class="pill ${genderColor} rounded-pill">
+                <label class="pill ${genderColor} rounded">
                     <span class="p-2 text-white fw-bold">${customer.gender}</span>
                 </label>
             </td>
             <td>${splitDateTime(customer.joinedDate)}</td>
             <td>
-                <label class="pill ${levelColor} rounded-pill">
+                <label class="pill ${levelColor} rounded">
                     <span class="p-2 text-white fw-bold">${customer.customerLevel}</span>
                 <label>
             </td>
