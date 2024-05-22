@@ -155,6 +155,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public Page<ItemDTO> searchItems(String query, String type, String category, String supplier, int page, int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<Item> items = itemRepository.searchItems(query, type, category, supplier, pageable);
+        return items.map(this::convertItemToItemDTO);
+    }
+
+    @Override
     public Boolean update(String itemCode, ItemDTO dto) {
         Optional<Item> existingItemOptional = itemRepository.findById(itemCode);
         if (existingItemOptional.isPresent()) {

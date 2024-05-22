@@ -4,6 +4,7 @@ import com.helloshoes.shoeshopmanagement.dto.ItemDTO;
 import com.helloshoes.shoeshopmanagement.service.ItemService;
 import com.helloshoes.shoeshopmanagement.util.RegexUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,17 @@ public class ItemController {
     public ResponseEntity<List<ItemDTO>> getSearchItems(@RequestParam String query) {
         List<ItemDTO> itemDTOS = itemService.getSearchItems(query);
         return ResponseEntity.ok().body(itemDTOS);
+    }
+
+    @GetMapping("/pos-search")
+    public Page<ItemDTO> searchItems(
+            @RequestParam(required = false) String query,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String supplier,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return itemService.searchItems(query, type, category, supplier, page, size);
     }
 
     @GetMapping("/page-size")
