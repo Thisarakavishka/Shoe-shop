@@ -3,6 +3,7 @@ const categories = [];
 const types = [];
 const colours = [];
 const sizes = [];
+const items = [];
 
 let item_page_size = 10;
 let next_item_code;
@@ -16,7 +17,7 @@ function viewItem(item) {
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        ${item.colours.map((color, index) => `<button class="btn btn-outline-custom-black-colour me-2" onclick="showDetails(view_item,'${color.colourName}')" ${index === 0 ? "id='autoClickButton'" : ""}>${color.colourName}</button>`).join('')}
+                        ${item.colours.map((color, index) => `<button class="btn btn-outline-custom-black-colour me-2" onmouseenter="showDetails(view_item,'${color.colourName}')" ${index === 0 ? "id='autoClickButton'" : ""}>${color.colourName}</button>`).join('')}
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -32,7 +33,7 @@ function viewItem(item) {
     $('#itemModal').remove();
     $('body').append(modalHtml);
     $('#itemModal').modal('show');
-    $("#autoClickButton").click();
+    $("#autoClickButton").mouseenter();
 }
 
 function showDetails(item, colourName) {
@@ -204,7 +205,7 @@ function addColourSection(index, color) {
                 <label for="colourImageInput-${colorSectionId}" class="form-label mt-2">Image</label>
                 <input type="file" class="form-control custom-focus" id="colourImageInput-${colorSectionId}" accept="image/*" required>
                 <input type="hidden" id="hiddenColourImage-${colorSectionId}" value="${color.image}">
-                <img id="imagePreview-${colorSectionId}" src="data:image/jpeg;base64,${color.image}" alt="Image Preview" style="max-width: 100%; height: auto; display: none; margin-top: 10px;">
+                <img id="imagePreview-${colorSectionId}" src="data:image/jpeg;base64,${color.image}" alt="Image Preview" style="max-width: 100%; height: auto; ${(color.image ? 'display: block;' : 'display: none;')} margin-top: 10px;">
                 <div class="invalid-feedback">Please select shoe image.</div>
             </div>
             <div class="col-md-6">
@@ -287,7 +288,7 @@ function addColourSection(index, color) {
             const reader = new FileReader();
             reader.onload = function (e) {
                 $(`#imagePreview-${colorSectionId}`).attr('src', e.target.result);
-                $(`#imagePreview-${colorSectionId}`).css("display","block");
+                $(`#imagePreview-${colorSectionId}`).css("display", "block");
                 $(`#hiddenColourImage-${colorSectionId}`).val(e.target.result.split(',')[1]);
             };
             reader.readAsDataURL(file);
@@ -772,6 +773,24 @@ function initializeSizes() {
     });
 }
 
+function initializeItems() {
+    $.ajax({
+        url: 'http://localhost:8080/spring-boot/api/v1/item/pos-search',
+        type: 'GET',
+        success: function (data) {
+            items.length = 0;
+            data.content.forEach(function (item) {
+                items.push(item);
+            });
+            console.log("Initialized Items Array");
+            createItemCards();
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
 function fetchSuppliers() {
     $('#itemSupplier').empty();
     $('#updateItemSupplier').empty();
@@ -901,6 +920,211 @@ $("#cancel-add-item-button").on('click', () => {
     ITEM_ADD_FORM.css("display", "none");
     ITEM_SECTION.css("display", "block");
 });
+
+function createItemCards() {
+    const container = $("#itemCardRow");
+    container.empty();
+
+    items.forEach((item) => {
+        const cardTop = `
+            <div class="col-md-4 mt-3 card-container">
+                <div class="border border-black rounded">
+                    <div class="row">
+                        <img src="data:image/png;base64,${item.colours[0].image}" style="height: 270px;" alt="Shoe Image" class="rounded item-image" data-item="${item.itemCode}">
+                        <span class="mt-2 ms-2">${item.itemName}</span>
+                    </div>
+                    <div class="p-3">
+                        <div class="mt-2">
+                            <div class="d-flex flex-wrap justify-content-start color-buttons" data-item="${item.itemCode}">
+                                <div class="row">
+                                    ${item.colours.map(color => `
+                                        <div class="col-auto p-1">
+                                            <button class="btn btn-outline-dark btn-sm w-100 color-btn" data-item="${item.itemCode}" data-color="${color.colourName}" data-image="${color.image}" data-price="${color.sellPrice}">${color.colourName}</button>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-2 itemCardBody${item.itemCode}"></div>
+                        <div class="mt-2 d-flex justify-content-center price-container" data-item="${item.itemCode}">
+                            <span class="item-price text-success fw-bold">${item.colours[0].sellPrice.toFixed(2)}</span>
+                        </div>
+                        <div class="mt-2 d-flex justify-content-center">
+                            <button class="btn btn-outline-custom-black-colour btn-sm add-to-cart-btn" data-item="${item.itemCode}" style="width: 180px;">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        container.append(cardTop);
+    });
+
+    $('.color-btn').on('click', function () {
+        const selectedColor = $(this).data('color');
+        const itemCode = $(this).data('item');
+        const itemImage = $(".item-image[data-item='" + itemCode + "']");
+        const itemCardBody = $(".itemCardBody" + itemCode);
+        const priceContainer = $(`.price-container[data-item='${itemCode}'] .item-price`);
+
+        const imageSrc = $(this).data('image');
+        const price = $(this).data('price');
+
+        itemImage.attr('src', "data:image/png;base64," + imageSrc);
+        priceContainer.text(price.toFixed(2));
+
+        $(`.color-btn[data-item='${itemCode}']`).removeClass('btn-dark').addClass('btn-outline-dark');
+        $(this).removeClass('btn-outline-dark').addClass('btn-dark');
+
+        const item = items.find(item => item.itemCode === itemCode);
+        const color = item.colours.find(color => color.colourName === selectedColor);
+
+        itemCardBody.empty();
+        const updatedBody = `
+            <div class="flex-wrap justify-content-start">
+                <div class="row">
+                    ${color.sizes.map(size => `
+                        <div class="col-3 p-1">
+                            <button class="btn ${size.quantity < 10 ? 'btn-outline-danger' : 'btn-outline-dark'} btn-sm w-100 size-btn"
+                                data-item="${item.itemCode}" data-quantity="${size.quantity}" data-size="${size.size}"
+                                ${size.quantity <= 0 ? 'disabled' : ''}>
+                                ${size.size}
+                            </button>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        itemCardBody.append(updatedBody);
+
+        attachSizeButtonListeners(itemCode);
+    });
+
+    $('.add-to-cart-btn').on('click', function () {
+        const itemCode = $(this).data('item');
+        const item = items.find(item => item.itemCode === itemCode);
+        const selectedColor = $(`.color-btn[data-item='${itemCode}'].btn-dark`).data('color');
+        const selectedSize = $(`.size-btn[data-item='${itemCode}'].btn-dark`).data('size');
+
+        if (!selectedColor || !selectedSize) {
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: "Please select a color and size.",
+                showConfirmButton: false,
+                timer: 800
+            });
+            return;
+        }
+
+        const color = item.colours.find(color => color.colourName === selectedColor);
+        const size = color.sizes.find(size => size.size === selectedSize);
+
+        addToCart(item.itemName, color.image, size.size, selectedColor, color.sellPrice);
+    });
+}
+
+function attachSizeButtonListeners(itemCode) {
+    $(`.size-btn[data-item='${itemCode}']`).on('click', function () {
+        $(`.size-btn[data-item='${itemCode}']`).removeClass('btn-dark').addClass('btn-outline-dark');
+        $(this).addClass('btn-dark').removeClass('btn-outline-dark');
+    });
+}
+
+function addToCart(name, image, size, color, price) {
+    const cartContainer = $("#order-items-list");
+    const existingCartItem = cartContainer.find(`.order-item[data-name='${name}'][data-size='${size}'][data-color='${color}']`);
+
+    if (existingCartItem.length > 0) {
+        const quantityElement = existingCartItem.find(".item-quantity");
+        let quantity = parseInt(quantityElement.text());
+        quantity++;
+        quantityElement.text(quantity);
+    } else {
+        // Add new item to cart
+        const cartItem = `
+            <div class="border border-secondary-subtle rounded mt-3 order-item" data-name="${name}" data-size="${size}" data-color="${color}">
+                <div class="row">
+                    <div class="col-3">
+                        <img src="data:image/png;base64,${image}" class="rounded" alt="Shoe Image" style="width: 100px; height: 100px">
+                    </div>
+                    <div class="col-6">
+                        <span class="mt-2">${name}</span>
+                        <label>${size}</label>
+                        <label>${color}</label>
+                        <h6 class="text-success item-price">${price.toFixed(2)}</h6>
+                    </div>
+                    <div class="col-3">
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn-close" aria-label="Close"></button>
+                        </div>
+                        <div class="mt-2 d-flex justify-content-end">
+                            <button class="rounded btn btn-danger me-2 decrease-quantity">-</button>
+                            <span class="me-2 mt-2 item-quantity">1</span>
+                            <button class="rounded btn btn-success increase-quantity">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        cartContainer.append(cartItem);
+    }
+
+    attachQuantityButtonListeners();
+    updatePaymentSummary();
+}
+
+function attachQuantityButtonListeners() {
+    $(".increase-quantity").off("click").on("click", function () {
+        const quantityElement = $(this).siblings(".item-quantity");
+        let quantity = parseInt(quantityElement.text());
+        quantity++;
+        quantityElement.text(quantity);
+        updatePaymentSummary();
+    });
+
+    $(".decrease-quantity").off("click").on("click", function () {
+        const quantityElement = $(this).siblings(".item-quantity");
+        let quantity = parseInt(quantityElement.text());
+        if (quantity > 1) {
+            quantity--;
+            quantityElement.text(quantity);
+            updatePaymentSummary();
+        }
+    });
+
+    $(".btn-close").off("click").on("click", function () {
+        $(this).closest(".order-item").remove();
+        updatePaymentSummary();
+    });
+}
+
+function updatePaymentSummary() {
+    let subtotal = 0;
+
+    $(".order-item").each(function () {
+        const priceText = $(this).find(".item-price").text().trim();
+        const quantityText = $(this).find(".item-quantity").text().trim();
+
+        const price = parseFloat(priceText);
+        const quantity = parseInt(quantityText);
+
+        subtotal += price * quantity;
+    });
+
+    const discount = 3;
+    const discountedTotal = subtotal - (subtotal * (discount / 100));
+
+    $("#subTotalCart").text(subtotal.toFixed(2));
+    $("#discountCart").text(discount.toFixed(2));
+    $("#totalAmountCart").text(discountedTotal.toFixed(2));
+}
+
+function loadDataToPOS() {
+    fetchSuppliers();
+    fetchTypes();
+    fetchCategories();
+    initializeItems();
+}
 
 function openAddSupplierModal() {
     const modalAddSupplier = `
