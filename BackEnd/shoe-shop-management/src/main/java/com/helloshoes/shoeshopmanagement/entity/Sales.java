@@ -19,6 +19,7 @@ public class Sales implements SuperEntity{
     @Id
     private String saleCode;
     private Double totalPrice;
+    @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
     private Integer addedPoints;
     private Date date;

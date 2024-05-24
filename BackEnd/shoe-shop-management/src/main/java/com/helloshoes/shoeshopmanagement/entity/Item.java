@@ -78,7 +78,7 @@ public class Item implements SuperEntity {
     private List<Refund> refunds;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "sales_item",
+    @JoinTable(name = "sale_item",
             joinColumns = @JoinColumn(name = "item_id"),
             inverseJoinColumns = @JoinColumn(name = "sale_id"))
     @ToString.Exclude
