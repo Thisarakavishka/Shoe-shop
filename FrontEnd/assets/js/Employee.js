@@ -222,6 +222,7 @@ function decodeEmployeeImage(imageFile) {
 }
 
 function saveEmployee() {
+    event.preventDefault();
     const employee = {
         "employeeCode": next_employee_code,
         "employeeName": $("#employeeName").val(),

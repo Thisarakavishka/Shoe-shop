@@ -1019,7 +1019,7 @@ function createItemCards() {
         const color = item.colours.find(color => color.colourName === selectedColor);
         const size = color.sizes.find(size => size.size === selectedSize);
 
-        addToCart(item.itemName, color.image, size.size, selectedColor, color.sellPrice);
+        addToCart(item.itemName, color.image, size.size, selectedColor, color.sellPrice, itemCode);
     });
 }
 
@@ -1030,9 +1030,9 @@ function attachSizeButtonListeners(itemCode) {
     });
 }
 
-function addToCart(name, image, size, color, price) {
+function addToCart(name, image, size, color, price, itemCode) {
     const cartContainer = $("#order-items-list");
-    const existingCartItem = cartContainer.find(`.order-item[data-name='${name}'][data-size='${size}'][data-color='${color}']`);
+    const existingCartItem = cartContainer.find(`.order-item[data-item-code='${itemCode}'][data-size='${size}'][data-color='${color}']`);
 
     if (existingCartItem.length > 0) {
         const quantityElement = existingCartItem.find(".item-quantity");
@@ -1042,15 +1042,15 @@ function addToCart(name, image, size, color, price) {
     } else {
         // Add new item to cart
         const cartItem = `
-            <div class="border border-secondary-subtle rounded mt-3 order-item" data-name="${name}" data-size="${size}" data-color="${color}">
+            <div class="border border-secondary-subtle rounded mt-3 order-item" data-item-code="${itemCode}" data-color="${color}" data-size="${size}">
                 <div class="row">
                     <div class="col-3">
                         <img src="data:image/png;base64,${image}" class="rounded" alt="Shoe Image" style="width: 100px; height: 100px">
                     </div>
                     <div class="col-6">
-                        <span class="mt-2">${name}</span>
-                        <label>${size}</label>
-                        <label>${color}</label>
+                        <span class="mt-2 item-name">${name}</span>
+                        <label>Size: <span class="item-size">${size}</span></label>
+                        <label>Color: <span class="item-color">${color}</span></label>
                         <h6 class="text-success item-price">${price.toFixed(2)}</h6>
                     </div>
                     <div class="col-3">
@@ -1125,6 +1125,89 @@ function loadDataToPOS() {
     fetchCategories();
     initializeItems();
 }
+
+$("#placeOrderBtn").on('click', () => {
+    event.preventDefault();
+    const saleCode = 'SC001'; // You can implement this function to generate a unique sale code
+    const totalPrice = parseFloat($("#totalAmountCart").text());
+    const paymentMethod = 'CARD'; // Assuming you have a select dropdown for payment method
+    const addedPoints = 35; // You can implement this function based on your logic
+    const date = new Date().toISOString();
+    const employeeCode = 'EMP001'; // Implement this based on your logic
+    const customerCode = 'CUS001'; // Implement this based on your logic
+
+    let items = [];
+
+    $(".order-item").each(function () {
+        const itemCode = $(this).data("item-code"); // Access the data-item-code attribute
+        const itemName = $(this).find('.item-name').text().trim(); // Access the item name
+        const selectedColor = $(this).data("color"); // Access the selected color
+        const selectedSize = $(this).data("size"); // Access the selected size
+        const quantity = parseInt($(this).find('.item-quantity').text().trim()); // Access the quantity
+
+        let sizes = [{
+            size: selectedSize,
+            quantity: quantity
+        }];
+
+        let colours = [{
+            colourName: selectedColor,
+            image: '', // If available, set the image URL
+            sellPrice: 0.0, // If available, set the sell price
+            buyPrice: 0.0, // If available, set the buy price
+            sizes: sizes
+        }];
+
+        items.push({
+            itemCode: itemCode,
+            itemName: itemName,
+            categoryName: '', // Set category name if available
+            supplierName: '', // Set supplier name if available
+            typeName: '', // Set type name if available
+            gender: 'UNISEX', // Set gender if available, e.g., 'MALE', 'FEMALE', 'UNISEX'
+            profitMargin: 0.0, // Set profit margin if available
+            expectedProfit: 0.0, // Set expected profit if available
+            colours: colours
+        });
+    });
+
+    const orderData = {
+        saleCode: saleCode,
+        totalPrice: totalPrice,
+        paymentMethod: paymentMethod,
+        addedPoints: addedPoints,
+        date: date,
+        employeeCode: employeeCode,
+        customerCode: customerCode,
+        items: items
+    };
+
+    console.log(orderData); // For debugging
+
+    $.ajax({
+        url: 'http://localhost:8080/spring-boot/api/v1/sales',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(orderData),
+        success: function(response) {
+            console.log('Order placed successfully:', response);
+            Swal.fire({
+                icon: "success",
+                title: "Your work has been saved",
+                showConfirmButton: false,
+                timer: 1000
+            });
+        },
+        error: function(error) {
+            console.error('Error placing order:', error);
+            Swal.fire({
+                icon: "error",
+                title: status,
+                showConfirmButton: false,
+                timer: 1000
+            });        }
+    });
+});
 
 function openAddSupplierModal() {
     const modalAddSupplier = `
