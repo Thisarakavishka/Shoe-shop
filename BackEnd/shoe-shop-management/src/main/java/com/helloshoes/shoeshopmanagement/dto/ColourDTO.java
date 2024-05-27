@@ -19,8 +19,4 @@ public class ColourDTO {
     @NotBlank(message = "Colour Name is Required")
     @Size(min = 3, max = 20, message = "Color Name must be between 3 and 20 characters")
     private String colourName;
-
-    @NotBlank(message = "colour Hex Value is Required")
-    @Pattern(regexp = "^#[0-9A-Fa-f]{6}$", message = "Invalid Hex Value format. It should be in the format #XXXXXX")
-    private String hexValue;
 }

@@ -17,7 +17,6 @@ public class Colour implements SuperEntity {
     @Id
     private String colourCode;
     private String colourName;
-    private String hexValue;
 
     @ManyToMany(mappedBy = "colours",cascade = CascadeType.ALL)
     @JsonBackReference

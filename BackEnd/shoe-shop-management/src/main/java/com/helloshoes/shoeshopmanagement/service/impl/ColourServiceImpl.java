@@ -69,7 +69,6 @@ public class ColourServiceImpl implements ColourService {
             Optional<Colour> colour = colourRepository.findById(code);
             if (colour.isPresent()) {
                 colour.get().setColourName(dto.getColourName());
-                colour.get().setHexValue(dto.getHexValue());
                 return true;
             }
         }
