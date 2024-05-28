@@ -18,7 +18,7 @@ public class TypeDTO implements SuperDTO {
     private String typeCode;
 
     @NotBlank(message = "Type Name is Required")
-    @Size(min = 3, max = 20, message = "Type Character code must be between 3 and 20 characters")
+    @Size(min = 3, max = 30, message = "Type Character code must be between 3 and 20 characters")
     private String typeName;
 
     @NotBlank(message = "Type Character is Required")

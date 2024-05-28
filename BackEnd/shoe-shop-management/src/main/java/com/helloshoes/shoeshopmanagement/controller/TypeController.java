@@ -44,6 +44,12 @@ public class TypeController {
         return ResponseEntity.ok(typeDTO);
     }
 
+    @GetMapping("/next-code")
+    public ResponseEntity<String> getNextTypeCode() {
+        String nextCode = typeService.getNextTypeCode();
+        return ResponseEntity.ok(nextCode);
+    }
+
     @PostMapping
     public ResponseEntity<?> createType(@RequestBody @Valid TypeDTO typeDTO) {
         TypeDTO savedType = typeService.save(typeDTO);

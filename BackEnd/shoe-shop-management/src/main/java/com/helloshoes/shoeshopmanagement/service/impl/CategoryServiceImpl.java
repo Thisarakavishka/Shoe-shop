@@ -75,4 +75,14 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return dataConvertor.toCategoryDTO(category);
     }
+
+    @Override
+    public String getNextCategoryCode() {
+        String nextCode = categoryRepository.findNextCategoryCode();
+        if (nextCode == null) {
+            return "CAT001";
+        }
+        int code = Integer.parseInt(nextCode.substring(3)) + 1;
+        return "CAT" + String.format("%03d", code);
+    }
 }

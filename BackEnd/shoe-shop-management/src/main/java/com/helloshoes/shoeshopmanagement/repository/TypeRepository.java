@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface TypeRepository extends JpaRepository<Type, String> {
     @Query(value = "SELECT t FROM Type t WHERE t.typeName = :typeName")
     Type findByTypeName(@Param("typeName") String typeName);
+
+    @Query(value = "SELECT MAX(t.typeCode) FROM Type t")
+    String findNextTypeCode();
 }

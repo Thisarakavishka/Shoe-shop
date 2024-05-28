@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface CategoryRepository extends JpaRepository<Category, String> {
     @Query(value = "SELECT c FROM Category c WHERE c.categoryName = :categoryName")
     Category findByName(@Param("categoryName") String categoryName);
+
+    @Query(value = "SELECT MAX(c.categoryCode) FROM Category c")
+    String findNextCategoryCode();
 }

@@ -76,4 +76,14 @@ public class TypeServiceImpl implements TypeService {
         }
         return dataConvertor.toTypeDTO(type);
     }
+
+    @Override
+    public String getNextTypeCode() {
+        String nextCode = typeRepository.findNextTypeCode();
+        if (nextCode == null) {
+            return "TYP001";
+        }
+        int code = Integer.parseInt(nextCode.substring(3)) + 1;
+        return "TYP" + String.format("%03d", code);
+    }
 }

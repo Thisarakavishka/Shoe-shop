@@ -44,6 +44,12 @@ public class CategoryController {
         return ResponseEntity.ok(categoryDTO);
     }
 
+    @GetMapping("/next-code")
+    public ResponseEntity<String> getNextCategoryCode() {
+        String nextCode = categoryService.getNextCategoryCode();
+        return ResponseEntity.ok(nextCode);
+    }
+
     @PostMapping
     public ResponseEntity<?> createCategory(@RequestBody @Valid CategoryDTO categoryDTO) {
         CategoryDTO savedCategory = categoryService.save(categoryDTO);
