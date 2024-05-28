@@ -16,6 +16,8 @@ let ITEM_UPDATE_FORM = $("#item-update-form");
 
 let CART_SECTION = $("#cart-section");
 
+let ATTRIBUTE_SECTION = $("#attribute-content");
+
 $(document).ready(async function () {
     initializeSuppliers();
     initializeCategories();
@@ -43,6 +45,8 @@ const clearPage = function () {
     ITEM_UPDATE_FORM.css("display", "none");
 
     CART_SECTION.css("display", "none");
+
+    ATTRIBUTE_SECTION.css("display", "none");
 }
 
 $("#admin-panel-button").on("click", () => {
@@ -83,8 +87,11 @@ $("#suppliers-button").on("click", () => {
     SUPPLIER_SECTION.css("display", "block");
 });
 
-$("#categories-button").on("click", () => {
+$("#attributes-button").on("click", () => {
     clearPage();
+    getDataToCategoryTable();
+    getDataToTypeTable();
+    ATTRIBUTE_SECTION.css("display", "block");
 });
 
 $("#logout-button").on("click", () => {

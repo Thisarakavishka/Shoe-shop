@@ -14,6 +14,7 @@
 <body>
 <section class="container-fluid">
     <div class="row">
+
         <!-- sidebar -->
         <div id="side-bar-section" class="col-sm-auto sidebar bg-white sticky-top border border-secondary-subtle">
             <div>
@@ -70,11 +71,11 @@
                         </a>
                     </li>
                     <li class="nav-item mt-4">
-                        <a id="categories-button" href="#" class="nav-link text-black" title="Categories"
+                        <a id="attributes-button" href="#" class="nav-link text-black" title="Categories"
                            data-bs-toggle="tooltip"
                            data-bs-placement="right">
                             <i class="fa fa-list fa-lg"></i>
-                            <span class="ms-2 d-none d-lg-inline"><b>Categories</b></span>
+                            <span class="ms-2 d-none d-lg-inline"><b>Attributes</b></span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -1456,10 +1457,83 @@
                                 </button>
                             </div>
                             <div class="mt-4 d-flex justify-content-center">
-                                <button class="btn btn-outline-custom-black-colour" id="placeOrderBtn" style="width: 350px;">Place order
+                                <button class="btn btn-outline-custom-black-colour" id="placeOrderBtn"
+                                        style="width: 350px;">Place order
                                 </button>
                             </div>
                         </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Attribute content -->
+            <section id="attribute-content" style=" height: 800px; overflow-y: auto;" class="p-2">
+                <!-- Category section -->
+                <section id="category-section" class="container p-2 mt-5">
+                    <!-- Category Button Section -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <div class="col-md-1">
+                            <select class="form-select custom-focus" id="categoryPageSize" name="size" required>
+                                <option value="" selected disabled>size</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button class="btn btn-custom-black-colour" id="add-new-category">New Category</button>
+                        </div>
+                    </div>
+                    <!-- Category Table -->
+                    <div class="row justify-content-center d-flex mt-3 p-2">
+                        <table class="table table-hover text-center" id="category-table">
+                            <thead class="bg-custom-table-head">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Character</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div class="justify-content-center d-flex" id="categoryPagination"></div>
+                    </div>
+                </section>
+                <!-- Type section -->
+                <section id="type-section" class="container p-2 mt-5">
+                    <!-- Type Button Section -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <div class="col-md-1">
+                            <select class="form-select custom-focus" id="typePageSize" name="size" required>
+                                <option value="" selected disabled>size</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button class="btn btn-custom-black-colour" id="add-new-type">New Type</button>
+                        </div>
+                    </div>
+                    <!-- Type Table -->
+                    <div class="row justify-content-center d-flex mt-3 p-2">
+                        <table class="table table-hover text-center" id="type-table">
+                            <thead class="bg-custom-table-head">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Code</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div class="justify-content-center d-flex" id="typePagination"></div>
                     </div>
                 </section>
             </section>
@@ -1485,5 +1559,6 @@
 <script src="assets/js/Item.js"></script>
 <script src="assets/js/Supplier.js"></script>
 <script src="assets/js/Customer.js"></script>
+<script src="assets/js/Attribute.js"></script>
 </body>
 </html>

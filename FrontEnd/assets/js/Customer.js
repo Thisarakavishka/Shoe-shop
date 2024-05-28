@@ -272,6 +272,7 @@ $('#backUpdateCustomer').on('click', () => {
     CUSTOMER_UPDATE_FORM.css("display", "none");
     CUSTOMER_SECTION.css("display", "block");
 });
+
 $('#customer-search-text').on('input', () => {
     getCustomerSearchResult();
 });
