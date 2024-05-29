@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,24 +104,44 @@ public class SalesServiceImpl implements SalesService {
         List<ItemDTO> itemDTOList = new ArrayList<>();
         for (SaleItem saleItem : saleItems) {
 
+            Optional<Item> item = itemRepository.findById(saleItem.getItem().getItemCode());
             ItemDTO itemDTO = new ItemDTO();
-            itemDTO.setItemCode(saleItem.getItem().getItemCode());
+            if (item.isPresent()) {
+                Item existingItem = item.get();
+                itemDTO.setItemCode(existingItem.getItemCode());
+                itemDTO.setItemName(existingItem.getItemName());
+                itemDTO.setCategoryName(String.valueOf(existingItem.getCategories().get(0).getCategoryName()));
+                itemDTO.setTypeName(String.valueOf(existingItem.getTypes().get(0).getTypeName()));
+                itemDTO.setSupplierName(String.valueOf(existingItem.getSuppliers().get(0).getSupplierName()));
+                itemDTO.setGender(item.get().getShoeGender());
+                itemDTO.setExpectedProfit(existingItem.getExpectedProfit());
+                itemDTO.setProfitMargin(existingItem.getProfitMargin());
 
-            ItemColourDTO colourDTO = new ItemColourDTO();
-            colourDTO.setColourName(saleItem.getColour().getColourName());
+                Colour colour = colourRepository.findByName(saleItem.getColour().getColourName());
+                Optional<ItemColour> itemColour = itemColourRepository.findByItemAndColour(existingItem, colour);
 
-            ItemSizeDTO itemSizeDTO = new ItemSizeDTO();
-            itemSizeDTO.setSize(saleItem.getSize().getSize());
-            itemSizeDTO.setQuantity(saleItem.getQty());
+                ItemColourDTO colourDTO = new ItemColourDTO();
+                if (itemColour.isPresent()) {
+                    colourDTO.setColourName(colour.getColourName());
+                    colourDTO.setImage(itemColour.get().getImgPath());
+                    colourDTO.setSellPrice(itemColour.get().getSellPrice());
+                    colourDTO.setBuyPrice(itemColour.get().getBuyPrice());
+                }
 
-            List<ItemSizeDTO> sizes = new ArrayList<>();
-            sizes.add(itemSizeDTO);
-            colourDTO.setSizes(sizes);
+                ItemSizeDTO itemSizeDTO = new ItemSizeDTO();
+                itemSizeDTO.setSize(saleItem.getSize().getSize());
+                itemSizeDTO.setQuantity(saleItem.getQty());
 
-            List<ItemColourDTO> colours = new ArrayList<>();
-            colours.add(colourDTO);
-            itemDTO.setColours(colours);
-            itemDTOList.add(itemDTO);
+                List<ItemSizeDTO> sizes = new ArrayList<>();
+                sizes.add(itemSizeDTO);
+                colourDTO.setSizes(sizes);
+
+                List<ItemColourDTO> colours = new ArrayList<>();
+                colours.add(colourDTO);
+                itemDTO.setColours(colours);
+                itemDTOList.add(itemDTO);
+            }
+
         }
         dto.setItems(itemDTOList);
         return dto;
@@ -205,52 +226,22 @@ public class SalesServiceImpl implements SalesService {
         return true;
     }
 
-    private ItemDTO convertItemToItemDTO(Item item) {
-        ItemDTO itemDTO = new ItemDTO();
-
-        itemDTO.setItemCode(item.getItemCode());
-        itemDTO.setItemName(item.getItemName());
-        itemDTO.setProfitMargin(item.getProfitMargin());
-        itemDTO.setExpectedProfit(item.getExpectedProfit());
-        itemDTO.setGender(item.getShoeGender());
-
-        if (!item.getSuppliers().isEmpty()) {
-            itemDTO.setSupplierName(item.getSuppliers().get(0).getSupplierName());
+    @Override
+    public String getNextSaleCode() {
+        String nextCode = salesRepository.findNextSaleCode();
+        if (nextCode == null) {
+            return "SC001";
         }
-        if (!item.getTypes().isEmpty()) {
-            itemDTO.setTypeName(item.getTypes().get(0).getTypeName());
-        }
-        if (!item.getCategories().isEmpty()) {
-            itemDTO.setCategoryName(item.getCategories().get(0).getCategoryName());
-        }
-
-        List<ItemColourDTO> itemColourDTOS = new ArrayList<>();
-        for (Colour colour : item.getColours()) {
-            ItemColourDTO itemColourDTO = new ItemColourDTO();
-            itemColourDTO.setColourName(colour.getColourName());
-
-            ItemColour itemColour = itemColourRepository.findByItemItemCodeAndColourColourCode(item.getItemCode(), colour.getColourCode());
-            itemColourDTO.setImage(itemColour.getImgPath());
-            itemColourDTO.setSellPrice(itemColour.getSellPrice());
-            itemColourDTO.setBuyPrice(itemColour.getBuyPrice());
-
-            List<ItemSizeDTO> itemSizeDTOS = new ArrayList<>();
-
-            List<ItemDetails> itemDetailsList = itemDetailsRepository.findByItem_ItemCodeAndColour_ColourCode(item.getItemCode(), colour.getColourCode());
-            for (ItemDetails itemDetails : itemDetailsList) {
-                Size size = itemDetails.getSize();
-                ItemSizeDTO itemSizeDTO = new ItemSizeDTO();
-
-                itemSizeDTO.setQuantity(itemDetails.getQty());
-                itemSizeDTO.setSize(size.getSize());
-
-                itemSizeDTOS.add(itemSizeDTO);
-            }
-            itemColourDTO.setSizes(itemSizeDTOS);
-            itemColourDTOS.add(itemColourDTO);
-        }
-        itemDTO.setColours(itemColourDTOS);
-        return itemDTO;
+        int code = Integer.parseInt(nextCode.substring(3)) + 1;
+        return "SC" + String.format("%03d", code);
     }
 
+    public List<SaleDTO> getSalesWithinDateRange(Date startDate, Date endDate) {
+        List<Sales> sales = salesRepository.findSalesWithinDateRange(startDate, endDate);
+        List<SaleDTO> saleDTOList = new ArrayList<>();
+        for (Sales sale : sales) {
+            saleDTOList.add(convertToDTO(sale));
+        }
+        return saleDTOList;
+    }
 }

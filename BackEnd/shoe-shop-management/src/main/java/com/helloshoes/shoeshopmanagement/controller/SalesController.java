@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -48,6 +50,24 @@ public class SalesController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(saleDTO);
+    }
+
+    @GetMapping("/next-code")
+    public ResponseEntity<String> getNextSaleCode() {
+        String nextCode = salesService.getNextSaleCode();
+        return ResponseEntity.ok(nextCode);
+    }
+
+
+    @GetMapping("/within-days")
+    public ResponseEntity<List<SaleDTO>> getSalesWithinDays(@RequestParam int days) {
+        Calendar calendar = Calendar.getInstance();
+        Date endDate = calendar.getTime();
+        calendar.add(Calendar.DAY_OF_YEAR, -days);
+        Date startDate = calendar.getTime();
+
+        List<SaleDTO> sales = salesService.getSalesWithinDateRange(startDate, endDate);
+        return ResponseEntity.ok().body(sales);
     }
 
     @PutMapping("/{code}")
