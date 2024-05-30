@@ -15,4 +15,6 @@ public interface EmployeeService extends SuperService<EmployeeDTO> {
     String getNextEmployeeCode();
 
     List<EmployeeDTO> getSearchEmployees(String query);
+
+    boolean checkAdminCredentials(String email, String password);
 }

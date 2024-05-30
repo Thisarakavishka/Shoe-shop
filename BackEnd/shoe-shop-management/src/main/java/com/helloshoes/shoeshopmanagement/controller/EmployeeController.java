@@ -69,6 +69,16 @@ public class EmployeeController {
         return ResponseEntity.ok().body(employeeDTO);
     }
 
+    @GetMapping("/check-credentials")
+    public ResponseEntity<?> checkAdminCredentials(@RequestParam String email, @RequestParam String password) {
+        boolean isValid = employeeService.checkAdminCredentials(email, password);
+        if (isValid) {
+            return ResponseEntity.ok().body("Credentials are valid");
+        } else {
+            return ResponseEntity.status(401).body("Invalid credentials or insufficient permissions");
+        }
+    }
+
     @PostMapping
     public ResponseEntity<?> createEmployee(@RequestBody @Valid EmployeeDTO employeeDTO) {
         EmployeeDTO savedEmployee = employeeService.save(employeeDTO);

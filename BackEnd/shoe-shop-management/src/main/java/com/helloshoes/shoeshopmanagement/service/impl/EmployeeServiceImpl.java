@@ -122,4 +122,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<Employee> employees = employeeRepository.searchEmployees(query);
         return dataConvertor.toEmployeeDTOList(employees);
     }
+
+    @Override
+    public boolean checkAdminCredentials(String email, String password) {
+        Employee employee = employeeRepository.findActiveAdminByEmailAndPassword(email, password);
+        return employee != null;
+    }
 }

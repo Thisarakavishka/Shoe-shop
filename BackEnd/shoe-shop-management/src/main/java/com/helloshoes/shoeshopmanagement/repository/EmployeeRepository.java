@@ -36,4 +36,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, String> {
             "LOWER(e.emergencyContactNumber) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
             "LOWER(e.email) LIKE LOWER(CONCAT('%', :query, '%'))")
     List<Employee> searchEmployees(String query);
+
+    @Query("SELECT e FROM Employee e WHERE e.email = :email AND e.password = :password AND e.status = 'ACTIVE' AND e.role = 'ADMIN'")
+    Employee findActiveAdminByEmailAndPassword(@Param("email") String email, @Param("password") String password);
+
 }
