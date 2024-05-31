@@ -4,6 +4,9 @@ const types = [];
 const colours = [];
 const sizes = [];
 const items = [];
+let discount = 3;
+
+let next_sale_code ;
 
 let item_page_size = 10;
 let next_item_code;
@@ -1111,7 +1114,7 @@ function updatePaymentSummary() {
         subtotal += price * quantity;
     });
 
-    const discount = 3;
+
     const discountedTotal = subtotal - (subtotal * (discount / 100));
 
     $("#subTotalCart").text(subtotal.toFixed(2));
@@ -1120,15 +1123,29 @@ function updatePaymentSummary() {
 }
 
 function loadDataToPOS() {
+    getNextSaleCode();
     fetchSuppliers();
     fetchTypes();
     fetchCategories();
     initializeItems();
 }
 
+function getNextSaleCode() {
+    $.ajax({
+        url: 'http://localhost:8080/spring-boot/api/v1/sales/next-code',
+        type: 'GET',
+        success: function (data) {
+            next_sale_code = data;
+        },
+        error: function () {
+            console.log("Error fetching next sale code")
+        }
+    });
+}
+
 $("#placeOrderBtn").on('click', () => {
     event.preventDefault();
-    const saleCode = 'SC001'; // You can implement this function to generate a unique sale code
+    const saleCode = next_sale_code
     const totalPrice = parseFloat($("#totalAmountCart").text());
     const paymentMethod = 'CARD'; // Assuming you have a select dropdown for payment method
     const addedPoints = 35; // You can implement this function based on your logic
@@ -1197,6 +1214,9 @@ $("#placeOrderBtn").on('click', () => {
                 showConfirmButton: false,
                 timer: 1000
             });
+            const cartContainer = $("#order-items-list");
+            cartContainer.empty();
+            loadDataToPOS();
         },
         error: function(error) {
             console.error('Error placing order:', error);
@@ -1208,104 +1228,3 @@ $("#placeOrderBtn").on('click', () => {
             });        }
     });
 });
-
-function openAddSupplierModal() {
-    const modalAddSupplier = `
-        <div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true" >
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3>Add New Supplier</h3>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="supplierModalAddForm" class="row g-3 needs-validation" novalidate>
-                            <div class="p-3">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label for="modalSupplierName" class="form-label">Supplier Name</label>
-                                        <input type="text" class="form-control custom-focus" id="modalSupplierName" name="supplierName" required>
-                                        <div class="invalid-feedback">Please provide a valid supplier name.</div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="modalSupplierCategory" class="form-label">Supplier Category</label>
-                                        <select class="form-select custom-focus" id="modalSupplierCategory" name="supplierCategory" required>
-                                            <option value="" selected disabled>Select Supplier Category</option>
-                                            <option value="LOCAL">LOCAL</option>
-                                            <option value="INTERNATIONAL">INTERNATIONAL</option>
-                                        </select>
-                                        <div class="invalid-feedback">Please select a supplier category.</div>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-6">
-                                        <label for="modalSupplierAddressNo" class="form-label">Address No</label>
-                                        <input type="text" class="form-control custom-focus" id="modalSupplierAddressNo" name="address" required>
-                                        <div class="invalid-feedback">Please provide a valid address.</div>
-                                    </div>
-                                    <div class="col-6">
-                                        <label for="modalSupplierAddressLane" class="form-label">Address Lane</label>
-                                        <input type="text" class="form-control custom-focus" id="modalSupplierAddressLane" name="address" required>
-                                        <div class="invalid-feedback">Please provide a valid address.</div>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-6">
-                                        <label for="modalSupplierAddressCity" class="form-label">Address City</label>
-                                        <input type="text" class="form-control custom-focus" id="modalSupplierAddressCity" name="address" required>
-                                        <div class="invalid-feedback">Please provide a valid address.</div>
-                                    </div>
-                                    <div class="col-6">
-                                        <label for="modalSupplierAddressState" class="form-label">Address State</label>
-                                        <input type="text" class="form-control custom-focus" id="modalSupplierAddressState" name="address" required>
-                                        <div class="invalid-feedback">Please provide a valid address.</div>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-6">
-                                        <label for="modalSupplierPostalCode" class="form-label">Postal Code</label>
-                                        <input type="text" class="form-control custom-focus" id="modalSupplierPostalCode" name="postalCode" required>
-                                        <div class="invalid-feedback">Please provide a valid postal code.</div>
-                                    </div>
-                                    <div class="col-6">
-                                        <label for="modalSupplierCountry" class="form-label">Country</label>
-                                        <input type="text" class="form-control custom-focus" id="modalSupplierCountry" name="country" required>
-                                        <div class="invalid-feedback">Please provide a valid country.</div>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-6">
-                                        <label for="modalSupplierMobileNumber" class="form-label">Mobile Number</label>
-                                        <input type="text" class="form-control custom-focus" id="modalSupplierMobileNumber" name="mobileNumber" required>
-                                        <div class="invalid-feedback">Please provide a valid mobile number.</div>
-                                    </div>
-                                    <div class="col-6">
-                                        <label for="modalSupplierLandNumber" class="form-label">Land Number</label>
-                                        <input type="text" class="form-control custom-focus" id="modalSupplierLandNumber" name="landNumber" required>
-                                        <div class="invalid-feedback">Please provide a valid land number.</div>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-md-8">
-                                        <label for="modalSupplierEmail" class="form-label">Email</label>
-                                        <input type="email" class="form-control custom-focus" id="modalSupplierEmail" name="email" required>
-                                        <div class="invalid-feedback">Please provide a valid email address.</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="modalAddNewSupplier" class="btn btn-outline-custom-black-colour" data-bs-dismiss="modal">Save</button>
-                    </div>
-                </div>
-            </div>
-        </div>    
-    `;
-
-    // Append modal to body
-    $('body').append(modalAddSupplier);
-
-    // Show the modal
-    $('#addSupplierModal').modal('show');
-}

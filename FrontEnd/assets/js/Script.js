@@ -18,6 +18,10 @@ let CART_SECTION = $("#cart-section");
 
 let ATTRIBUTE_SECTION = $("#attribute-content");
 
+let REFUND_SECTION = $("#refund-section");
+
+let HISTORY_SECTION = $("#history-section");
+
 $(document).ready(async function () {
     initializeSuppliers();
     initializeCategories();
@@ -47,6 +51,10 @@ const clearPage = function () {
     CART_SECTION.css("display", "none");
 
     ATTRIBUTE_SECTION.css("display", "none");
+
+    REFUND_SECTION.css("display", "none");
+
+    HISTORY_SECTION.css("display", "none");
 }
 
 $("#admin-panel-button").on("click", () => {
@@ -57,6 +65,12 @@ $("#cart-button").on("click", () => {
     clearPage();
     loadDataToPOS();
     CART_SECTION.css("display", "block");
+});
+
+$("#refund-button").on("click", () => {
+    clearPage();
+    loadRefundDataToTable();
+    REFUND_SECTION.css("display", "block");
 });
 
 $("#items-button").on("click", () => {
@@ -92,6 +106,11 @@ $("#attributes-button").on("click", () => {
     getDataToCategoryTable();
     getDataToTypeTable();
     ATTRIBUTE_SECTION.css("display", "block");
+});
+
+$("#history-button").on("click", () => {
+    clearPage();
+    HISTORY_SECTION.css("display", "block");
 });
 
 $("#logout-button").on("click", () => {
