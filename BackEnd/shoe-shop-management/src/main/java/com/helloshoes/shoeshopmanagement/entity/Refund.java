@@ -1,6 +1,7 @@
 package com.helloshoes.shoeshopmanagement.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +26,10 @@ public class Refund implements SuperEntity {
     @JsonBackReference
     private Employee employee;
 
-    @ManyToMany(mappedBy = "refunds",cascade = CascadeType.ALL)
-    @JsonBackReference
+    @ManyToMany
+    @JoinTable(name = "item_refund",
+            joinColumns = @JoinColumn(name = "refund_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id"))
+    @JsonManagedReference
     private List<Item> items;
 }

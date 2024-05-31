@@ -11,10 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
 
 @Service
 @Transactional
@@ -32,6 +31,7 @@ public class SalesServiceImpl implements SalesService {
     private final ItemSizeRepository itemSizeRepository;
     private final ItemDetailsRepository itemDetailsRepository;
     private final DataConvertor dataConvertor;
+    private final RefundRepository refundRepository;
 
     @Override
     public SaleDTO save(SaleDTO dto) {
@@ -158,6 +158,11 @@ public class SalesServiceImpl implements SalesService {
     }
 
     @Override
+    public Boolean update(String code, SaleDTO dto) {
+        return null;
+    }
+
+    @Override
     public SaleDTO getByCode(String code) {
         if (!salesRepository.existsById(code)) {
             return null;
@@ -173,56 +178,93 @@ public class SalesServiceImpl implements SalesService {
     }
 
     @Override
-    public Boolean update(String code, SaleDTO dto) {
-    /*
+    public Boolean update(String code, RefundDTO dto) {
+        if (!dto.getSaleCode().equals(code)) {
+            return false;
+        }
         Sales existingSale = salesRepository.findById(code)
-                .orElseThrow(() -> new RuntimeException("Sale not found"));
+                .orElseThrow(() -> new RuntimeException("Sale not found with code: " + code));
 
-        existingSale.setTotalPrice(dto.getTotalPrice());
-        existingSale.setPaymentMethod(dto.getPaymentMethod());
-        existingSale.setAddedPoints(dto.getAddedPoints());
-        existingSale.setDate(dto.getDate());
+        Map<String, Map<String, Map<String, Integer>>> itemColourSizeMap = new HashMap<>();
 
-        Employee employee = employeeRepository.findById(dto.getEmployeeCode())
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
-        existingSale.setEmployee(employee);
-
-        Customer customer = customerRepository.findById(dto.getCustomerCode())
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
-        existingSale.setCustomer(customer);
-
-        // Update items
-        List<Item> existingItems = existingSale.getItems();
-        saleItemRepository.deleteAll(existingItems);
-        List<Item> newItemList = new ArrayList<>();
         for (ItemDTO itemDTO : dto.getItems()) {
             Optional<Item> itemOptional = itemRepository.findById(itemDTO.getItemCode());
-            if (itemOptional.isPresent()) {
-                Item item = itemOptional.get();
+            Item existItem = itemOptional
+                    .orElseThrow(() -> new RuntimeException("Item not found with code: " + itemDTO.getItemCode()));
 
-                SaleItem saleItem = new SaleItem();
-                saleItem.setId(IDGeneratorUtil.idGenerator(IdType.SALE_ITEM));
-                saleItem.setSale(existingSale);
+            Colour colour = colourRepository.findByName(itemDTO.getColours().get(0).getColourName());
+            Size size = sizeRepository.findBySize(itemDTO.getColours().get(0).getSizes().get(0).getSize());
 
-                saleItem.setItem(item);
-                saleItem.setQty(itemDTO.getColours().get(0).getSizes().get(0).getQuantity());
+            if (colour == null) {
+                throw new RuntimeException("Colour not found with name: " + itemDTO.getColours().get(0).getColourName());
+            }
+            if (size == null) {
+                throw new RuntimeException("Size not found with value: " + itemDTO.getColours().get(0).getSizes().get(0).getSize());
+            }
 
-                Colour colour = colourRepository.findByName(itemDTO.getColours().get(0).getColourName());
-                saleItem.setColour(colour);
+            int quantity = itemDTO.getColours().get(0).getSizes().get(0).getQuantity();
 
-                Size size = sizeRepository.findBySize(itemDTO.getColours().get(0).getSizes().get(0).getSize());
-                saleItem.setSize(size);
+            itemColourSizeMap.putIfAbsent(existItem.getItemCode(), new HashMap<>());
+            itemColourSizeMap.get(existItem.getItemCode()).putIfAbsent(colour.getColourCode(), new HashMap<>());
+            itemColourSizeMap.get(existItem.getItemCode()).get(colour.getColourCode()).put(size.getSizeCode(), quantity);
+        }
 
-                saleItemRepository.save(saleItem);
+        for (Map.Entry<String, Map<String, Map<String, Integer>>> itemEntry : itemColourSizeMap.entrySet()) {
+            String itemCode = itemEntry.getKey();
+            for (Map.Entry<String, Map<String, Integer>> colourEntry : itemEntry.getValue().entrySet()) {
+                String colourCode = colourEntry.getKey();
+                for (Map.Entry<String, Integer> sizeEntry : colourEntry.getValue().entrySet()) {
+                    String sizeCode = sizeEntry.getKey();
+                    int quantity = sizeEntry.getValue();
 
-                newItemList.add(item);
+                    int delete = saleItemRepository.deleteBySaleAndItemAndSizeAndColour(
+                            dto.getSaleCode(),
+                            itemCode,
+                            sizeCode,
+                            colourCode
+                    );
+
+                    if (delete == 0) {
+                        throw new RuntimeException("Failed to delete SaleItem with saleCode: " + dto.getSaleCode()
+                                + ", itemCode: " + itemCode
+                                + ", sizeCode: " + sizeCode
+                                + ", colourCode: " + colourCode);
+                    }
+
+                    Optional<ItemSize> itemSizeOptional = itemSizeRepository.findByItemCodeAndColourCodeAndSizeCode(itemCode, colourCode, sizeCode);
+                    if (itemSizeOptional.isPresent()) {
+                        ItemSize itemSize = itemSizeOptional.get();
+                        itemSize.setQty(itemSize.getQty() + quantity);
+                        System.out.println(quantity);
+                        itemSizeRepository.save(itemSize);
+                    } else {
+                        throw new RuntimeException("ItemSize not found for itemCode: " + itemCode
+                                + ", colourCode: " + colourCode
+                                + ", sizeCode: " + sizeCode);
+                    }
+                }
             }
         }
 
-        existingSale.setItems(newItemList);
-        salesRepository.save(existingSale);
+        BigDecimal totalPrice = BigDecimal.valueOf(existingSale.getTotalPrice())
+                .subtract(BigDecimal.valueOf(dto.getTotalRefund()));
+        existingSale.setTotalPrice(totalPrice.setScale(2, RoundingMode.HALF_UP).doubleValue());
 
-     */
+        existingSale.setAddedPoints(existingSale.getAddedPoints() - dto.getAddedPoints());
+
+        Refund refund = new Refund();
+        refund.setRefundCode(IDGeneratorUtil.idGenerator(IdType.REFUND));
+        refund.setDescription(dto.getRefundDescription());
+        refund.setDate(dto.getDate());
+
+        Employee employee = employeeRepository.findById(dto.getEmployeeCode())
+                .orElseThrow(() -> new RuntimeException("Employee not found with code: " + dto.getEmployeeCode()));
+        refund.setEmployee(employee);
+
+        refund.setItems(new ArrayList<>(itemRepository.findAllById(itemColourSizeMap.keySet())));
+
+        refundRepository.save(refund);
+
         return true;
     }
 

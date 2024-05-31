@@ -1,5 +1,6 @@
 package com.helloshoes.shoeshopmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.helloshoes.shoeshopmanagement.entity.enums.ShoeGender;
 import jakarta.persistence.*;
@@ -69,12 +70,8 @@ public class Item implements SuperEntity {
     @JsonManagedReference
     private List<ItemDetails> itemDetails;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "item_refund",
-            joinColumns = @JoinColumn(name = "item_id"),
-            inverseJoinColumns = @JoinColumn(name = "refund_id"))
-    @ToString.Exclude
-    @JsonManagedReference
+    @ManyToMany(mappedBy = "items", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Refund> refunds;
 
     @ManyToMany(cascade = CascadeType.ALL)

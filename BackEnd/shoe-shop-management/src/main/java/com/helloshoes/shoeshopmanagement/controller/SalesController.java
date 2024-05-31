@@ -1,5 +1,6 @@
 package com.helloshoes.shoeshopmanagement.controller;
 
+import com.helloshoes.shoeshopmanagement.dto.RefundDTO;
 import com.helloshoes.shoeshopmanagement.dto.SaleDTO;
 import com.helloshoes.shoeshopmanagement.service.SalesService;
 import com.helloshoes.shoeshopmanagement.util.RegexUtil;
@@ -58,9 +59,8 @@ public class SalesController {
         return ResponseEntity.ok(nextCode);
     }
 
-
     @GetMapping("/within-days")
-    public ResponseEntity<List<SaleDTO>> getSalesWithinDays(@RequestParam int days) {
+    public ResponseEntity<List<SaleDTO>> getSalesWithinDays(@RequestParam(defaultValue = "3") int days) {
         Calendar calendar = Calendar.getInstance();
         Date endDate = calendar.getTime();
         calendar.add(Calendar.DAY_OF_YEAR, -days);
@@ -71,10 +71,12 @@ public class SalesController {
     }
 
     @PutMapping("/{code}")
-    public ResponseEntity<?> updateSale(@PathVariable String code, @RequestBody SaleDTO saleDTO) {
-        boolean isUpdated = salesService.update(code, saleDTO);
+    public ResponseEntity<?> updateSale(@PathVariable String code, @RequestBody RefundDTO refundDTO) {
+        System.out.println("hit on refund/update method sale controller");
+        System.out.println(refundDTO);
+        boolean isUpdated = salesService.update(code, refundDTO);
         if (!isUpdated) {
-            return ResponseEntity.badRequest().body("Failed to update Sale");
+            return ResponseEntity.badRequest().body("Failed to Refund");
         }
         return ResponseEntity.ok().build();
     }

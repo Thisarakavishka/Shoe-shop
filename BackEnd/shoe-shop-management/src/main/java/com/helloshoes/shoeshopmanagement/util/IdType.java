@@ -5,6 +5,7 @@ public enum IdType {
     ITEM_DETAILS("ID"),
     ITEM_SIZE("IS"),
     SALE_ITEM("SI"),
+    REFUND("RF"),
     ITEM("ITC");
     private final String code;
 
