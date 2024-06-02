@@ -9,11 +9,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, String> {
     @Query(value = "SELECT e FROM Employee e WHERE e.email = :email")
     Employee findByEmail(@Param("email") String email);
+
+    @Query(value = "SELECT e FROM Employee e WHERE e.email = :email")
+    Optional<Employee> findUserByEmail(@Param("email") String email);
 
     Page<Employee> findAll(Pageable pageable);
 
