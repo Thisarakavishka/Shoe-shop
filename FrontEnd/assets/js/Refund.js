@@ -11,6 +11,9 @@ function getRefundData(range) {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/sales/within-days',
         method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         data: {days: range},
         success: function (data) {
             displayRefundData(data);
@@ -337,6 +340,9 @@ function editSale(sale) {
             $.ajax({
                 url: 'http://localhost:8080/spring-boot/api/v1/employee/check-credentials',
                 type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
                 contentType: 'application/x-www-form-urlencoded',
                 data: $.param({
                     email: username,
@@ -373,6 +379,9 @@ function editSale(sale) {
             $.ajax({
                 url: `http://localhost:8080/spring-boot/api/v1/sales/${sale.saleCode}`,
                 type: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
                 contentType: 'application/json',
                 data: JSON.stringify(updateData), // Send updateData directly
                 success: function (response) {

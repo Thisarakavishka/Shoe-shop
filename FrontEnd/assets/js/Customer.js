@@ -12,6 +12,9 @@ function getDataToCustomerTable(page, size) {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/customer',
         method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         data: {page: page, size: size},
         success: function (data) {
             displayCustomerData(data, page, size);
@@ -69,6 +72,9 @@ function getPageCount() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/customer/page-size',
         method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         data: {size: customer_page_size},
         success: function (data) {
             console.log('success fetching count of customer pages');
@@ -125,6 +131,9 @@ function deleteCustomer(customer) {
             $.ajax({
                 url: 'http://localhost:8080/spring-boot/api/v1/customer/' + customer.customerCode,
                 type: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
                 success: function (response) {
                     Swal.fire({
                         title: "Deleted!",
@@ -132,7 +141,6 @@ function deleteCustomer(customer) {
                         icon: "success"
                     }).then(() => {
                         getDataToCustomerTable(0, customer_page_size);
-                        getPageCount();
                     });
                 },
                 error: function (xhr, status, error) {
@@ -163,6 +171,9 @@ function getNextCustomerCode() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/customer/next-code',
         type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         success: function (data) {
             next_customer_code = data;
         },
@@ -187,6 +198,7 @@ $('#addNewCustomer').on('click', () => {
 });//In customer add form
 
 function saveCustomer() {
+    event.preventDefault();
     const customer = {
         customerCode: next_customer_code,
         customerName: $('#customerName').val(),
@@ -207,6 +219,9 @@ function saveCustomer() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/customer',
         type: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         contentType: 'application/json',
         data: JSON.stringify(customer),
         success: function (data) {
@@ -219,7 +234,7 @@ function saveCustomer() {
             });
             CUSTOMER_ADD_FORM.css("display", "none");
             CUSTOMER_SECTION.css("display", "block");
-            getPageCount();
+            getDataToCustomerTable(0, customer_page_size);
         },
         error: function (xhr, status, error) {
             console.error('Error adding customer:', error);
@@ -234,6 +249,7 @@ function saveCustomer() {
 }
 
 $('#updateCustomer').on('click', () => {
+    event.preventDefault();
     const customer = {
         "customerCode": update_customer.customerCode,
         "customerName": $("#updateCustomerName").val(),
@@ -255,15 +271,31 @@ $('#updateCustomer').on('click', () => {
     $.ajax({
         url: "http://localhost:8080/spring-boot/api/v1/customer/" + update_customer.customerCode,
         method: "PUT",
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         contentType: "application/json",
         data: JSON.stringify(customer),
         success: function (response) {
             console.log("Customer updated successfully");
+            Swal.fire({
+                icon: "success",
+                title: "Your work has been saved",
+                showConfirmButton: false,
+                timer: 1000
+            });
             CUSTOMER_UPDATE_FORM.css("display", "none");
             CUSTOMER_SECTION.css("display", "block");
+            getDataToCustomerTable(0, customer_page_size);
         },
         error: function (xhr, status, error) {
             console.error("Error updating customer:", error);
+            Swal.fire({
+                icon: "error",
+                title: "Something wrong",
+                showConfirmButton: false,
+                timer: 1000
+            });
         }
     });
 });//In customer update form
@@ -316,6 +348,9 @@ function getCustomerSearchResult() {
     } else {
         $.ajax({
             type: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
             url: 'http://localhost:8080/spring-boot/api/v1/customer/search',
             data: {query: searchText},
             success: function (data) {

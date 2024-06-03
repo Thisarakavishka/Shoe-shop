@@ -7,6 +7,9 @@ function getDataToEmployeeTable(page, size) {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/employee',
         method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         data: {page: page, size: size},
         success: function (data) {
             displayEmployeeData(data, page, size);
@@ -72,6 +75,9 @@ function getEmployeePageCount() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/employee/page-size',
         method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         data: {size: employee_page_size},
         success: function (data) {
             console.log('success fetching count of employee pages');
@@ -138,6 +144,9 @@ function deleteEmployee(employee) {
             $.ajax({
                 url: 'http://localhost:8080/spring-boot/api/v1/employee/' + employee.employeeCode,
                 type: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
                 success: function (response) {
                     Swal.fire({
                         title: "Deleted!",
@@ -165,6 +174,9 @@ function getNextEmployeeCode() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/employee/next-code',
         type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         success: function (data) {
             next_employee_code = data;
         },
@@ -183,6 +195,9 @@ function getEmployeeSearchResult() {
     } else {
         $.ajax({
             type: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
             url: 'http://localhost:8080/spring-boot/api/v1/employee/search',
             data: {query: searchText},
             success: function (data) {
@@ -248,6 +263,9 @@ function saveEmployee() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/employee',
         type: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         contentType: 'application/json',
         data: JSON.stringify(employee),
         success: function (data) {
@@ -302,6 +320,7 @@ $('#addNewEmployee').on('click', () => {
 });
 
 $('#updateEmployee').on('click', () => {
+    event.preventDefault();
     const employee = {
         "employeeCode": update_employee.employeeCode,
         "employeeName": $("#updateEmployeeName").val(),
@@ -325,26 +344,36 @@ $('#updateEmployee').on('click', () => {
         "emergencyContactNumber": $("#updateEmployeeEmergencyContactNumber").val()
     };
 
-    event.preventDefault();
     console.log(employee);
 
     $.ajax({
         url: "http://localhost:8080/spring-boot/api/v1/employee/" + update_employee.employeeCode,
         method: "PUT",
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         contentType: "application/json",
         data: JSON.stringify(employee),
         success: function (response) {
             console.log("Employee updated successfully");
+            Swal.fire({
+                icon: "success",
+                title: "Your work has been saved",
+                showConfirmButton: false,
+                timer: 1000
+            });
             EMPLOYEE_UPDATE_FORM.css("display", "none");
             EMPLOYEE_SECTION.css("display", "block");
             getDataToEmployeeTable(0, employee_page_size);
         },
         error: function (xhr, status, error) {
-            setTimeout(function () {
-                console.error("Error updating employee:", error);
-                console.log(xhr);
-                console.log(status);
-            }, 5000);
+            console.error("Error updating employee:", error);
+            Swal.fire({
+                icon: "error",
+                title: "Something wrong",
+                showConfirmButton: false,
+                timer: 1000
+            });
         }
     });
 });

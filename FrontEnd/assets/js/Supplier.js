@@ -12,6 +12,9 @@ function getDataToSupplierTable(page, size) {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/supplier',
         method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         data: {page: page, size: size},
         success: function (data) {
             displaySupplierData(data, page, size);
@@ -70,10 +73,13 @@ function getSupplierCategoryColour(category) {
     }
 }
 
-function getSupplierPageCount() {
+function getSupplierPageCount()     {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/supplier/page-size',
         method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         data: {size: supplier_page_size},
         success: function (data) {
             console.log('success fetching count of supplier pages');
@@ -124,6 +130,9 @@ function deleteSupplier(supplier) {
             $.ajax({
                 url: 'http://localhost:8080/spring-boot/api/v1/supplier/' + supplier.supplierCode,
                 type: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
                 success: function (response) {
                     Swal.fire({
                         title: "Deleted!",
@@ -131,7 +140,6 @@ function deleteSupplier(supplier) {
                         icon: "success"
                     }).then(() => {
                         getDataToSupplierTable(0, supplier_page_size);
-                        getSupplierPageCount();
                     });
                 },
                 error: function (xhr, status, error) {
@@ -151,6 +159,9 @@ function getNextSupplierCode() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/supplier/next-code',
         type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         success: function (data) {
             next_supplier_code = data;
         },
@@ -173,6 +184,7 @@ $('#backNewSupplier').on('click', () => {
 });
 
 function saveSupplier() {
+    event.preventDefault();
     const supplier = {
         "supplierCode": next_supplier_code,
         "supplierName": $("#supplierName").val(),
@@ -190,6 +202,9 @@ function saveSupplier() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/supplier',
         type: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         contentType: 'application/json',
         data: JSON.stringify(supplier),
         success: function (data) {
@@ -219,6 +234,7 @@ function saveSupplier() {
 $('#addNewSupplier').on('click', () => {
     if ($('#supplierAddForm')[0].checkValidity()) {
         saveSupplier();
+        getDataToSupplierTable(0, supplier_page_size);
     } else {
         $('#supplierAddForm').addClass('was-validated');
         event.preventDefault();
@@ -226,6 +242,7 @@ $('#addNewSupplier').on('click', () => {
 });
 
 $('#updateSupplier').on('click', () => {
+    event.preventDefault();
     const supplier = {
         "supplierCode": update_supplier.supplierCode,
         "supplierName": $("#updateSupplierName").val(),
@@ -244,19 +261,32 @@ $('#updateSupplier').on('click', () => {
     $.ajax({
         url: "http://localhost:8080/spring-boot/api/v1/supplier/" + update_supplier.supplierCode,
         method: "PUT",
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         contentType: "application/json",
         data: JSON.stringify(supplier),
         success: function (response) {
             console.log("Supplier updated successfully");
-            SUPPLIER_ADD_FORM.css("display", "none");
+            Swal.fire({
+                icon: "success",
+                title: "Your work has been saved",
+                showConfirmButton: false,
+                timer: 1000
+            });
+            SUPPLIER_UPDATE_FORM.css("display", "none");
             SUPPLIER_SECTION.css("display", "block");
+            getDataToSupplierTable(0, supplier_page_size);
+
         },
         error: function (xhr, status, error) {
-            setTimeout(function () {
-                console.error("Error updating supplier:", error);
-                console.log(xhr);
-                console.log(status);
-            }, 5000);
+            console.error("Error updating supplier:", error);
+            Swal.fire({
+                icon: "error",
+                title: "Something wrong",
+                showConfirmButton: false,
+                timer: 1000
+            });
         }
     });
 });
@@ -283,6 +313,9 @@ function getSupplierSearchResult() {
     } else {
         $.ajax({
             type: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
             url: 'http://localhost:8080/spring-boot/api/v1/supplier/search',
             data: {query: searchText},
             success: function (data) {

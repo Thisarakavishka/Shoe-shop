@@ -12,6 +12,9 @@ function getDataToCategoryTable() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/category',
         method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         success: function (data) {
             categoryArray.length = 0;
             data.forEach(function (category) {
@@ -122,6 +125,9 @@ function editCategory(category) {
         $.ajax({
             url: `http://localhost:8080/spring-boot/api/v1/category/${category.categoryCode}`,
             method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
             contentType: 'application/json',
             data: JSON.stringify(updatedCategory),
             success: function () {
@@ -165,6 +171,9 @@ function deleteCategory(category) {
             $.ajax({
                 url: `http://localhost:8080/spring-boot/api/v1/category/${category.categoryCode}`,
                 method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
                 success: function () {
                     Swal.fire({
                         title: "Deleted!",
@@ -205,6 +214,9 @@ function fetchNextCategoryCode() {
         $.ajax({
             url: 'http://localhost:8080/spring-boot/api/v1/category/next-code',
             type: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
             success: function (data) {
                 resolve(data);
             },
@@ -264,6 +276,9 @@ function saveNewCategory() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/category',
         method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         contentType: 'application/json',
         data: JSON.stringify(newCategory),
         success: function () {
@@ -292,6 +307,9 @@ function getDataToTypeTable() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/type',
         method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         success: function (data) {
             typeArray.length = 0;
             data.forEach(function (type) {
@@ -402,6 +420,9 @@ function editType(type) {
         $.ajax({
             url: `http://localhost:8080/spring-boot/api/v1/type/${type.typeCode}`,
             method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
             contentType: 'application/json',
             data: JSON.stringify(updatedType),
             success: function () {
@@ -445,6 +466,9 @@ function deleteType(type) {
             $.ajax({
                 url: `http://localhost:8080/spring-boot/api/v1/type/${type.typeCode}`,
                 method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
                 success: function () {
                     Swal.fire({
                         title: "Deleted!",
@@ -485,6 +509,9 @@ function fetchNextTypeCode() {
         $.ajax({
             url: 'http://localhost:8080/spring-boot/api/v1/type/next-code',
             type: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
             success: function (data) {
                 resolve(data);
             },
@@ -544,6 +571,9 @@ function saveNewType() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/type',
         method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         contentType: 'application/json',
         data: JSON.stringify(newType),
         success: function () {

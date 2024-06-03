@@ -1,3 +1,5 @@
+let token = "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiaWF0IjoxNzE3MzgzODI4LCJleHAiOjE3MTc0MTI2Mjh9.o9azhbMn0RHUCKv1_zn_LhTEv0uGHWWl3d0ynjpnUao";
+
 let CUSTOMER_SECTION = $('#customer-section');
 let CUSTOMER_ADD_FORM = $('#customer-add-form');
 let CUSTOMER_UPDATE_FORM = $('#customer-update-form');

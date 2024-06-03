@@ -79,6 +79,7 @@ function showDetails(item, colourName) {
 }
 
 async function updateItem(event) {
+    event.preventDefault();
 
     const item = {
         "itemCode": update_item.itemCode,
@@ -139,11 +140,12 @@ async function updateItem(event) {
     try {
         await Promise.all(promises);
 
-        console.log(item);
-
         $.ajax({
             url: 'http://localhost:8080/spring-boot/api/v1/item/' + update_item.itemCode,
             type: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
             contentType: 'application/json',
             data: JSON.stringify(item),
             success: function (data) {
@@ -154,10 +156,9 @@ async function updateItem(event) {
                     showConfirmButton: false,
                     timer: 1000
                 });
-                event.preventDefault();
-                getDataToItemTable(0, item_page_size);
                 ITEM_UPDATE_FORM.css("display", "none");
                 ITEM_SECTION.css("display", "block");
+                getDataToItemTable(0, item_page_size);
             },
             error: function (xhr, status, error) {
                 console.error('Error updating item:', error);
@@ -179,6 +180,9 @@ function getNextItemCode() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/item/next-code',
         type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         success: function (data) {
             next_item_code = data;
         },
@@ -368,43 +372,6 @@ function editItem(item) {
     });
 }
 
-function deleteItem(item) {
-    Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: 'http://localhost:8080/spring-boot/api/v1/item/' + item.itemCode,
-                type: 'DELETE',
-                success: function (response) {
-                    Swal.fire({
-                        title: "Deleted!",
-                        text: "Your Item has been deleted.",
-                        icon: "success"
-                    }).then(() => {
-                        getDataToItemTable(0, item_page_size);
-                        getItemPageCount();
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error deleting Item:', error);
-                    Swal.fire({
-                        title: "Error!",
-                        text: "Failed to delete item.",
-                        icon: "error"
-                    });
-                }
-            });
-        }
-    });
-}
-
 function appendItemToTable(index, item) {
     $('#item-table tbody').append(`
         <tr>
@@ -420,7 +387,6 @@ function appendItemToTable(index, item) {
             <td class="align-middle">
                 <button class="btn btn-outline-custom-black-colour view-item-btn btn-sm"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></button>
                 <button class="btn btn-outline-custom-black-colour edit-item-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
-                <button class="btn btn-outline-custom-red-colour delete-item-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
             </td>
         </tr>
     `);
@@ -429,9 +395,6 @@ function appendItemToTable(index, item) {
     });
     $('.edit-item-btn').last().click(function () {
         editItem(item);
-    });
-    $('.delete-item-btn').last().click(function () {
-        deleteItem(item);
     });
 }
 
@@ -446,6 +409,9 @@ function getDataToItemTable(page, size) {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/item',
         method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         data: {page: page, size: size},
         success: function (data) {
             displayItemData(data, page, size);
@@ -467,6 +433,9 @@ function getItemPageCount() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/item/page-size',
         method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         data: {size: item_page_size},
         success: function (data) {
             console.log('success fetching count of item pages');
@@ -603,6 +572,7 @@ $("#add-item-button").on('click', () => {
 });
 
 function saveItem() {
+    event.preventDefault();
     const item = {
         "itemCode": next_item_code,
         "itemName": $('#item-name').val(),
@@ -662,6 +632,9 @@ function saveItem() {
         $.ajax({
             url: 'http://localhost:8080/spring-boot/api/v1/item',
             type: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
             contentType: 'application/json',
             data: JSON.stringify(item),
             success: function (data) {
@@ -672,9 +645,9 @@ function saveItem() {
                     showConfirmButton: false,
                     timer: 1000
                 });
-                event.preventDefault();
                 ITEM_ADD_FORM.css("display", "none");
                 ITEM_SECTION.css("display", "block");
+                getDataToItemTable(0, item_page_size);
             },
             error: function (xhr, status, error) {
                 console.error('Error adding Item:', error);
@@ -695,6 +668,9 @@ function initializeSuppliers() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/supplier/all',
         type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         success: function (data) {
             suppliers.length = 0;
             data.forEach(function (supplier) {
@@ -712,6 +688,9 @@ function initializeCategories() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/category',
         type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         success: function (data) {
             categories.length = 0;
             data.forEach(function (category) {
@@ -729,6 +708,9 @@ function initializeTypes() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/type',
         type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         success: function (data) {
             types.length = 0;
             data.forEach(function (type) {
@@ -746,6 +728,9 @@ function initializeColours() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/colour',
         type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         success: function (data) {
             colours.length = 0;
             data.forEach(function (colour) {
@@ -763,6 +748,9 @@ function initializeSizes() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/size',
         type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         success: function (data) {
             sizes.length = 0;
             data.forEach(function (size) {
@@ -780,6 +768,9 @@ function initializeItems() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/item/pos-search',
         type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         success: function (data) {
             items.length = 0;
             data.content.forEach(function (item) {
@@ -890,6 +881,9 @@ function getItemSearchResult() {
     } else {
         $.ajax({
             type: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
             url: 'http://localhost:8080/spring-boot/api/v1/item/search',
             data: {query: searchText},
             success: function (data) {
@@ -1134,6 +1128,9 @@ function getNextSaleCode() {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/sales/next-code',
         type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         success: function (data) {
             next_sale_code = data;
         },
@@ -1204,6 +1201,9 @@ $("#placeOrderBtn").on('click', () => {
     $.ajax({
         url: 'http://localhost:8080/spring-boot/api/v1/sales',
         type: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         contentType: 'application/json',
         data: JSON.stringify(orderData),
         success: function(response) {
