@@ -22,6 +22,6 @@ public class CategoryDTO implements SuperDTO {
     private String categoryName;
 
     @NotBlank(message = "Category Character is Required")
-    @Size(min = 1, max = 2, message = "Category Character code must be between 1 and 2 characters")
+    @Size(min = 2, max = 2, message = "Category Character code must be 2 characters")
     private String categoryCharacter;
 }
