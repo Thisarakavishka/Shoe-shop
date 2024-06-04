@@ -13,10 +13,44 @@
 </head>
 <body>
 <section class="container-fluid">
+
+    <section id="login-section">
+        <div class="container-fluid">
+            <div class="row justify-content-center align-items-center vh-100">
+                <div class="col-md-4">
+                    <div class="card shadow-lg">
+                        <div class="card-body p-5">
+                            <h2 class="text-center mb-4 fw-bolder">Login</h2>
+                            <form id="loginForm">
+                                <div class="form-group">
+                                    <label for="inputEmail">Email</label>
+                                    <input type="email" id="inputEmail" class="form-control" required>
+                                    <div class="invalid-feedback" id="emailError"></div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <label for="inputPassword">Password</label>
+                                    <input type="password" id="inputPassword" class="form-control" required>
+                                    <div class="invalid-feedback" id="passwordError"></div>
+                                </div>
+                                <div class="form-group mt-5 d-flex justify-content-center">
+                                    <button type="submit" id="loginBtn" class="btn btn-outline-dark btn-block"
+                                            style="width: 120px;">Login
+                                    </button>
+                                </div>
+                            </form>
+                            <p class="text-center mb-0 mt-5">Forget password? <a href="#" class="text-primary">Reset
+                                Password</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <div class="row">
 
         <!-- sidebar -->
-        <div id="side-bar-section" class="col-sm-auto sidebar bg-white sticky-top border border-secondary-subtle">
+        <div id="side-bar-section" style="display: none;" class="col-sm-auto sidebar bg-white sticky-top border border-secondary-subtle">
             <div>
                 <img src="assets/images/HELLO%2520SHOE.png" alt="Company Logo" style="width:170px;">
             </div>
@@ -1134,7 +1168,7 @@
             <!-- Item content -->
             <section id="item-content">
                 <!-- Item Section -->
-                <section id="item-section" class="container-xxl">
+                <section id="item-section" class="container-xxl" style=" height: 800px; overflow-y: auto;">
                     <!-- Item Search Bar -->
                     <div class="d-flex justify-content-center mt-4">
                         <form class="d-flex col-md-5 p-2">
@@ -1569,7 +1603,8 @@
                     </div><!-- Category Button Section -->
                     <div class="d-flex justify-content-between mt-4">
                         <div class="col-md-2">
-                            <select class="form-select custom-focus" id="refundDateRange" name="Refund Date Range" required>
+                            <select class="form-select custom-focus" id="refundDateRange" name="Refund Date Range"
+                                    required>
                                 <option value="" selected disabled>Refund Date Range</option>
                                 <option value="3">3</option>
                                 <option value="4">4</option>
@@ -1662,5 +1697,6 @@
 <script src="assets/js/Customer.js"></script>
 <script src="assets/js/Attribute.js"></script>
 <script src="assets/js/Refund.js"></script>
+<script src="assets/js/LoginController.js"></script>
 </body>
 </html>

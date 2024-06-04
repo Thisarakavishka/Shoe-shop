@@ -1,5 +1,3 @@
-let token = "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiaWF0IjoxNzE3MzgzODI4LCJleHAiOjE3MTc0MTI2Mjh9.o9azhbMn0RHUCKv1_zn_LhTEv0uGHWWl3d0ynjpnUao";
-
 let CUSTOMER_SECTION = $('#customer-section');
 let CUSTOMER_ADD_FORM = $('#customer-add-form');
 let CUSTOMER_UPDATE_FORM = $('#customer-update-form');
@@ -24,13 +22,18 @@ let REFUND_SECTION = $("#refund-section");
 
 let HISTORY_SECTION = $("#history-section");
 
+let LOGIN_SECTION = $("#login-section");
+
+let SIDE_BAR_SECTION = $("#side-bar-section");
+
+
 $(document).ready(async function () {
     initializeSuppliers();
     initializeCategories();
     initializeTypes();
     initializeColours();
     initializeSizes();
-    clearPage();
+
 });
 
 const clearPage = function () {
@@ -57,6 +60,8 @@ const clearPage = function () {
     REFUND_SECTION.css("display", "none");
 
     HISTORY_SECTION.css("display", "none");
+
+    LOGIN_SECTION.css("display", "none");
 }
 
 $("#admin-panel-button").on("click", () => {
@@ -116,5 +121,24 @@ $("#history-button").on("click", () => {
 });
 
 $("#logout-button").on("click", () => {
-    clearPage();
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#191919",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Logout!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            clearPage();
+            SIDE_BAR_SECTION.css("display", "none");
+            LOGIN_SECTION.css("display", "block");
+            Swal.fire({
+                title: "Logout",
+                text: "Successfully Logout!",
+                icon: "success"
+            });
+        }
+    });
 });

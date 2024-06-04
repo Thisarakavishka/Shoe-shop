@@ -6,7 +6,7 @@ const sizes = [];
 const items = [];
 let discount = 3;
 
-let next_sale_code ;
+let next_sale_code;
 
 let item_page_size = 10;
 let next_item_code;
@@ -16,23 +16,26 @@ let view_item;
 function viewItem(item) {
     view_item = item;
     const modalHtml = `
-        <div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        ${item.colours.map((color, index) => `<button class="btn btn-outline-custom-black-colour me-2" onmouseenter="showDetails(view_item,'${color.colourName}')" ${index === 0 ? "id='autoClickButton'" : ""}>${color.colourName}</button>`).join('')}
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="flex-wrap">
+                    ${item.colours.map((color, index) => `<button class="btn btn-outline-custom-black-colour me-2 mt-2" onmouseenter="showDetails(view_item,'${color.colourName}')" ${index === 0 ? "id='autoClickButton'" : ""}>${color.colourName}</button>`).join('')}
                     </div>
-                    <div class="modal-body">
-                        <div id="itemDetails"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-custom-black-colour" data-bs-dismiss="modal">Close</button>
-                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="itemDetails"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-custom-black-colour" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-    `;
+    </div>
+`;
+
     $('#itemModal').remove();
     $('body').append(modalHtml);
     $('#itemModal').modal('show');
@@ -373,12 +376,15 @@ function editItem(item) {
 }
 
 function appendItemToTable(index, item) {
+    const imageSrc = item.colours[0] && item.colours[0].image ? `data:image/png;base64,${item.colours[0].image}` : '';
+    const imageHtml = imageSrc ? `<img src="${imageSrc}" class="rounded" alt="Profile Pic" style="width: 50px; height: 50px;">` : '';
+
     $('#item-table tbody').append(`
         <tr>
             <th scope="row" class="align-middle">${index + 1}</th>
             <th>
-                <img src="data:image/png;base64,${item.colours[0].image}" class="rounded" alt="Profile Pic" style="width: 50px; height: 50px;">
-            </th>
+                ${imageHtml}
+             </th>
             <td class="align-middle">${item.itemName}</td>
             <td class="align-middle">${item.categoryName}</td>
             <td class="align-middle">${item.typeName}</td>
@@ -447,16 +453,128 @@ function getItemPageCount() {
     });
 }
 
+function createAddColorModal(colorSectionId) {
+    let next_colour_code;
+
+    $.ajax({
+        url: 'http://localhost:8080/spring-boot/api/v1/colour/next-code',
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        success: function (data) {
+            next_colour_code = data;
+            console.log(next_colour_code);
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+
+    const addColourmodal = `
+        <div class="modal fade" id="addColorModal" tabindex="-1" aria-labelledby="addColorModalLabel" aria-hidden="true" data-bs-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addColorModalLabel">Add New Colour</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addColorForm">
+                            <div class="mb-3">
+                                <label for="colorName" class="form-label">Colour Name</label>
+                                <input type="text" class="form-control" id="colorName" required>
+                                <div class="invalid-feedback">Please enter a valid colour name.</div>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-dark">Add Colour</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    $('body').append(addColourmodal);
+    const addColorModal = new bootstrap.Modal(document.getElementById('addColorModal'));
+    addColorModal.show();
+
+    $('#addColorForm').off('submit').on('submit', function (event) {
+        event.preventDefault();
+        const colorName = $('#colorName').val().trim();
+
+        if (!colorName) {
+            $('#colorName').addClass('is-invalid');
+            return;
+        } else {
+            $('#colorName').removeClass('is-invalid');
+        }
+
+        const newColourData = {
+            "colourCode": next_colour_code,
+            "colourName": colorName
+        };
+         console.log(newColourData);
+
+        $.ajax({
+            url: 'http://localhost:8080/spring-boot/api/v1/colour',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(newColourData),
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            success: function (data) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Your work has been saved",
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+                $(`#colourSelect-${colorSectionId}`).append($('<option>', {
+                    value: data.colourCode,
+                    text: data.colourName,
+                    selected: true
+                }));
+
+                colours.push(data);
+
+                $('#addColorModal').modal('hide');
+                $('#addColorModal').remove();
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+
+    $('#addColorModal').on('hidden.bs.modal', function () {
+        $('#addColorModal').remove();
+    });
+}
+
+
+let formDataLoaded = false;
+
 function loadItemAddFormData() {
+    if (formDataLoaded) {
+        return;
+    }
+
     fetchSuppliers();
     fetchCategories();
     fetchTypes();
-    let colorSectionCount = 0;
+    let colorSectionCount = $('.mb-3[id^="colorSection"]').length;
 
     $('#add-new-colour-section').click(function () {
         event.preventDefault();
         colorSectionCount++;
+
         const colorSectionId = `colorSection${colorSectionCount}`;
+        if ($(`#${colorSectionId}`).length > 0) {
+            return;
+        }
         const colorSection = $('<div>').addClass('mb-3').attr('id', colorSectionId);
 
         colorSection.append(`
@@ -465,7 +583,6 @@ function loadItemAddFormData() {
                 <div class="col-md-6">
                     <label for="colourSelect-${colorSectionId}" class="form-label mt-2">Colour</label>
                     <select class="form-select custom-focus" id="colourSelect-${colorSectionId}" required>
-                        <option value="" selected disabled>Select Colour</option>
                     </select>
                     <div class="invalid-feedback">Please select a colour.</div>
                 </div>
@@ -507,6 +624,13 @@ function loadItemAddFormData() {
         $('#add-new-colour-section').before(colorSection);
         fetchColours(colorSectionId);
         fetchSizes(colorSectionId);
+
+        $(`#colourSelect-${colorSectionId}`).change(function () {
+            if ($(this).val() === "addNewColour") {
+                createAddColorModal(colorSectionId);
+                $('#addColorModal').modal('show');
+            }
+        });
 
         $(document).on('click', `.add-size-button[data-section="${colorSectionId}"]`, function () {
             event.preventDefault();
@@ -559,6 +683,25 @@ function loadItemAddFormData() {
             reader.readAsDataURL(event.target.files[0]);
         });
     });
+    formDataLoaded = true;
+
+}
+
+function clearAddItemForm() {
+    // Reset input fields to their initial state
+    $('#itemAddForm')[0].reset();
+
+    // Reset radio buttons
+    $('input[name="gender"]').prop('checked', false);
+
+    // Remove dynamically added color sections
+    $('[id^=colorSection]').remove();
+
+    // Reset image preview
+    $('[id^=imagePreview]').hide().removeAttr('src');
+
+    // Remove any error messages
+    $('.is-invalid').removeClass('is-invalid');
 }
 
 $("#add-item-button").on('click', () => {
@@ -645,6 +788,7 @@ function saveItem() {
                     showConfirmButton: false,
                     timer: 1000
                 });
+                clearAddItemForm();
                 ITEM_ADD_FORM.css("display", "none");
                 ITEM_SECTION.css("display", "block");
                 getDataToItemTable(0, item_page_size);
@@ -858,7 +1002,10 @@ function fetchColours(colorSectionId) {
             text: colour.colourName
         }));
     });
-
+    $(`#colourSelect-${colorSectionId}`).append($('<option>', {
+        value: "addNewColour",
+        text: "+"
+    }));
 }
 
 function fetchSizes(colorSectionId) {
@@ -914,6 +1061,7 @@ $("#add-new-item").on('click', () => {
 
 $("#cancel-add-item-button").on('click', () => {
     event.preventDefault();
+    clearAddItemForm();
     ITEM_ADD_FORM.css("display", "none");
     ITEM_SECTION.css("display", "block");
 });
@@ -1206,7 +1354,7 @@ $("#placeOrderBtn").on('click', () => {
         },
         contentType: 'application/json',
         data: JSON.stringify(orderData),
-        success: function(response) {
+        success: function (response) {
             console.log('Order placed successfully:', response);
             Swal.fire({
                 icon: "success",
@@ -1218,13 +1366,20 @@ $("#placeOrderBtn").on('click', () => {
             cartContainer.empty();
             loadDataToPOS();
         },
-        error: function(error) {
+        error: function (error) {
             console.error('Error placing order:', error);
             Swal.fire({
                 icon: "error",
                 title: status,
                 showConfirmButton: false,
                 timer: 1000
-            });        }
+            });
+        }
     });
+});
+
+$("#itemPageSize").change(function () {
+    item_page_size = $(this).val();
+    getDataToItemTable(0, item_page_size);
+    getItemPageCount();
 });
