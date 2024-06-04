@@ -1,5 +1,4 @@
 let employee_page_size = 10;
-let next_employee_code;
 let update_employee;
 let employee_profile_pic;
 
@@ -170,22 +169,6 @@ function deleteEmployee(employee) {
     });
 }
 
-function getNextEmployeeCode() {
-    $.ajax({
-        url: 'http://localhost:8080/spring-boot/api/v1/employee/next-code',
-        type: 'GET',
-        headers: {
-            'Authorization': 'Bearer ' + token
-        },
-        success: function (data) {
-            next_employee_code = data;
-        },
-        error: function () {
-            console.log("Error fetching next employee code")
-        }
-    });
-}
-
 function getEmployeeSearchResult() {
     event.preventDefault();
     const searchText = $('#employee-search-text').val().trim();
@@ -239,7 +222,7 @@ function decodeEmployeeImage(imageFile) {
 function saveEmployee() {
     event.preventDefault();
     const employee = {
-        "employeeCode": next_employee_code,
+        "employeeCode": "EMP001",
         "employeeName": $("#employeeName").val(),
         "profilePic": employee_profile_pic,
         "gender": $("#employeeGender").val(),
@@ -261,7 +244,7 @@ function saveEmployee() {
         "emergencyContactNumber": $("#employeeEmergencyContactNumber").val(),
     }
     $.ajax({
-        url: 'http://localhost:8080/spring-boot/api/v1/employee',
+        url: 'http://localhost:8080/spring-boot/api/v1/auth',
         type: 'POST',
         headers: {
             'Authorization': 'Bearer ' + token
@@ -302,7 +285,6 @@ $('#add-new-employee').on('click', () => {
     clearPage();
     EMPLOYEE_SECTION.css("display", "none");
     EMPLOYEE_ADD_FORM.css("display", "block");
-    getNextEmployeeCode();
 });//In Supplier Section
 
 $('#backNewEmployee').on('click', () => {
