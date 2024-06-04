@@ -24,13 +24,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDTO save(EmployeeDTO employeeDTO) {
-        boolean isExists = employeeRepository.existsById(employeeDTO.getEmployeeCode());
-        if (!isExists) {
-            EmployeeDTO dbEmployee = getEmployeeByEmail(employeeDTO.getEmail());
-            if (dbEmployee == null) {
-                return dataConvertor.toEmployeeDTO(employeeRepository.save(dataConvertor.toEmployee(employeeDTO)));
-            }
-        }
         return null;
     }
 

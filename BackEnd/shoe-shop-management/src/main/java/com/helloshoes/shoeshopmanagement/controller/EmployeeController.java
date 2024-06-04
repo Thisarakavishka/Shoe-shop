@@ -81,16 +81,7 @@ public class EmployeeController {
 
     @PostMapping
     public ResponseEntity<?> createEmployee(@RequestBody @Valid EmployeeDTO employeeDTO) {
-        EmployeeDTO savedEmployee = employeeService.save(employeeDTO);
-        if (savedEmployee == null) {
-            return ResponseEntity.badRequest().body("Failed to create Employee");
-        }
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedEmployee.getEmployeeCode())
-                .toUri();
-        return ResponseEntity.created(location).body(savedEmployee);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")

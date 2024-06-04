@@ -48,30 +48,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public JwtAuthResponseDTO signUp(EmployeeDTO signUp) {
-
-//        // Get Employee if exists
-//        EmployeeDTO employee = employeeService.getEmployee(signUp.getEmail());
-//        if (employee == null) {
-//            throw new IllegalArgumentException("Employee not found for email: " + signUp.getEmail());
-//        }
-//
-//        UserDTO userDTO = new UserDTO();
-//        userDTO.setEmail(signUp.getEmail());
-//        userDTO.setPassword(signUp.getPassword());
-//
-//        // Set Role
-//        if ("manager".equalsIgnoreCase(employee.getDesignation())) {
-//            userDTO.setRole(UserRole.ADMIN);
-//        } else {
-//            userDTO.setRole(UserRole.USER);
-//        }
-//
-//        // Set relationship
-//        userDTO.setEmployee(employee);
-
-        //        Throw exception if user already authenticated
         if (employeeRepository.findUserByEmail(signUp.getEmail()).isPresent()) {
-            throw new RuntimeException("User already exists");
+            return null;
         }
 
         Employee employee = new ModelMapper().map(signUp, Employee.class);
