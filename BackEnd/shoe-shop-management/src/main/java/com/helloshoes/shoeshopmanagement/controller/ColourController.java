@@ -58,6 +58,11 @@ public class ColourController {
         return ResponseEntity.created(location).body(savedColour);
     }
 
+    @GetMapping("/next-code")
+    public ResponseEntity<String> getNextColourCode() {
+        return ResponseEntity.ok(colourService.getNextColourCode());
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateColour(@PathVariable String id, @RequestBody @Valid ColourDTO colourDTO) {
         if (!id.matches(RegexUtil.COLOUR_REGEX)) {

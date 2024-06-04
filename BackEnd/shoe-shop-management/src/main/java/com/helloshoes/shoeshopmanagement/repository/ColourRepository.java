@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface ColourRepository extends JpaRepository<Colour, String> {
     @Query(value = "SELECT c FROM Colour c WHERE c.colourName = :colourName")
     Colour findByName(@Param("colourName") String colourName);
+
+    @Query(value = "SELECT MAX(c.colourCode) FROM Colour  c")
+    String findNextColourCode();
 }

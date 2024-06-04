@@ -29,6 +29,16 @@ public class ColourServiceImpl implements ColourService {
     }
 
     @Override
+    public String getNextColourCode() {
+        String nextCode = colourRepository.findNextColourCode();
+        if (nextCode == null) {
+            return "COL001";
+        }
+        int code = Integer.parseInt(nextCode.substring(3)) + 1;
+        return "COL" + String.format("%03d", code);
+    }
+
+    @Override
     public ColourDTO save(ColourDTO dto) {
         boolean isExists = colourRepository.existsById(dto.getColourCode());
         if (!isExists) {
