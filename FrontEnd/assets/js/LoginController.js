@@ -1,4 +1,5 @@
 let token;
+let logged_user;
 
 $("#loginForm").on('submit', function(event) {
     event.preventDefault();
@@ -18,7 +19,9 @@ $("#loginForm").on('submit', function(event) {
             data: JSON.stringify(signIn),
             success: function (data) {
                 token = data.token;
+                logged_user = data.employee;
                 console.log(token);
+                console.log(logged_user);
                 Swal.fire({
                     icon: "success",
                     title: "Successfully Login",
@@ -29,6 +32,8 @@ $("#loginForm").on('submit', function(event) {
                 SIDE_BAR_SECTION.css("display", "block");
                 $('#inputEmail').val("");
                 $('#inputPassword').val("");
+                $('#userProfileNameMenu').text(logged_user.employeeName);
+                $('#userProfilePicMenu').attr('src', `data:image/png;base64,${logged_user.profilePic}`);
             },
             error: function (xhr, status, error) {
                 console.log(error);
@@ -36,7 +41,6 @@ $("#loginForm").on('submit', function(event) {
                     icon: "error",
                     title: "Enter valid credentials",
                     showConfirmButton: false,
-                    timer: 1000
                 });
             }
         });
@@ -62,3 +66,4 @@ $('#inputPassword').on('input', function() {
         $(this).next('.invalid-feedback').text('');
     }
 });
+

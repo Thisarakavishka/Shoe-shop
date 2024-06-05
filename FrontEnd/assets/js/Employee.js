@@ -261,7 +261,7 @@ function saveEmployee() {
             });
             EMPLOYEE_ADD_FORM.css("display", "none");
             EMPLOYEE_SECTION.css("display", "block");
-            getEmployeePageCount();
+            getDataToEmployeeTable(0,employee_page_size);
         },
         error: function (xhr, status, error) {
             console.error('Error adding supplier:', error);

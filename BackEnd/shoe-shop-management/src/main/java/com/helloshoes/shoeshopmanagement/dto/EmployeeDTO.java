@@ -16,7 +16,6 @@ import java.util.Date;
 public class EmployeeDTO implements SuperDTO {
 
     @NotBlank(message = "Employee code is Required")
-    @Pattern(regexp = RegexUtil.EMPLOYEE_REGEX, message = "Employee Code is Invalid")
     private String employeeCode;
 
     @NotBlank(message = "Employee name is Required")

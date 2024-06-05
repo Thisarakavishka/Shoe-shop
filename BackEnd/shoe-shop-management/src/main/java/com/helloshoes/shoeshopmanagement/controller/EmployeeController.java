@@ -86,19 +86,16 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEmployee(@PathVariable String id, @RequestBody @Valid EmployeeDTO employeeDTO) {
-        if (!id.matches(RegexUtil.EMPLOYEE_REGEX)) {
-            return ResponseEntity.badRequest().body("Invalid Employee Code format");
-        }
         boolean isUpdated = employeeService.update(id, employeeDTO);
         if (!isUpdated) {
             return ResponseEntity.badRequest().body("Failed to update Employee");
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(employeeService.getByCode(employeeDTO.getEmployeeCode()));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteEmployee(@PathVariable String id) {
-        if (!id.matches(RegexUtil.EMPLOYEE_REGEX)) {
+        if (id == null) {
             return ResponseEntity.badRequest().body("Invalid Employee Code format");
         }
         boolean isDeleted = employeeService.delete(id);
