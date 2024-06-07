@@ -34,6 +34,10 @@ function displaySupplierData(data, page, size) {
 
 function appendSupplierToTable(index, supplier) {
     let categoryColour = getSupplierCategoryColour(supplier.category);
+
+    let isUSer = logged_user.role === 'USER';
+    let hideClass = isUSer ? 'd-none' : '';
+
     $('#supplier-table tbody').append(`
         <tr>
             <th scope="row">${index + 1}</th>
@@ -49,8 +53,9 @@ function appendSupplierToTable(index, supplier) {
             <td>${supplier.contactLandline}</td>
             <td>${supplier.email}</td>
             <td>
-                <button class="btn btn-outline-custom-black-colour edit-supplier-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
-                <button class="btn btn-outline-custom-red-colour delete-supplier-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
+                <button class="btn btn-outline-custom-black-colour view-item-btn btn-sm"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></button>
+                <button class="admin-only ${hideClass} btn btn-outline-custom-black-colour edit-supplier-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
+                <button class="admin-only ${hideClass} btn btn-outline-custom-red-colour delete-supplier-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
             </td>
         </tr>
     `);

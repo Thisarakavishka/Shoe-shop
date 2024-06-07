@@ -379,6 +379,9 @@ function appendItemToTable(index, item) {
     const imageSrc = item.colours[0] && item.colours[0].image ? `data:image/png;base64,${item.colours[0].image}` : '';
     const imageHtml = imageSrc ? `<img src="${imageSrc}" class="rounded" alt="Profile Pic" style="width: 50px; height: 50px;">` : '';
 
+    let isUSer = logged_user.role === 'USER';
+    let hideClass = isUSer ? 'd-none' : '';
+
     $('#item-table tbody').append(`
         <tr>
             <th scope="row" class="align-middle">${index + 1}</th>
@@ -392,7 +395,7 @@ function appendItemToTable(index, item) {
             <td class="align-middle">$${item.expectedProfit}</td>
             <td class="align-middle">
                 <button class="btn btn-outline-custom-black-colour view-item-btn btn-sm"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></button>
-                <button class="btn btn-outline-custom-black-colour edit-item-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
+                <button class="admin-only ${hideClass} btn btn-outline-custom-black-colour edit-item-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
             </td>
         </tr>
     `);

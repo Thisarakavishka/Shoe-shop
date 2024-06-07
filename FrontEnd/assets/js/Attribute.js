@@ -42,6 +42,9 @@ function displayCategoryData() {
 }
 
 function appendCategoryToTable(index, category) {
+    let isUSer = logged_user.role === 'USER';
+    let hideClass = isUSer ? 'd-none' : '';
+
     $('#category-table tbody').append(`
         <tr>
             <th scope="row">${index + 1}</th>
@@ -49,7 +52,7 @@ function appendCategoryToTable(index, category) {
             <td>${category.categoryName}</td>
             <td>
                 <button class="btn btn-outline-custom-black-colour edit-category-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
-                <button class="btn btn-outline-custom-red-colour delete-category-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
+                <button class="admin-only ${hideClass} btn btn-outline-custom-red-colour delete-category-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
             </td>
         </tr>
     `);
@@ -337,6 +340,9 @@ function displayTypeData() {
 }
 
 function appendTypeToTable(index, type) {
+    let isUSer = logged_user.role === 'USER';
+    let hideClass = isUSer ? 'd-none' : '';
+
     $('#type-table tbody').append(`
         <tr>
             <th scope="row">${index + 1}</th>
@@ -344,7 +350,7 @@ function appendTypeToTable(index, type) {
             <td>${type.typeName}</td>
             <td>
                 <button class="btn btn-outline-custom-black-colour edit-type-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
-                <button class="btn btn-outline-custom-red-colour delete-type-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
+                <button class="admin-only ${hideClass} btn btn-outline-custom-red-colour delete-type-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
             </td>
         </tr>
     `);

@@ -1,7 +1,7 @@
 let token;
 let logged_user;
 
-$("#loginForm").on('submit', function(event) {
+$("#loginForm").on('submit', function (event) {
     event.preventDefault();
 
     $("#emailError").text('');
@@ -37,8 +37,10 @@ $("#loginForm").on('submit', function(event) {
 
                 if (logged_user.role === 'USER') {
                     $('.admin-only').hide();
+                    CART_SECTION.css("display", "block");
                 }else {
                     $('.admin-only').show();
+                    ADMIN_CONTENT.css("display", "block");
                 }
             },
             error: function (xhr, status, error) {
@@ -51,13 +53,13 @@ $("#loginForm").on('submit', function(event) {
             }
         });
     } else {
-        $(':invalid').each(function() {
+        $(':invalid').each(function () {
             $(this).next('.invalid-feedback').text($(this).data('error-message'));
         });
     }
 });
 
-$('#inputEmail').on('input', function() {
+$('#inputEmail').on('input', function () {
     if (!this.validity.valid) {
         $(this).next('.invalid-feedback').text('Please enter a valid email address.');
     } else {
@@ -65,7 +67,7 @@ $('#inputEmail').on('input', function() {
     }
 });
 
-$('#inputPassword').on('input', function() {
+$('#inputPassword').on('input', function () {
     if (!this.validity.valid) {
         $(this).next('.invalid-feedback').text('Password is required.');
     } else {

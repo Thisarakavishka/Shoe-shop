@@ -35,6 +35,10 @@ function displayCustomerData(data, page, size) {
 function appendCustomerToTable(index, customer) {
     let levelColor = getCustomerLevelColour(customer.customerLevel);
     let genderColor = getCustomerGenderColour(customer.gender);
+
+    let isUSer = logged_user.role === 'USER';
+    let hideClass = isUSer ? 'd-none' : '';
+
     $('#customer-table tbody').append(`
         <tr>
             <th scope="row">${index + 1}</th>
@@ -55,8 +59,9 @@ function appendCustomerToTable(index, customer) {
             <td>${customer.email}</td>
             <td>${splitDateTime(customer.recentPurchaseDateTime)}</td>
             <td>
-                <button class="btn btn-outline-custom-black-colour edit-customer-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
-                <button class="btn btn-outline-custom-red-colour delete-customer-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
+                <button class="btn btn-outline-custom-black-colour view-customer-btn btn-sm"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></button>
+                <button class="admin-only ${hideClass} btn btn-outline-custom-black-colour edit-customer-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
+                <button class="admin-only ${hideClass} btn btn-outline-custom-red-colour delete-customer-btn btn-sm "><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
         </td>
         </tr>
     `);

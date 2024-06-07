@@ -28,6 +28,10 @@ function displayEmployeeData(data, page, size) {
 
 function appendEmployeeToTable(index, employee) {
     let statusColour = getEmployeeStatusColour(employee.status);
+
+    let isUSer = logged_user.role === 'USER';
+    let hideClass = isUSer ? 'd-none' : '';
+
     $('#employee-table tbody').append(`
         <tr>
             <th scope="row" class="align-middle">${index + 1}</th>
@@ -46,8 +50,9 @@ function appendEmployeeToTable(index, employee) {
                 </label>
             </td>
             <td class="align-middle">
-                <button class="btn btn-outline-custom-black-colour edit-employee-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
-                <button class="btn btn-outline-custom-red-colour delete-employee-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
+                <button class="btn btn-outline-custom-black-colour view-employee-btn btn-sm"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></button>
+                <button class="admin-only ${hideClass} btn btn-outline-custom-black-colour edit-employee-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
+                <button class="admin-only ${hideClass} btn btn-outline-custom-red-colour delete-employee-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
             </td>
         </tr>
     `);
