@@ -38,8 +38,6 @@
                                     </button>
                                 </div>
                             </form>
-                            <p class="text-center mb-0 mt-5">Forget password? <a href="#" class="text-primary">Reset
-                                Password</a></p>
                         </div>
                     </div>
                 </div>
@@ -58,7 +56,7 @@
             <div class="d-flex flex-sm-column flex-row flex-nowrap bg-white text-black align-items-center justify-content-between sticky-top">
                 <ul class="nav nav-pills flex-column mt-4">
                     <li class="nav-item">
-                        <a id="admin-panel-button" href="#" class="nav-link text-black" title="Admin panel"
+                        <a id="admin-panel-button" href="#" class="nav-link text-black admin-only" title="Admin panel"
                            data-bs-toggle="tooltip"
                            data-bs-placement="right">
                             <i class="fa fa-home fa-lg"></i>
@@ -177,7 +175,7 @@
                             </select>
                         </div>
                         <div>
-                            <button class="btn btn-custom-black-colour" id="add-new-customer">New Customer</button>
+                            <button class="btn btn-custom-black-colour admin-only" id="add-new-customer">New Customer</button>
                         </div>
                     </div>
                     <!-- Customer Table -->
@@ -486,7 +484,7 @@
                             </select>
                         </div>
                         <div>
-                            <button class="btn btn-custom-black-colour" id="add-new-employee">New Employee</button>
+                            <button class="btn btn-custom-black-colour admin-only" id="add-new-employee">New Employee</button>
                         </div>
                     </div>
                     <!-- Employee Table -->
@@ -909,7 +907,7 @@
                             </select>
                         </div>
                         <div>
-                            <button class="btn btn-custom-black-colour" id="add-new-supplier">New Supplier</button>
+                            <button class="btn btn-custom-black-colour admin-only" id="add-new-supplier">New Supplier</button>
                         </div>
                     </div>
                     <!-- Supplier Table -->
@@ -1192,7 +1190,7 @@
                             </select>
                         </div>
                         <div>
-                            <button class="btn btn-custom-black-colour" id="add-new-item">New Item</button>
+                            <button class="btn btn-custom-black-colour admin-only" id="add-new-item">New Item</button>
                         </div>
                     </div>
                     <!-- Item Table -->
@@ -1531,7 +1529,7 @@
                             </select>
                         </div>
                         <div>
-                            <button class="btn btn-custom-black-colour" id="add-new-category">New Category</button>
+                            <button class="btn btn-custom-black-colour admin-only" id="add-new-category">New Category</button>
                         </div>
                     </div>
                     <!-- Category Table -->
@@ -1565,7 +1563,7 @@
                             </select>
                         </div>
                         <div>
-                            <button class="btn btn-custom-black-colour" id="add-new-type">New Type</button>
+                            <button class="btn btn-custom-black-colour admin-only" id="add-new-type">New Type</button>
                         </div>
                     </div>
                     <!-- Type Table -->
@@ -1651,11 +1649,24 @@
                             </button>
                         </form>
                     </div>
+                    <!-- Button Section -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <div class="col-md-1">
+                            <select class="form-select custom-focus" id="historyPageSize" name="size" required>
+                                <option value="" selected disabled>size</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                        </div>
+                    </div>
                     <!-- History Table -->
                     <div class="row justify-content-center d-flex mt-3 p-2">
                         <table class="table table-hover text-center" id="history-table">
                             <thead class="bg-custom-table-head">
                             <tr>
+                                <th scope="col">#</th>
                                 <th scope="col">Code</th>
                                 <th scope="col">Date</th>
                                 <th scope="col">Customer</th>
@@ -1698,5 +1709,6 @@
 <script src="assets/js/Attribute.js"></script>
 <script src="assets/js/Refund.js"></script>
 <script src="assets/js/LoginController.js"></script>
+<script src="assets/js/HistoryController.js"></script>
 </body>
 </html>

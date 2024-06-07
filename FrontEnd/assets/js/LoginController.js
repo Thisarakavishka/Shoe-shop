@@ -34,6 +34,12 @@ $("#loginForm").on('submit', function(event) {
                 $('#inputPassword').val("");
                 $('#userProfileNameMenu').text(logged_user.employeeName);
                 $('#userProfilePicMenu').attr('src', `data:image/png;base64,${logged_user.profilePic}`);
+
+                if (logged_user.role === 'USER') {
+                    $('.admin-only').hide();
+                }else {
+                    $('.admin-only').show();
+                }
             },
             error: function (xhr, status, error) {
                 console.log(error);

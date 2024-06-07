@@ -262,7 +262,7 @@ function editSale(sale) {
             totalRefund: totalRefund,
             date: new Date().toISOString(),
             addedPoints: 2, // Assuming you have logic to calculate this correctly
-            employeeCode: 'EMP002', // Assuming this is the logged-in employee
+            employeeCode: logged_user.employeeCode,
             refundDescription: refundDescription,
             items: removedItems
         };

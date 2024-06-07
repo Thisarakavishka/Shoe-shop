@@ -1295,7 +1295,7 @@ $("#placeOrderBtn").on('click', () => {
     const paymentMethod = 'CARD'; // Assuming you have a select dropdown for payment method
     const addedPoints = 35; // You can implement this function based on your logic
     const date = new Date().toISOString();
-    const employeeCode = 'EMP001'; // Implement this based on your logic
+    const employeeCode = logged_user.employeeCode;
     const customerCode = 'CUS001'; // Implement this based on your logic
 
     let items = [];
