@@ -53,18 +53,94 @@ function appendSupplierToTable(index, supplier) {
             <td>${supplier.contactLandline}</td>
             <td>${supplier.email}</td>
             <td>
-                <button class="btn btn-outline-custom-black-colour view-item-btn btn-sm"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></button>
+                <button class="btn btn-outline-custom-black-colour view-supplier-btn btn-sm"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></button>
                 <button class="admin-only ${hideClass} btn btn-outline-custom-black-colour edit-supplier-btn btn-sm"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></button>
                 <button class="admin-only ${hideClass} btn btn-outline-custom-red-colour delete-supplier-btn btn-sm"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>
             </td>
         </tr>
     `);
+
     $('.edit-supplier-btn').last().click(function () {
         editSupplier(supplier);
     });
+
     $('.delete-supplier-btn').last().click(function () {
         deleteSupplier(supplier);
     });
+
+    $('.view-supplier-btn').last().click(function () {
+        viewSupplier(supplier);
+    });
+}
+
+function generateSupplierModalContent(supplier) {
+    let categoryColour = getSupplierCategoryColour(supplier.category);
+
+    let modalContent = `
+        <div class="modal fade" id="supplierModal" tabindex="-1" role="dialog" aria-labelledby="supplierModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-dark text-light">
+                        <h5 class="modal-title" id="supplierModalLabel">Supplier Details</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6 border-end">
+                                    <h5 class="text-uppercase text-muted mb-3">Supplier Information</h5>
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Name:</span>
+                                        <span class="text-secondary">${supplier.supplierName}</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Category:</span>
+                                        <span class="badge ${categoryColour}">${supplier.category}</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Country:</span>
+                                        <span class="text-secondary">${supplier.country}</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Email:</span>
+                                        <span class="text-secondary">${supplier.email}</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Mobile:</span>
+                                        <span class="text-secondary">${supplier.contactMobile}</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Landline:</span>
+                                        <span class="text-secondary">${supplier.contactLandline}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="text-uppercase text-muted mb-3">Address Details</h5>
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Address:</span>
+                                        <span class="text-secondary">
+                                            ${supplier.addressNo}, ${supplier.addressLane},<br>
+                                            ${supplier.addressCity}, ${supplier.addressState},<br>
+                                            ${supplier.postalCode}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    return modalContent;
+}
+
+function viewSupplier(supplier) {
+    $('#supplierModal').remove();
+    const supplierModalContent = generateSupplierModalContent(supplier);
+    $('body').append(supplierModalContent);
+    $('#supplierModal').modal('show');
 }
 
 function getSupplierCategoryColour(category) {

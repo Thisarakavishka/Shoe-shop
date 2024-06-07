@@ -56,12 +56,118 @@ function appendEmployeeToTable(index, employee) {
             </td>
         </tr>
     `);
+
     $('.edit-employee-btn').last().click(function () {
         editEmployee(employee);
     });
+
     $('.delete-employee-btn').last().click(function () {
         deleteEmployee(employee);
     });
+
+    $('.view-employee-btn').last().click(function () {
+        viewEmployee(employee);
+    });
+}
+
+function generateEmployeeModalContent(employee) {
+    let statusColor = getEmployeeStatusColour(employee.status);
+
+    let modalContent = `
+        <div class="modal fade" id="employeeModal" tabindex="-1" role="dialog" aria-labelledby="employeeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-dark text-light">
+                        <h5 class="modal-title" id="employeeModalLabel">Employee Details</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row mb-3">
+                                <div class="col-md-4 text-center border-end">
+                                    <img src="data:image/png;base64,${employee.profilePic}" class="rounded-circle mb-3" alt="Profile Pic" style="width: 200px; height: 200px;">
+                                    <h5 class="fw-bold">${employee.employeeName}</h5>
+                                    <p><span class="badge bg-${statusColor}">${employee.status}</span></p>
+                                </div>
+                                <div class="col-md-8">
+                                    <h5 class="text-uppercase text-muted mb-3">Personal Information</h5>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <span class="fw-bold">Gender:</span>
+                                            <p class="text-secondary">${employee.gender}</p>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">Date of Birth:</span>
+                                            <p class="text-secondary">${splitDateTime(employee.dob)}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <span class="fw-bold">Contact Number:</span>
+                                            <p class="text-secondary">${employee.contactNumber}</p>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">Email:</span>
+                                            <p class="text-secondary">${employee.email}</p>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Address:</span>
+                                        <p class="text-secondary">${employee.addressNo}, ${employee.addressLane}, ${employee.addressCity}, ${employee.addressState}, ${employee.postalCode}</p>
+                                    </div>
+                                    <hr>
+                                    <h5 class="text-uppercase text-muted mb-2 mt-3">Emergency Contact</h5>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <span class="fw-bold">Contact Person:</span>
+                                            <p class="text-secondary">${employee.emergencyContactPerson}</p>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">Contact Number:</span>
+                                            <p class="text-secondary">${employee.emergencyContactNumber}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5 class="text-uppercase text-muted mb-3">Job Details</h5>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <span class="fw-bold">Role:</span>
+                                            <p class="text-secondary">${employee.role}</p>
+                                        </div>
+                                        <div class="col-3">
+                                            <span class="fw-bold">Designation:</span>
+                                            <p class="text-secondary">${employee.designation}</p>
+                                        </div>
+                                        <div class="col-3">
+                                            <span class="fw-bold">Joined Date:</span>
+                                            <p class="text-secondary">${splitDateTime(employee.joinedDate)}</p>
+                                        </div>
+                                        <div class="col-3">
+                                            <span class="fw-bold">Branch:</span>
+                                            <p class="text-secondary">${employee.branch}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    return modalContent;
+}
+
+function viewEmployee(employee) {
+    $('#employeeModal').remove();
+    const employeeModalContent = generateEmployeeModalContent(employee);
+    $('body').append(employeeModalContent);
+    $('#employeeModal').modal('show');
 }
 
 function getEmployeeStatusColour(status) {

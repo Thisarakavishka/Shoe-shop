@@ -65,12 +65,87 @@ function appendCustomerToTable(index, customer) {
         </td>
         </tr>
     `);
+
     $('.edit-customer-btn').last().click(function () {
         editCustomer(customer);
     });
+
     $('.delete-customer-btn').last().click(function () {
         deleteCustomer(customer);
     });
+
+    $('.view-customer-btn').last().click(function () {
+        viewCustomer(customer);
+    });
+}
+
+function generateCustomerModalContent(customer) {
+    let levelColor = getCustomerLevelColour(customer.customerLevel);
+    let genderColor = getCustomerGenderColour(customer.gender);
+
+    let modalContent = `
+        <div class="modal fade" id="customerModal" tabindex="-1" role="dialog" aria-labelledby="customerModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-dark text-light">
+                        <h5 class="modal-title" id="customerModalLabel">Customer Details</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class="text-uppercase text-muted">Personal Information</h5>
+                                    <div class="mb-3">
+                                        <span class="fw-bold">Name:</span><p class="text-secondary"> ${customer.customerName}</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <span class="fw-bold">Gender:</span> <span class="pill ${genderColor} rounded text-white fw-bold"> ${customer.gender}</span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <span class="fw-bold">Date of Birth:</span><p class="text-secondary"> ${splitDateTime(customer.dob)}</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <span class="fw-bold">Email:</span><p class="text-secondary"> ${customer.email}</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <span class="fw-bold">Contact Number:</span><p class="text-secondary"> ${customer.contactNumber}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="text-uppercase text-muted">Membership Details</h5>
+                                    <div class="mb-3">
+                                        <span class="fw-bold">Joined Date:</span><p class="text-secondary"> ${splitDateTime(customer.joinedDate)}</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <span class="fw-bold">Customer Level:</span> <span class="pill ${levelColor} rounded text-white fw-bold">${customer.customerLevel} </span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <span class="fw-bold">Total Points:</span><p class="text-secondary"> ${customer.totalPoints}</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <span class="fw-bold">Recent Purchase:</span> <p class="text-secondary"> ${splitDateTime(customer.recentPurchaseDateTime)} </p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <span class="fw-bold">Address:</span><p class="text-secondary"> ${customer.addressNo}, ${customer.addressLane}, ${customer.addressCity}, ${customer.addressState}, ${customer.postalCode} </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    return modalContent;
+}
+
+function viewCustomer(customer) {
+    $('#customerModal').remove();
+    const customerModalContent = generateCustomerModalContent(customer);
+    $('body').append(customerModalContent);
+    $('#customerModal').modal('show');
 }
 
 function getPageCount() {
